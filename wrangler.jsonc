@@ -1,0 +1,13 @@
+{
+  "name": "secondsun",
+  "main": "src/worker.js",
+  "compatibility_date": "2025-09-01",
+  "assets": { "directory": "./public", "binding": "ASSETS", "run_worker_first": true },
+  "send_email": [{ "name": "EMAIL" }],
+  "vars": {
+    // Päringud saadetakse siia. Cloudflare'i tasuta paketis peab see olema Email Routingus kinnitatud sihtaadress.
+    "TO_ADDRESS": "eva@secondsun.ee",
+    // Saatja aadress peab olema secondsun.ee domeenil.
+    "FROM_ADDRESS": "veeb@secondsun.ee"
+  }
+}
