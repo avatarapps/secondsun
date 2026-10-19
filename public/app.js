@@ -170,16 +170,19 @@
     show();
   })();
 
-  /* ---------------- 01 automate ---------------- */
+  /* ---------------- 01 automate (runs once, when first seen) ---------------- */
   (function automate() {
-    var btn = $('auto-btn'); if (!btn) return;
-    var states = document.querySelectorAll('.task-state'), on = false;
-    btn.addEventListener('click', function () {
-      on = !on;
-      btn.textContent = on ? 'Näita uuesti' : 'Automatiseeri';
-      btn.className = on ? 'btn-undo' : 'btn-auto';
-      Array.prototype.forEach.call(states, function (s, i) { s.style.transitionDelay = on ? (i * 0.12) + 's' : '0s'; s.textContent = on ? '✓ automaatne' : 'käsitsi'; s.classList.toggle('on', on); });
-    });
+    var card = $('task-card'); if (!card) return;
+    var states = card.querySelectorAll('.task-state'), done = false;
+    function run() {
+      if (done) return; done = true;
+      Array.prototype.forEach.call(states, function (s, i) {
+        setTimeout(function () { s.textContent = '✓ automaatne'; s.classList.add('on'); }, reduce ? 0 : 400 + i * 450);
+      });
+    }
+    if (!('IntersectionObserver' in window)) { run(); return; }
+    var io = new IntersectionObserver(function (en) { if (en[0].isIntersecting) { io.disconnect(); run(); } }, { threshold: 0.6 });
+    io.observe(card);
   })();
 
   /* ---------------- 03 portal ---------------- */
