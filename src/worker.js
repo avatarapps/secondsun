@@ -24,6 +24,7 @@ async function handleRequest(request, env) {
     await env.EMAIL.send({
       to: env.TO_ADDRESS,
       from: env.FROM_ADDRESS,
+      replyTo: email,
       subject: 'Uus päring: ' + (company || name || email),
       text: lines.join('\n')
     });
