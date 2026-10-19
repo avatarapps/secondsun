@@ -210,8 +210,8 @@
     var ALLOWED = ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'csv', 'txt', 'ppt', 'pptx', 'png', 'jpg', 'jpeg', 'webp', 'heic'];
     var MAX_FILES = 5, MAX_FILE = 10 * 1024 * 1024, MAX_TOTAL = 15 * 1024 * 1024;
     var DRAFT = 'ss-paring-v1';
-    var S, files = [], startedAt = Date.now(), aiSig = '';
-    function fresh() { return { step: 'contact', name: '', company: '', email: '', phone: '', needs: [], desc: '', ai: 'idle', aiQs: [], aiAns: {}, known: {}, dl: '', dlDate: '', bud: '', budget: '', brief: '', briefTouched: false, send: 'idle', sendErr: '', idem: '', tried: false, fileErr: '' }; }
+    var S, files = [], startedAt = Date.now(), aiSig = '', aiOn = false;
+    function fresh() { return { aiOn: aiOn, step: 'contact', name: '', company: '', email: '', phone: '', needs: [], desc: '', ai: 'idle', aiQs: [], aiAns: {}, known: {}, dl: '', dlDate: '', bud: '', budget: '', brief: '', briefTouched: false, send: 'idle', sendErr: '', idem: '', tried: false, fileErr: '' }; }
     S = fresh();
     try { var d = JSON.parse(localStorage.getItem(DRAFT) || 'null'); if (d && d.v === 1) { ['name', 'company', 'email', 'phone', 'needs', 'desc', 'dl', 'dlDate', 'bud', 'budget'].forEach(function (k) { if (d[k] !== undefined) S[k] = d[k]; }); } } catch (e) { /* no storage */ }
     function save() { try { localStorage.setItem(DRAFT, JSON.stringify({ v: 1, name: S.name, company: S.company, email: S.email, phone: S.phone, needs: S.needs, desc: S.desc, dl: S.dl, dlDate: S.dlDate, bud: S.bud, budget: S.budget })); } catch (e) { /* ignore */ } }
@@ -224,7 +224,7 @@
     var uuid = function () { return (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : 'id-' + Date.now() + '-' + Math.random().toString(36).slice(2); };
 
     // which steps the visitor actually sees
-    function needAi() { return S.ai !== 'none'; }
+    function needAi() { return S.aiOn && S.ai !== 'none' && S.ai !== 'error'; }
     function needFrame() { return !(S.known.deadline && S.known.budget); }
     function visible() { return ORDER.filter(function (k) { return (k !== 'ai' || needAi()) && (k !== 'frame' || needFrame()); }); }
     function go(step) { S.step = step; S.tried = false; if (step === 'summary' && !S.briefTouched) S.brief = buildBrief(); render(); scrollEl.scrollTop = 0; var top = $('intake').getBoundingClientRect().top; if (top < 0) $('intake').scrollIntoView({ block: 'start', behavior: reduce ? 'auto' : 'smooth' }); }
@@ -282,9 +282,9 @@
       if (s === 'contact' && !validateContact()) { S.tried = true; render(); var m = $('i-mail'); if (m) m.focus(); return; }
       if (s === 'needs' && !S.needs.length) { S.tried = true; render(); return; }
       save();
-      if (s === 'desc') {
+      if (s === 'desc' && S.aiOn) {
         S.step = 'ai'; render();
-        askAi().then(function () { if (S.step !== 'ai') return; if (S.ai === 'none') go(nextFrom('desc')); else render(); });
+        askAi().then(function () { if (S.step !== 'ai') return; if (S.ai === 'ok') render(); else go(nextFrom('desc')); });
         return;
       }
       go(nextFrom(s));
@@ -412,5 +412,6 @@
     form.addEventListener('dragleave', function () { var d = $('i-drop'); if (d) d.classList.remove('over'); });
     form.addEventListener('drop', function (e) { var d = $('i-drop'); if (d && d.contains(e.target)) { e.preventDefault(); d.classList.remove('over'); addFiles(e.dataTransfer.files); } });
     render();
+    fetch('/api/config').then(function (r) { return r.json(); }).then(function (c) { aiOn = !!(c && c.ai); S.aiOn = aiOn; render(); }).catch(function () { /* AI stays off */ });
   })();
 })();
