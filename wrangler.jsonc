@@ -6,7 +6,7 @@
   "send_email": [{ "name": "EMAIL" }],
   "vars": {
     // Päringud saadetakse siia. Cloudflare'i tasuta paketis peab see olema Email Routingus kinnitatud sihtaadress.
-    "TO_ADDRESS": "eva@secondsun.ee",
+    "TO_ADDRESS": "evaliisa.ong@gmail.com",
     // Saatja aadress peab olema secondsun.ee domeenil.
     "FROM_ADDRESS": "veeb@secondsun.ee"
   }
