@@ -224,6 +224,7 @@ export default {
     if (url.hostname === 'secondsun.ee') { url.hostname = 'www.secondsun.ee'; return Response.redirect(url.toString(), 301); }
     if (url.pathname === '/api/paring') return handleInquiry(request, env);
     if (url.pathname === '/api/tapsustused') return handleFollowups(request, env);
+    if (url.pathname === '/api/config') return json({ ok: true, ai: !!env.ANTHROPIC_API_KEY });
     const res = await env.ASSETS.fetch(request);
     const out = new Response(res.body, res);
     out.headers.set('x-content-type-options', 'nosniff');
