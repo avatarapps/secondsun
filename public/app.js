@@ -7,75 +7,107 @@
   /* ---------------- Reading machine ---------------- */
   (function readingMachine() {
     var root = $('rm'); if (!root) return;
-    var stage = $('rm-stage'), wrap = $('rm-wrap'), labelsEl = $('rm-labels'), beam = $('rm-beam');
+    var stage = $('rm-stage'), wrap = $('rm-wrap'), labelsEl = $('rm-labels'), beam = $('rm-beam'), frame = $('rm-frame');
     var capEl = $('rm-cap'), qEl = $('rm-q'), aEl = $('rm-a'), srcEl = $('rm-src'), doneEl = $('rm-done'), statEl = $('rm-stat');
     var tabs = Array.prototype.slice.call(root.querySelectorAll('.rm-tab'));
     var rnd = function (i) { var v = Math.sin(i * 12.9898 + 7.7) * 43758.5453; return v - Math.floor(v); };
-    var CYCLE = 8200, DONE = 2900, WORK = 700;
+    var CYCLE = 8600, DONE = 2900, WORK = 700;
+    var all = []; for (var n = 0; n < 240; n++) all.push(n);
+    var cols = [0, 165, 330, 495];
+    var nf = function (v) { return v.toLocaleString('et-EE'); };
     var Q = [
       {
-        q: 'Mitmest erinevast kohast sa iga päev uudiseid loed?',
-        a: 'Üks kokkuvõte hommikul: viis uudist, mis puudutavad just sinu ettevõtet.',
-        src: ['uudisportaal · tarneajad pikenevad', 'valdkonna uudiskiri · uus nõue', 'LinkedIn · konkurent värbab müüjaid'],
-        stat: function (p) { return 'loen ' + Math.round(p * 38) + ' allikast · ' + Math.round(p * 412) + ' artiklit'; },
-        labels: ['uudisportaalid', 'uudiskirjad', 'LinkedIn', 'valdkond', 'pressiteated', 'foorumid'].map(function (t, g) { return { x: g * 108, y: 44, t: t }; }),
+        tag: 'TEHTUD',
+        q: 'Kui palju kulutate aega tööle, mida mitte keegi ei peaks enam käsitsi tegema?',
+        a: 'Võida poole aasta töötunnid tagasi.',
+        src: ['arved → raamatupidamine', 'e-kirjad → CRM', 'näitlik ajavõit ≈ 1 000 h aastas'],
+        stat: function (p) { return 'automatiseerin · ' + Math.round(p * 240) + ' / 240 korduvat toimingut · ≈ ' + nf(Math.round(p * 1000)) + ' h aastas'; },
+        labels: ['arved', 'e-kirjad', 'tellimused', 'aruanded', 'andmesisestus'].map(function (t, r) { return { x: 0, y: 18 + r * 62, t: t }; }),
+        hits: all, beam: 'v',
+        pos: function (i) { var r = Math.floor(i / 48), k = i % 48, c = k % 24, l = Math.floor(k / 24), x = 116 + c * 22; return { x: x, y: 12 + r * 62 + l * 20, w: 15, h: 13, bg: ['#C7CDD8', '#8FA3C0', '#E4E7EC', '#8FA3C0', '#C7CDD8'][r], d: 700 + (x / 650) * 1900 }; },
+        done: function (i) { var c = (i % 48) % 24; return { x: 116 + c * 3, s: 1, o: 1 }; }
+      },
+      {
+        tag: 'LEITUD',
+        q: 'Kui palju olulist jääb sul märkamata, sest sa ei jõua kõigel silma peal hoida?',
+        a: 'Sinule olulised uudised ja konkurentide tegemised. Kindlaks ajaks kindlas kohas.',
+        src: ['uudis · tarneajad pikenevad', 'konkurent B · hinnaleht muutus', 'iga tööpäev 08:00 · sinu postkastis'],
+        stat: function (p) { return 'jälgin ' + Math.round(p * 42) + ' allikat · ' + Math.round(p * 5) + ' olulist muutust'; },
+        labels: ['uudisportaalid', 'uudiskirjad', 'LinkedIn', 'konkurent A', 'konkurent B', 'konkurent C'].map(function (t, g) { return { x: g * 108, y: 44, t: t }; }),
         hideLabelsDone: true,
-        hits: [7, 52, 95, 141, 203],
-        pos: function (i) { var g = Math.floor(i / 40), k = i % 40, c = k % 5, r = Math.floor(k / 5); return { x: g * 108 + c * 15, y: 70 + r * 26, w: 12, h: 17, bg: ['#E4E7EC', '#C7CDD8', '#8FA3C0', '#E4E7EC', '#C7CDD8', '#8FA3C0'][g], d: 700 + g * 300 + r * 22 }; },
-        done: function (i, hit, j) { return hit ? { x: 300, y: 20 + j * 58, s: 1.9, o: 1 } : { x: 330, y: 150, s: 0.3, o: 0 }; }
+        hits: [7, 52, 95, 141, 166, 203],
+        pos: function (i) { var g = Math.floor(i / 40), k = i % 40, c = k % 5, r = Math.floor(k / 5); return { x: g * 108 + c * 15, y: 70 + r * 26, w: 12, h: 17, bg: ['#E4E7EC', '#C7CDD8', '#C7CDD8', '#8FA3C0', '#8FA3C0', '#8FA3C0'][g], d: 700 + g * 300 + r * 22 }; },
+        done: function (i, hit, j) { return hit ? { x: 300, y: 8 + j * 50, s: 1.8, o: 1 } : { x: 330, y: 150, s: 0.3, o: 0 }; }
       },
       {
-        q: 'Kui konkurent homme midagi olulist muudab, millal sina sellest teada saad?',
-        a: 'Näide: konkurent B muutis hinnalehte, põhipakett on nüüd 12% odavam.',
-        src: ['konkurent B · hinnaleht · muutus 07:40', 'konkurent B · uus pakett', 'konkurent D · 2 uut töökuulutust'],
-        stat: function (p) { return 'võrdlen ' + Math.round(p * 24) + ' / 24 lehte eilsega'; },
-        labels: ['Konkurent A', 'Konkurent B', 'Konkurent C', 'Konkurent D'].map(function (t, b) { return { x: b * 176, y: 32, t: t }; }).concat([{ x: 0, y: 290, t: 'veeb · hinnad · töökuulutused' }]),
-        hits: [79, 80, 81, 82, 85, 86, 87, 88],
-        pos: function (i) { var b = Math.floor(i / 60), k = i % 60, c = k % 6, r = Math.floor(k / 6); return { x: b * 176 + c * 16, y: 58 + r * 22, w: 13, h: 13, bg: r < 2 ? '#8FA3C0' : '#4E5D78', d: 700 + b * 480 + r * 30 }; },
-        done: function (i, hit) { return hit ? { s: 1.25, o: 1 } : { s: 1, o: Math.floor(i / 60) === 1 ? 0.6 : 0.28 }; }
+        tag: 'TEHTUD',
+        q: 'Kas iga uus klient tähendab rohkem tööd?',
+        a: 'Päring saab vastuse. Pakkumine läheb teele. Tellimus jõuab süsteemi. Sa ei pea kõrval seisma.',
+        src: ['vastus · 21:14', 'pakkumine · 21:15', 'tellimus → süsteem · 21:16'],
+        stages: [700, 1350, 2000, 2650],
+        stat: function (p, st) { return ['päring saabus · 21:14', 'vastus saadetud · 21:14', 'pakkumine teel · 21:15', 'tellimus süsteemis · 21:16', 'tellimus süsteemis · 21:16'][st]; },
+        labels: ['päring', 'vastus', 'pakkumine', 'tellimus → süsteem'].map(function (t, c) { return { x: cols[c], y: 0, t: t }; }),
+        lbl: function (c, st) { return { o: '1', c: c <= Math.min(st, 3) ? '#F5A524' : '#8E98A8' }; },
+        flow: function (i, st, done) {
+          if (i < 200) {
+            var c = Math.floor(i / 50), k = i % 50;
+            return { x: cols[c] + 6 + (k % 5) * 29, y: 28 + Math.floor(k / 5) * 28, w: 22, h: 18, bg: '#4E5D78', o: c <= Math.min(st, 3) ? 0.3 : 0.12, z: 1 };
+          }
+          var kk = i - 200, cc = Math.min(st, 3);
+          return { x: cols[cc] + 22 + (kk % 5) * 22, y: 70 + Math.floor(kk / 5) * 24, w: 17, h: 14, bg: done || st >= 3 ? '#F5A524' : (st >= 1 ? '#C7CDD8' : '#E4E7EC'), o: 1, z: 3 };
+        }
       },
       {
-        q: 'Kui palju aega kulub sul vajaliku info otsimisele?',
-        a: 'Leitud: lepingu tingimus, viimane hinnapakkumine ja kliendi kiri.',
-        src: ['Leping_tarnija.pdf · p 7.3', 'Pakkumine_1184.docx', 'e-kiri · 12.09'],
-        stat: function (p) { return 'otsin ' + Math.round(p * 9860).toLocaleString('et-EE') + ' failist'; },
-        labels: [],
-        hits: [37, 118, 203],
-        pos: function (i) { var c = i % 24, r = Math.floor(i / 24); return { x: c * 26 + Math.round((rnd(i) - 0.5) * 8), y: 8 + r * 32 + Math.round((rnd(i + 99) - 0.5) * 8), w: 13, h: 17, bg: ['#E4E7EC', '#8FA3C0', '#4E5D78'][Math.floor(rnd(i * 3) * 3)], d: 700 + (c / 24) * 1800 }; },
-        done: function (i, hit) { return hit ? { s: 2.2, o: 1 } : { s: 1, o: 0.18 }; }, beam: 'v'
-      },
-      {
-        q: 'Kui palju maksab sinu ettevõttele see, mida sa veel ei tea?',
-        a: 'Näide: sama mure kordub eri kanalites — tellimuse kinnituskiri jõuab klientidel rämpsposti.',
-        src: ['arvustus · „kinnitust ei tulnud“', 'e-kiri · „kas tellimus läks läbi?“', 'vestlus · „kirja pole siiani“'],
-        stat: function (p) { return 'loen klienditagasisidet · ' + Math.round(p * 240) + ' / 240 kirjet'; },
-        labels: ['arvustused', 'e-kirjad', 'vestlused'].map(function (t, g) { return { x: g * 214, y: 22, t: t }; }),
-        hits: [12, 27, 45, 61, 73, 94, 108, 117, 139, 150, 171, 186, 202, 229],
-        pos: function (i) { var g = Math.floor(i / 80), k = i % 80, c = k % 8, r = Math.floor(k / 8); return { x: g * 214 + c * 24, y: 48 + r * 26, w: 19, h: 12, r: 6, bg: ['#8FA3C0', '#C7CDD8', '#4E5D78'][g], d: 700 + (r / 10) * 1800 }; },
-        done: function (i, hit) { return hit ? { s: 1.2, o: 1 } : { s: 1, o: 0.2 }; }, beam: 'h'
+        tag: 'TEHTUD',
+        q: 'Sul on hea äriidee. Miks sa pole seda veel teoks teinud?',
+        a: 'Sina tunned oma äri. Meie loome sellest läbimõeldud digitoote üleliigsete sammudeta.',
+        src: ['kasutaja põhitegevus', 'esimene versioon', 'üleliigsed sammud eemaldatud'],
+        stages: [700, 1500, 2200, 99999],
+        stat: function (p, st) { return ['kogun ideed ja vajadused', 'sorteerin: idee · kasutajad · esimene versioon', 'eemaldan üleliigsed sammud · 144 → 0', 'koostan esimese vaate', 'koostan esimese vaate'][st]; },
+        labels: ['idee', 'kasutajad', 'esimene versioon', 'üleliigne'].map(function (t, c) { return { x: cols[c], y: 0, t: t }; }),
+        lbl: function (c, st, done) { return { o: done || st === 0 ? '0' : (c === 3 && st >= 2 ? '0' : '1'), c: '#8E98A8' }; },
+        frameDone: true,
+        flow: function (i, st, done) {
+          var g = i < 36 ? 0 : i < 72 ? 1 : i < 96 ? 2 : 3, base = [0, 36, 72, 96][g], k = i - base;
+          if (st === 0 && !done) return { x: Math.round(rnd(i) * 610), y: 20 + Math.round(rnd(i + 51) * 280), w: 10 + Math.round(rnd(i + 7) * 20), h: 9 + Math.round(rnd(i + 3) * 8), bg: ['#E4E7EC', '#C7CDD8', '#8FA3C0'][Math.floor(rnd(i * 5) * 3)], o: 1, z: 1 };
+          var gx = cols[g] + (k % 6) * 24, gy = 26 + Math.floor(k / 6) * 11;
+          if (!done) { var gone = g === 3 && st >= 2; return { x: gx, y: gy, w: 18, h: 8, bg: ['#E4E7EC', '#C7CDD8', '#F5A524', '#4E5D78'][g], o: gone ? 0 : 1, s: gone ? 0.3 : 1, z: 1 }; }
+          if (g === 3) return { x: gx, y: gy, w: 18, h: 8, bg: '#4E5D78', o: 0, s: 0.3, z: 1 };
+          if (g === 0) { if (k >= 12) return { x: 300, y: 150, w: 10, h: 8, bg: '#E4E7EC', o: 0, s: 0.3, z: 1 }; return { x: 240 + (k % 6) * 30, y: 26 + Math.floor(k / 6) * 16, w: 27, h: 13, bg: '#8FA3C0', o: 1, z: 2 }; }
+          if (g === 1) { var row = Math.floor(k / 12), r2 = k % 12; return { x: 240 + (r2 % 6) * 30, y: 76 + row * 52 + Math.floor(r2 / 6) * 21, w: 27, h: 18, bg: '#E4E7EC', o: 1, z: 2 }; }
+          return { x: 240 + (k % 6) * 30, y: 244 + Math.floor(k / 6) * 12, w: 27, h: 10, bg: '#F5A524', o: 1, z: 3 };
+        }
       }
     ];
     var cards = [];
     for (var i = 0; i < 240; i++) { var el = document.createElement('span'); el.className = 'rm-card'; stage.appendChild(el); cards.push(el); }
-    var q = 0, t = 0, cyc = 0, hov = false, visible = true, phase = -1;
+    var q = 0, t = 0, cyc = 0, hov = false, visible = true, lastKey = '';
 
-    function place(done) {
+    function stageOf(Qd, done) { var st = 0; if (Qd.stages) { Qd.stages.forEach(function (b, k) { if (t >= b) st = k + 1; }); if (done) st = Math.max(st, 3); } return st; }
+    function place(done, st, entering) {
       var Qd = Q[q], j = 0, odd = cyc % 2 === 1;
       for (var i = 0; i < 240; i++) {
-        var p = Qd.pos(i), hit = Qd.hits.indexOf(i) >= 0, x = p.x, y = p.y, s = 1, o = 1;
-        if (done) { var d = Qd.done(i, hit, j); if (d.x !== undefined) { x = d.x; y = d.y; } s = d.s; o = d.o; }
-        if (hit) j++;
-        var st = cards[i].style;
-        st.width = p.w + 'px'; st.height = p.h + 'px'; st.borderRadius = (p.r || 2) + 'px';
-        st.transform = 'translate(' + x + 'px,' + y + 'px) scale(' + s + ')';
-        st.backgroundColor = done && hit ? '#F5A524' : p.bg;
-        st.opacity = o; st.zIndex = hit ? 3 : 1;
-        if (!done) { st.animationName = odd ? 'rmfB' : 'rmfA'; st.animationDelay = Math.round(p.d) + 'ms'; }
+        var c = cards[i].style, x, y, w, h, s = 1, o = 1, bg, z = 1, r = 2, d = 0;
+        if (Qd.flow) { var f = Qd.flow(i, st, done); x = f.x; y = f.y; w = f.w; h = f.h; bg = f.bg; o = f.o; z = f.z || 1; s = f.s === undefined ? 1 : f.s; }
+        else {
+          var p = Qd.pos(i), hit = Qd.hits.indexOf(i) >= 0;
+          x = p.x; y = p.y; w = p.w; h = p.h; r = p.r || 2; bg = p.bg; d = p.d; z = hit ? 3 : 1;
+          if (done) { var dd = Qd.done(i, hit, j); if (dd.x !== undefined) x = dd.x; if (dd.y !== undefined) y = dd.y; s = dd.s; o = dd.o; if (hit) bg = '#F5A524'; }
+          if (hit) j++;
+        }
+        c.width = w + 'px'; c.height = h + 'px'; c.borderRadius = r + 'px';
+        c.transform = 'translate(' + x + 'px,' + y + 'px) scale(' + s + ')';
+        c.backgroundColor = bg; c.opacity = o; c.zIndex = z;
+        if (entering) { c.animationName = Qd.flow ? 'none' : (odd ? 'rmfB' : 'rmfA'); c.animationDelay = Math.round(d) + 'ms'; }
       }
-      Array.prototype.forEach.call(labelsEl.children, function (l) { l.style.opacity = done && Qd.hideLabelsDone ? '0' : '1'; });
+      Array.prototype.forEach.call(labelsEl.children, function (l, k) {
+        if (Qd.lbl) { var v = Qd.lbl(k, st, done); l.style.opacity = v.o; l.style.color = v.c; }
+        else l.style.opacity = done && Qd.hideLabelsDone ? '0' : '1';
+      });
+      frame.classList.toggle('on', !!Qd.frameDone && done);
     }
-    function setQuestion(n) {
-      q = n; t = 0; cyc++; phase = -1;
+    function setQuestion(nq) {
+      q = nq; t = 0; cyc++; lastKey = '';
       var Qd = Q[q];
       tabs.forEach(function (b, k) { b.setAttribute('aria-selected', k === q ? 'true' : 'false'); b.querySelector('.bar').style.width = '0%'; });
       qEl.textContent = Qd.q; qEl.classList.remove('fade-in'); void qEl.offsetWidth; qEl.classList.add('fade-in');
@@ -87,28 +119,24 @@
       srcEl.innerHTML = Qd.src.map(function (s, k) { return '<span class="fade-in" style="animation-delay:' + (150 + k * 120) + 'ms"><i></i>' + esc(s) + '</span>'; }).join('');
       tick(true);
     }
-    function tick(force) {
-      var Qd = Q[q];
-      var ph = t >= DONE ? 2 : t >= WORK ? 1 : 0;
-      if (ph !== phase || force) {
-        if (phase === -1 || (ph === 0)) place(false);
-        if (ph === 2) { place(true); aEl.classList.remove('fade-in'); void aEl.offsetWidth; aEl.classList.add('fade-in'); }
-        doneEl.hidden = ph !== 2; statEl.hidden = ph === 2;
-        phase = ph;
+    function tick(entering) {
+      var Qd = Q[q], done = t >= DONE, st = stageOf(Qd, done);
+      var key = (done ? 'd' : 'w') + st;
+      if (key !== lastKey || entering) {
+        place(done, st, !!entering);
+        if (done && lastKey.charAt(0) !== 'd') { aEl.classList.remove('fade-in'); void aEl.offsetWidth; aEl.classList.add('fade-in'); }
+        doneEl.hidden = !done; statEl.hidden = done;
+        lastKey = key;
       }
-      capEl.textContent = ph === 2 ? 'VASTUS · näidisstsenaarium' : ph === 0 ? 'KÜSIMUS ' + (q + 1) + ' / 4' : 'TÖÖTLEN…';
-      if (ph < 2) statEl.textContent = Qd.stat(Math.min(1, Math.max(0, (t - WORK) / 2100)));
-      var bar = tabs[q].querySelector('.bar'); bar.style.width = (Math.min(1, t / CYCLE) * 100).toFixed(1) + '%';
+      capEl.textContent = done ? Qd.tag : t < WORK ? 'KÜSIMUS ' + (q + 1) + ' / 4' : 'TÖÖTLEN…';
+      if (!done) statEl.textContent = Qd.stat(Math.min(1, Math.max(0, (t - WORK) / 2100)), st);
+      tabs[q].querySelector('.bar').style.width = (Math.min(1, t / CYCLE) * 100).toFixed(1) + '%';
     }
     tabs.forEach(function (b, k) { b.addEventListener('click', function () { setQuestion(k); }); });
     root.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse') hov = true; });
     root.addEventListener('pointerleave', function () { hov = false; });
     if ('IntersectionObserver' in window) new IntersectionObserver(function (en) { visible = en[0].isIntersecting; }).observe(root);
-    function fit() {
-      var w = wrap.clientWidth, s = Math.min(1, w / 644);
-      stage.style.transform = 'scale(' + s + ')';
-      wrap.style.height = Math.round(320 * s) + 'px';
-    }
+    function fit() { var w = wrap.clientWidth, s = Math.min(1, w / 650); stage.style.transform = 'scale(' + s + ')'; wrap.style.height = Math.round(320 * s) + 'px'; }
     fit(); window.addEventListener('resize', fit);
     setQuestion(0);
     setInterval(function () {
@@ -121,15 +149,12 @@
     }, 100);
   })();
 
-  /* ---------------- 01 hours ---------------- */
+  /* ---------------- 02 hours ---------------- */
   (function hours() {
     var box = $('hours'); if (!box) return;
     var H = [
-      { t: '08:10', kind: 'Tellimus', inDay: true },
-      { t: '13:40', kind: 'Pakkumine', inDay: true },
-      { t: '19:25', kind: 'Broneering', inDay: false },
-      { t: '23:15', kind: 'Tellimus', inDay: false },
-      { t: '03:40', kind: 'Broneering', inDay: false }
+      { t: '08:10', kind: 'Tellimus', inDay: true }, { t: '13:40', kind: 'Pakkumine', inDay: true },
+      { t: '19:25', kind: 'Broneering', inDay: false }, { t: '23:15', kind: 'Tellimus', inDay: false }, { t: '03:40', kind: 'Broneering', inDay: false }
     ];
     var cur = 3, card = $('hour-card');
     box.innerHTML = H.map(function (h, i) { return '<button type="button" role="tab" data-h="' + i + '">' + h.t + '</button>'; }).join('');
@@ -145,7 +170,7 @@
     show();
   })();
 
-  /* ---------------- 02 automate ---------------- */
+  /* ---------------- 01 automate ---------------- */
   (function automate() {
     var btn = $('auto-btn'); if (!btn) return;
     var states = document.querySelectorAll('.task-state'), on = false;
@@ -153,11 +178,7 @@
       on = !on;
       btn.textContent = on ? 'Näita uuesti' : 'Automatiseeri';
       btn.className = on ? 'btn-undo' : 'btn-auto';
-      Array.prototype.forEach.call(states, function (s, i) {
-        s.style.transitionDelay = on ? (i * 0.12) + 's' : '0s';
-        s.textContent = on ? '✓ automaatne' : 'käsitsi';
-        s.classList.toggle('on', on);
-      });
+      Array.prototype.forEach.call(states, function (s, i) { s.style.transitionDelay = on ? (i * 0.12) + 's' : '0s'; s.textContent = on ? '✓ automaatne' : 'käsitsi'; s.classList.toggle('on', on); });
     });
   })();
 
@@ -175,148 +196,221 @@
 
   /* ---------------- Intake ---------------- */
   (function intake() {
-    var body = $('in-body'); if (!body) return;
+    var form = $('in-form'); if (!form) return;
+    var stepEl = $('in-step'), footEl = $('in-foot'), scrollEl = $('in-scroll');
     var NEEDS = [
-      { id: 'toode', t: 'Uus digitoode' }, { id: 'ai', t: 'AI kasutamine' }, { id: 'auto', t: 'Automatiseerimine' },
-      { id: 'sys', t: 'Süsteemide ühendamine' }, { id: 'web', t: 'Veebilahendus' }, { id: 'muu', t: 'Muu' }
+      { id: 'auto', t: 'Automatiseerida korduvaid tööülesandeid' },
+      { id: 'sys', t: 'Ühendada erinevaid programme ja süsteeme' },
+      { id: 'cs', t: 'Lihtsustada klienditeenindust' },
+      { id: 'prod', t: 'Luua uus digitoode' },
+      { id: 'other', t: 'Midagi muud või pole veel kindel' }
     ];
-    var B = {
-      goal: { id: 'goal', type: 'text', q: 'Mis peaks muutuma, kui lahendus on olemas?', ph: 'Näiteks: kliendid saavad ise aja broneerida', field: 'Eesmärk' },
-      users: { id: 'users', type: 'multi', q: 'Kes seda kasutama hakkaks?', opts: ['Meie kliendid', 'Meie töötajad', 'Partnerid', 'Pole veel kindel'], field: 'Kasutajad' },
-      stage: { id: 'stage', type: 'single', q: 'Kui kaugel idee praegu on?', opts: ['Ainult mõte', 'Kirja pandud', 'Prototüüp olemas', 'Töötab, vajab edasiarendust'], field: 'Praegune olukord' },
-      work: { id: 'work', type: 'multi', q: 'Millist tööd see praegu puudutab?', opts: ['Dokumendid ja pakkumised', 'Kliendipäringud', 'Andmete sisestamine', 'Aruandlus', 'Muu'], field: 'Praegune töö' },
-      systems: { id: 'systems', type: 'text', q: 'Milliseid süsteeme või tööriistu te praegu kasutate?', ph: 'Näiteks: Excel, raamatupidamistarkvara, CRM', field: 'Olemasolevad süsteemid' },
-      freq: { id: 'freq', type: 'single', q: 'Kui tihti seda tööd tehakse?', opts: ['Mitu korda päevas', 'Iga päev', 'Iga nädal', 'Harvem'], field: 'Sagedus' },
-      time: { id: 'time', type: 'single', q: 'Kas sul on ajakava silmas?', opts: ['Mida varem, seda parem', 'Järgmise 3 kuu jooksul', 'Pole kiire', 'Ei tea veel'], field: 'Ajakava' },
-      budget: { id: 'budget', type: 'single', q: 'Kas eelarve on juba paigas?', opts: ['Jah', 'Umbes teada', 'Veel mitte', 'Ei soovi praegu öelda'], field: 'Eelarve' }
-    };
-    var S;
-    function init() { S = { phase: 'start', needs: [], desc: '', queue: [], qi: 0, answers: {}, skipped: {}, curText: '', curMulti: [], typing: false, edits: {}, name: '', email: '', phone: '', company: '', showInternal: false, sending: false, error: '' }; }
-    init();
-    var timer;
-    var needLabels = function (ids) { return ids.map(function (id) { var n = NEEDS.filter(function (x) { return x.id === id; })[0]; return n ? n.t : id; }); };
-    var fmt = function (v) { return Array.isArray(v) ? v.join(', ') : (v || ''); };
-    var recap = function () { return [needLabels(S.needs).join(', '), (S.desc || '').trim()].filter(Boolean).join('\n'); };
-    function buildQueue(needs) {
-      var has = function (ids) { return ids.some(function (i) { return needs.indexOf(i) >= 0; }); };
-      var mid = [];
-      if (has(['toode', 'web', 'ai'])) mid.push('users');
-      if (has(['toode', 'web'])) mid.push('stage');
-      if (has(['ai', 'auto'])) mid.push('work');
-      if (has(['sys', 'auto'])) mid.push('systems');
-      if (has(['auto'])) mid.push('freq');
-      return ['goal'].concat(mid.slice(0, 3), ['time', 'budget']);
+    var TITLES = { contact: 'Kontaktandmed', needs: 'Mida soovid paremaks muuta või luua?', desc: 'Räägi sellest lähemalt', ai: 'AI täpsustused', frame: 'Projekti raamid', summary: 'Päringu kokkuvõte' };
+    var ORDER = ['contact', 'needs', 'desc', 'ai', 'frame', 'summary'];
+    var ALLOWED = ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'csv', 'txt', 'ppt', 'pptx', 'png', 'jpg', 'jpeg', 'webp', 'heic'];
+    var MAX_FILES = 5, MAX_FILE = 10 * 1024 * 1024, MAX_TOTAL = 15 * 1024 * 1024;
+    var DRAFT = 'ss-paring-v1';
+    var S, files = [], startedAt = Date.now(), aiSig = '';
+    function fresh() { return { step: 'contact', name: '', company: '', email: '', phone: '', needs: [], desc: '', ai: 'idle', aiQs: [], aiAns: {}, known: {}, dl: '', dlDate: '', bud: '', budget: '', brief: '', briefTouched: false, send: 'idle', sendErr: '', idem: '', tried: false, fileErr: '' }; }
+    S = fresh();
+    try { var d = JSON.parse(localStorage.getItem(DRAFT) || 'null'); if (d && d.v === 1) { ['name', 'company', 'email', 'phone', 'needs', 'desc', 'dl', 'dlDate', 'bud', 'budget'].forEach(function (k) { if (d[k] !== undefined) S[k] = d[k]; }); } } catch (e) { /* no storage */ }
+    function save() { try { localStorage.setItem(DRAFT, JSON.stringify({ v: 1, name: S.name, company: S.company, email: S.email, phone: S.phone, needs: S.needs, desc: S.desc, dl: S.dl, dlDate: S.dlDate, bud: S.bud, budget: S.budget })); } catch (e) { /* ignore */ } }
+    function clearDraft() { try { localStorage.removeItem(DRAFT); } catch (e) { /* ignore */ } }
+
+    var emailOk = function (v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test((v || '').trim()); };
+    var needLabels = function () { return S.needs.map(function (id) { return (NEEDS.filter(function (n) { return n.id === id; })[0] || { t: id }).t; }); };
+    var fmtSize = function (n) { return n < 1024 * 1024 ? Math.max(1, Math.round(n / 1024)) + ' KB' : (n / 1048576).toFixed(1).replace('.', ',') + ' MB'; };
+    var ext = function (n) { var m = /\.([a-z0-9]+)$/i.exec(n || ''); return m ? m[1].toLowerCase() : ''; };
+    var uuid = function () { return (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : 'id-' + Date.now() + '-' + Math.random().toString(36).slice(2); };
+
+    // which steps the visitor actually sees
+    function needAi() { return S.ai !== 'none'; }
+    function needFrame() { return !(S.known.deadline && S.known.budget); }
+    function visible() { return ORDER.filter(function (k) { return (k !== 'ai' || needAi()) && (k !== 'frame' || needFrame()); }); }
+    function go(step) { S.step = step; S.tried = false; if (step === 'summary' && !S.briefTouched) S.brief = buildBrief(); render(); scrollEl.scrollTop = 0; var top = $('intake').getBoundingClientRect().top; if (top < 0) $('intake').scrollIntoView({ block: 'start', behavior: reduce ? 'auto' : 'smooth' }); }
+    function nextFrom(step) { var v = visible(), i = v.indexOf(step); return v[Math.min(v.length - 1, i + 1)]; }
+    function prevFrom(step) { var v = visible(), i = v.indexOf(step); return v[Math.max(0, i - 1)]; }
+
+    function dlText() {
+      if (S.known.deadline) return S.known.deadline;
+      if (S.dl === 'date') return S.dlDate ? 'kindel tähtaeg ' + S.dlDate.split('-').reverse().join('.') : 'kindel tähtaeg, kuupäev märkimata';
+      return S.dl === 'asap' ? 'võimalikult kiiresti' : S.dl === 'flex' ? 'paindlik' : '';
     }
-    function fields() { return [{ k: 'soov', label: 'Soov' }].concat(S.queue.map(function (id) { return { k: id, label: B[id].field }; })); }
-    function later() { clearTimeout(timer); timer = setTimeout(function () { S.typing = false; render(); }, 700); }
-    function next() {
-      var nq = S.qi + 1;
-      if (nq >= S.queue.length) { toSummary(); return; }
-      S.qi = nq; S.curText = ''; S.curMulti = []; S.typing = true; render(); later();
+    function budText() {
+      if (S.known.budget) return S.known.budget;
+      if (S.bud === 'sum') return S.budget.trim() ? S.budget.trim().replace(/\s*€$/, '') + ' €' : '';
+      return S.bud === 'unknown' ? 'ei tea veel' : '';
     }
-    function answer(v) { S.answers[S.queue[S.qi]] = v; next(); }
-    function skip() { S.skipped[S.queue[S.qi]] = true; next(); }
-    function toSummary() {
-      clearTimeout(timer);
-      S.edits = { soov: recap() };
-      S.queue.forEach(function (id) { S.edits[id] = S.skipped[id] ? '' : fmt(S.answers[id]); });
-      S.phase = 'summary'; S.typing = false; render();
-    }
-    var val = function (k) { return (S.edits[k] || '').trim(); };
-    function send() {
-      if (S.email.indexOf('@') < 1 || S.sending) return;
-      S.sending = true; S.error = ''; render();
-      var payload = {
-        needs: needLabels(S.needs), fields: fields().map(function (f) { return { label: f.label, value: val(f.k) }; }),
-        name: S.name.trim(), email: S.email.trim(), phone: S.phone.trim(), company: S.company.trim(), website: (document.getElementById('in-hp') || {}).value || ''
-      };
-      fetch('/api/paring', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
-        .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { if (!r.ok || !j.ok) throw new Error(j.error || 'send'); }); })
-        .then(function () { S.sending = false; S.phase = 'sent'; render(); })
-        .catch(function () { S.sending = false; S.error = 'Päringut ei õnnestunud saata. Proovi uuesti või kirjuta otse eva@secondsun.ee või helista +372 5664 1159.'; render(); });
+    function buildBrief() {
+      var L = [], unknown = [];
+      L.push('LÄHTEÜLESANNE', '');
+      L.push('Kontakt: ' + [S.name.trim(), S.company.trim(), S.email.trim(), S.phone.trim()].filter(Boolean).join(' · '));
+      if (!S.company.trim()) unknown.push('ettevõte');
+      L.push('Soov: ' + (needLabels().join('; ') || '—'), '');
+      L.push('Kirjeldus:', S.desc.trim() || '—');
+      if (!S.desc.trim()) unknown.push('kirjeldus');
+      if (S.ai === 'ok' && S.aiQs.length) {
+        L.push('', 'Täpsustused:');
+        S.aiQs.forEach(function (qq, i) { var a = (S.aiAns[i] || '').trim(); L.push('– ' + qq, '  ' + (a || 'vastamata')); if (!a) unknown.push('vastus: „' + qq + '“'); });
+      }
+      var dl = dlText(), bd = budText();
+      if (!dl) unknown.push('tähtaeg');
+      if (!bd || bd === 'ei tea veel') unknown.push('eelarve');
+      L.push('', 'Tähtaeg: ' + (dl || '—'), 'Eelarve: ' + (bd || '—'));
+      L.push('Lisamaterjalid: ' + (files.length ? files.map(function (f) { return f.name; }).join(', ') : '—'));
+      L.push('', 'Teadmata: ' + (unknown.length ? unknown.join('; ') : '—'));
+      return L.join('\n');
     }
 
-    var chip = function (t, on, act, cls) { return '<button type="button" class="chip' + (cls ? ' ' + cls : '') + '" aria-pressed="' + on + '" data-act="' + act + '">' + (on ? '✓ ' : '') + esc(t) + '</button>'; };
-    function render() {
-      var total = S.queue.length;
-      var fill = S.phase === 'start' ? 0 : S.phase === 'q' ? (S.qi / (total + 1)) * 100 : S.phase === 'summary' ? 85 : S.phase === 'contact' ? 94 : 100;
-      $('in-fill').style.width = fill.toFixed(1) + '%';
-      $('in-right').textContent = S.phase === 'q' ? 'küsimus ' + (S.qi + 1) + ' / ' + total : S.phase === 'summary' ? 'kokkuvõte' : S.phase === 'contact' ? 'kontakt' : S.phase === 'sent' ? 'saadetud' : '';
-      var h = '';
-      if (S.phase === 'start') {
-        var dis = !S.needs.length && !S.desc.trim();
-        h = '<div class="in-scroll"><div class="in-pad" style="min-height:100%">' +
-          '<div style="display:flex;flex-direction:column;gap:6px"><span class="in-title">Millega saame aidata?</span><span class="in-sub">Vali üks või mitu.</span></div>' +
-          '<div class="chips" role="group" aria-label="Vajadused">' + NEEDS.map(function (n) { return chip(n.t, S.needs.indexOf(n.id) >= 0, 'need:' + n.id); }).join('') + '</div>' +
-          '<div class="field" style="flex:1"><label for="in-desc">Kirjelda oma soovi oma sõnadega</label><textarea id="in-desc" data-in="desc" placeholder="Paar lauset piisab." style="flex:1;min-height:160px">' + esc(S.desc) + '</textarea></div>' +
-          '</div></div>' +
-          '<div class="in-foot plain"><small>Assistent esitab paar täpsustavat küsimust. Lahendused ja hinnad tulevad Second Sunilt.</small><button type="button" class="btn btn-gold" data-act="start" id="in-start"' + (dis ? ' disabled style="background:#F3E3BF"' : '') + '>Vastan →</button></div>';
-      } else if (S.phase === 'q') {
-        var cur = B[S.queue[S.qi]];
-        var past = S.queue.slice(0, S.qi).map(function (id) {
-          var q = B[id], a = fmt(S.answers[id]), sk = !!S.skipped[id] || !a;
-          return '<div class="b-bot">' + esc(q.q) + '</div>' + (sk ? '<div class="b-skip">vahele jäetud</div>' : '<div class="b-me">' + esc(a) + '</div>');
-        }).join('');
-        var curH = '';
-        if (S.typing) curH = '<div class="typing" aria-label="Assistent kirjutab"><i></i><i></i><i></i></div>';
-        else {
-          curH = '<div class="cur-wrap pop-in"><div class="b-cur">' + esc(cur.q) + '</div>';
-          if (cur.type === 'single') curH += '<div class="chips" style="gap:8px">' + cur.opts.map(function (o, k) { return '<button type="button" class="chip sm" data-act="single:' + k + '">' + esc(o) + '</button>'; }).join('') + '</div>';
-          if (cur.type === 'multi') curH += '<span class="in-sub" style="font-size:13px;margin-top:-6px">Vali üks või mitu.</span><div class="chips" style="gap:8px">' + cur.opts.map(function (o, k) { return chip(o, S.curMulti.indexOf(o) >= 0, 'multi:' + k, 'sm'); }).join('') + '</div><button type="button" class="btn btn-dark btn-sm" style="align-self:flex-start" data-act="multiNext">Edasi →</button>';
-          if (cur.type === 'text') curH += '<label for="in-cur" class="sr-only">Vastus</label><textarea id="in-cur" data-in="curText" rows="3" placeholder="' + esc(cur.ph || '') + '">' + esc(S.curText) + '</textarea><button type="button" class="btn btn-dark btn-sm" style="align-self:flex-start" data-act="textNext">Edasi →</button>';
-          curH += '</div>';
-        }
-        h = '<div class="in-scroll" id="in-chat"><div class="chat"><div class="b-me">' + esc(recap()) + '</div>' + past + curH + '</div></div>' +
-          '<div class="in-foot"><button type="button" class="ghost" data-act="skip">Jäta vahele</button><button type="button" class="btn-out" data-act="finish">Lõpeta ja vaata kokkuvõtet</button></div>';
-      } else if (S.phase === 'summary') {
-        h = '<div class="in-scroll"><div class="in-pad pop-in" style="padding-bottom:8px;gap:18px"><div style="display:flex;flex-direction:column;gap:6px"><span class="in-title" style="font-size:28px">Päringu kokkuvõte</span><span class="in-sub">Kontrolli üle. Kõiki välju saab muuta.</span></div>' +
-          fields().map(function (f) { return '<div class="sum-field"><label for="in-f-' + f.k + '">' + esc(f.label) + '</label><textarea id="in-f-' + f.k + '" data-in="edit:' + f.k + '" rows="2" placeholder="Pole täpsustatud">' + esc(S.edits[f.k] || '') + '</textarea></div>'; }).join('') +
-          '</div></div><div class="in-foot"><button type="button" class="ghost" data-act="reset">Alusta uuesti</button><button type="button" class="btn btn-dark" style="min-height:52px;font-size:16px" data-act="toContact">Edasi →</button></div>';
-      } else if (S.phase === 'contact') {
-        var sd = S.email.indexOf('@') < 1 || S.sending;
-        h = '<div class="in-scroll"><div class="in-pad pop-in" style="padding-bottom:8px;gap:18px"><div style="display:flex;flex-direction:column;gap:6px"><span class="in-title" style="font-size:28px">Kuhu vastata?</span><span class="in-sub">E-post on vajalik, ülejäänu soovi korral.</span></div>' +
-          '<div class="field"><label for="in-name">Nimi</label><input id="in-name" type="text" autocomplete="name" data-in="name" value="' + esc(S.name) + '"></div>' +
-          '<div class="field"><label for="in-mail">E-post *</label><input id="in-mail" type="email" autocomplete="email" data-in="email" value="' + esc(S.email) + '"></div>' +
-          '<div class="two"><div class="field"><label for="in-tel">Telefon</label><input id="in-tel" type="tel" autocomplete="tel" data-in="phone" value="' + esc(S.phone) + '"></div><div class="field"><label for="in-org">Ettevõte</label><input id="in-org" type="text" autocomplete="organization" data-in="company" value="' + esc(S.company) + '"></div></div>' +
-          '<div class="sr-only" aria-hidden="true"><label for="in-hp">Veebileht</label><input id="in-hp" type="text" tabindex="-1" autocomplete="off"></div>' +
-          (S.error ? '<div class="err" role="alert">' + esc(S.error) + '</div>' : '') +
-          '</div></div><div class="in-foot"><button type="button" class="ghost" data-act="toSummary">← Kokkuvõte</button><button type="button" class="btn btn-gold" style="min-height:52px;font-size:17px" data-act="send" id="in-send"' + (sd ? ' disabled style="min-height:52px;font-size:17px;background:#F3E3BF"' : '') + '>' + (S.sending ? 'Saadan…' : 'Saada päring') + '</button></div>';
-      } else if (S.phase === 'sent') {
-        var first = (S.name || '').trim().split(' ')[0];
-        var fl = fields(), missing = fl.filter(function (f) { return !val(f.k); }).map(function (f) { return f.label; });
-        h = '<div class="in-scroll"><div class="in-pad pop-in" style="padding-top:32px;padding-bottom:8px;gap:20px"><span class="sent-mark" aria-hidden="true">✓</span><span class="in-title" style="font-size:32px">Päring on saadetud' + esc(first ? '. Aitäh, ' + first + '!' : '.') + '</span><span class="in-sub" style="font-size:16px;color:#475467">Vastame sulle e-posti teel.</span>' +
-          (S.showInternal ? '<div class="internal pop-in"><span>UUS PÄRING · STRUKTUREERITUD</span><div class="kv"><span>Suund</span><span>' + esc(needLabels(S.needs).join(', ') || '—') + '</span></div>' +
-            fl.map(function (f) { return '<div class="kv"><span>' + esc(f.label) + '</span><span style="color:' + (val(f.k) ? '#FFFFFF' : '#7D8797') + '">' + esc(val(f.k) || 'puudub') + '</span></div>'; }).join('') +
-            '<div class="kv sep"><span>Puuduv info</span><span style="color:#F5C46A">' + esc(missing.length ? missing.join(', ') : '—') + '</span></div><div class="kv"><span>Kontakt</span><span>' + esc([S.name, S.email, S.phone, S.company].map(function (x) { return x.trim(); }).filter(Boolean).join(' · ')) + '</span></div></div>'
-            : '<button type="button" class="ghost mono" style="align-self:flex-start;padding:0;font-size:13px" data-act="internal">Näita, mis jõuab Second Sunile →</button>') +
-          '</div></div><div class="in-foot" style="justify-content:flex-end"><button type="button" class="ghost" data-act="reset">Alusta uuesti</button></div>';
-      }
-      body.innerHTML = h;
-      var chat = $('in-chat'); if (chat) chat.scrollTop = chat.scrollHeight;
+    function askAi() {
+      var sig = JSON.stringify([S.needs, S.desc.trim(), S.company.trim()]);
+      if (sig === aiSig && (S.ai === 'ok' || S.ai === 'none')) return Promise.resolve();
+      aiSig = sig; S.ai = 'loading'; S.aiQs = []; S.aiAns = {}; S.known = {};
+      return fetch('/api/tapsustused', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ needs: needLabels(), description: S.desc.trim(), company: S.company.trim(), startedAt: startedAt }) })
+        .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { if (!r.ok || !j.ok) throw new Error(j.error || 'ai'); return j; }); })
+        .then(function (j) {
+          S.aiQs = (j.questions || []).slice(0, 3);
+          S.known = j.known || {};
+          S.ai = S.aiQs.length ? 'ok' : 'none';
+        })
+        .catch(function () { S.ai = 'error'; aiSig = ''; });
     }
-    body.addEventListener('click', function (e) {
+
+    function validateContact() { return emailOk(S.email); }
+    function next() {
+      var s = S.step;
+      if (s === 'contact' && !validateContact()) { S.tried = true; render(); var m = $('i-mail'); if (m) m.focus(); return; }
+      if (s === 'needs' && !S.needs.length) { S.tried = true; render(); return; }
+      save();
+      if (s === 'desc') {
+        S.step = 'ai'; render();
+        askAi().then(function () { if (S.step !== 'ai') return; if (S.ai === 'none') go(nextFrom('desc')); else render(); });
+        return;
+      }
+      go(nextFrom(s));
+    }
+
+    function addFiles(list) {
+      S.fileErr = '';
+      var errs = [];
+      Array.prototype.forEach.call(list, function (f) {
+        var total = files.reduce(function (a, x) { return a + x.size; }, 0);
+        if (files.length >= MAX_FILES) { errs.push('Korraga saab lisada kuni ' + MAX_FILES + ' faili.'); return; }
+        if (ALLOWED.indexOf(ext(f.name)) < 0) { errs.push('„' + f.name + '“: seda failitüüpi ei saa lisada.'); return; }
+        if (f.size > MAX_FILE) { errs.push('„' + f.name + '“ on suurem kui 10 MB.'); return; }
+        if (f.size === 0) { errs.push('„' + f.name + '“ on tühi fail.'); return; }
+        if (total + f.size > MAX_TOTAL) { errs.push('Failide kogumaht võib olla kuni 15 MB.'); return; }
+        if (files.some(function (x) { return x.name === f.name && x.size === f.size; })) return;
+        files.push(f);
+      });
+      S.fileErr = errs.filter(function (e, i) { return errs.indexOf(e) === i; }).join(' ');
+      render();
+    }
+
+    function send() {
+      if (S.send === 'sending') return;
+      if (!emailOk(S.email)) { go('contact'); S.tried = true; render(); return; }
+      if (!S.idem) S.idem = uuid();
+      S.send = 'sending'; S.sendErr = ''; render();
+      var fd = new FormData();
+      fd.append('meta', JSON.stringify({ name: S.name.trim(), company: S.company.trim(), email: S.email.trim(), phone: S.phone.trim(), needs: needLabels(), brief: S.brief, website: $('in-hp').value, startedAt: startedAt, idem: S.idem }));
+      files.forEach(function (f) { fd.append('files', f, f.name); });
+      var ctl = window.AbortController ? new AbortController() : null;
+      var to = setTimeout(function () { if (ctl) ctl.abort(); }, 60000);
+      fetch('/api/paring', { method: 'POST', body: fd, signal: ctl ? ctl.signal : undefined })
+        .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { if (!r.ok || !j.ok) { var e = new Error(j.error || 'send'); e.msg = j.message; throw e; } }); })
+        .then(function () { clearTimeout(to); S.send = 'sent'; clearDraft(); render(); })
+        .catch(function (e) {
+          clearTimeout(to);
+          S.send = 'error';
+          S.sendErr = e && e.msg ? e.msg : (e && e.name === 'AbortError' ? 'Ühendus katkes enne kinnitust.' : 'Server ei kinnitanud saatmist.');
+          render();
+        });
+    }
+
+    var opt = function (t, on, act) { return '<button type="button" class="opt" aria-pressed="' + on + '" data-act="' + act + '"><span class="box" aria-hidden="true">' + (on ? '✓' : '') + '</span>' + esc(t) + '</button>'; };
+    var radio = function (t, on, act) { return '<button type="button" class="chip" role="radio" aria-checked="' + on + '" data-act="' + act + '">' + esc(t) + '</button>'; };
+
+    function render() {
+      var sent = S.send === 'sent', v = visible(), idx = v.indexOf(S.step);
+      $('in-title').textContent = sent ? 'Saadetud' : (idx + 1) + '. ' + TITLES[S.step];
+      $('in-count').textContent = sent ? '' : (idx + 1) + ' / ' + v.length;
+      $('in-fill').style.width = (sent ? 100 : (idx / v.length) * 100).toFixed(1) + '%';
+      var h = '', f = '';
+      if (sent) {
+        h = '<div class="in-pad pop-in" style="padding-top:40px"><span class="sent-mark" aria-hidden="true">✓</span><p class="in-title" role="status">Päring saadetud!</p><p style="margin:0;font-size:17px;color:#344054">Võtame sinuga ühendust.</p></div>';
+      } else if (S.step === 'contact') {
+        var bad = S.tried && !emailOk(S.email);
+        h = '<div class="in-pad"><p class="in-title">Kontaktandmed</p><div class="two">' +
+          '<div class="field"><label for="i-name">Nimi</label><input id="i-name" data-in="name" type="text" autocomplete="name" maxlength="200" value="' + esc(S.name) + '"></div>' +
+          '<div class="field"><label for="i-org">Ettevõte</label><input id="i-org" data-in="company" type="text" autocomplete="organization" maxlength="200" value="' + esc(S.company) + '"></div>' +
+          '<div class="field"><label for="i-mail">E-post *</label><input id="i-mail" data-in="email" type="email" inputmode="email" autocomplete="email" maxlength="200" required aria-invalid="' + bad + '"' + (bad ? ' aria-describedby="i-mail-err"' : '') + ' value="' + esc(S.email) + '"></div>' +
+          '<div class="field"><label for="i-tel">Telefon</label><input id="i-tel" data-in="phone" type="tel" inputmode="tel" autocomplete="tel" maxlength="60" value="' + esc(S.phone) + '"></div>' +
+          '</div>' + (bad ? '<p class="f-err" id="i-mail-err">Sisesta e-posti aadress, et saaksime vastata.</p>' : '') + '</div>';
+      } else if (S.step === 'needs') {
+        h = '<div class="in-pad"><div style="display:flex;flex-direction:column;gap:6px"><p class="in-title">Mida soovid paremaks muuta või luua?</p><p class="in-sub">Vali üks või mitu.</p></div><div class="opts" role="group" aria-label="Soov">' +
+          NEEDS.map(function (n) { return opt(n.t, S.needs.indexOf(n.id) >= 0, 'need:' + n.id); }).join('') + '</div>' +
+          (S.tried && !S.needs.length ? '<p class="f-err">Vali vähemalt üks.</p>' : '') + '</div>';
+      } else if (S.step === 'desc') {
+        h = '<div class="in-pad"><label for="i-desc" class="in-title">Räägi sellest lähemalt.</label>' +
+          '<div class="field"><textarea id="i-desc" data-in="desc" rows="8" maxlength="5000" style="min-height:220px">' + esc(S.desc) + '</textarea></div>' +
+          '<div class="grp"><span class="lbl" style="font-size:15px;font-weight:600">Lisamaterjalid</span>' +
+          '<label class="drop" id="i-drop"><b>Lisa failid</b><small>PDF, Word, Excel, PowerPoint, CSV, TXT, pildid · kuni 5 faili, igaüks kuni 10 MB</small><input id="i-files" type="file" multiple accept=".' + ALLOWED.join(',.') + '"></label>' +
+          (S.fileErr ? '<p class="f-err" role="alert">' + esc(S.fileErr) + '</p>' : '') +
+          (files.length ? '<div class="files">' + files.map(function (x, i) { return '<div class="file"><span>' + esc(x.name) + '</span><span>' + fmtSize(x.size) + '<button type="button" data-act="rm:' + i + '" aria-label="Eemalda ' + esc(x.name) + '">×</button></span></div>'; }).join('') + '</div>' : '') +
+          '</div></div>';
+      } else if (S.step === 'ai') {
+        h = '<div class="in-pad"><p class="in-title">Täpsustused</p>';
+        if (S.ai === 'loading' || S.ai === 'idle') h += '<div class="typing" role="status" aria-label="Täpsustused laadivad"><i></i><i></i><i></i></div>';
+        else if (S.ai === 'error') h += '<div class="notice" role="status"><b>Täpsustusi ei õnnestunud praegu laadida.</b><span>Võid jätkata ilma nendeta või proovida uuesti.</span><button type="button" class="ghost" style="align-self:flex-start;padding:0" data-act="aiRetry">Proovi uuesti</button></div>';
+        else S.aiQs.forEach(function (qq, i) { h += '<div class="field"><label for="i-ai-' + i + '" class="b-q">' + esc(qq) + '</label><textarea id="i-ai-' + i + '" data-in="ai:' + i + '" rows="2" maxlength="2000">' + esc(S.aiAns[i] || '') + '</textarea></div>'; });
+        h += '</div>';
+      } else if (S.step === 'frame') {
+        h = '<div class="in-pad" style="gap:26px"><p class="in-title">Projekti raamid</p>';
+        if (!S.known.deadline) h += '<div class="grp" role="radiogroup" aria-labelledby="i-dl-l"><span class="lbl" id="i-dl-l">Kas sul on kindel tähtaeg?</span><div class="chips">' + radio('Jah, kuupäev', S.dl === 'date', 'dl:date') + radio('Võimalikult kiiresti', S.dl === 'asap', 'dl:asap') + radio('Paindlik', S.dl === 'flex', 'dl:flex') + '</div>' +
+          (S.dl === 'date' ? '<label class="inline">Kuupäev <input class="inline-in" type="date" data-in="dlDate" value="' + esc(S.dlDate) + '"></label>' : '') + '</div>';
+        if (!S.known.budget) h += '<div class="grp" role="radiogroup" aria-labelledby="i-bd-l"><span class="lbl" id="i-bd-l">Projekti eelarve</span><div class="chips">' + radio('Summa', S.bud === 'sum', 'bud:sum') + radio('Ei tea veel', S.bud === 'unknown', 'bud:unknown') + '</div>' +
+          (S.bud === 'sum' ? '<label class="inline">Summa <input class="inline-in" type="text" inputmode="numeric" maxlength="40" placeholder="€" data-in="budget" value="' + esc(S.budget) + '"></label>' : '') + '</div>';
+        h += '</div>';
+      } else if (S.step === 'summary') {
+        h = '<div class="in-pad" style="gap:14px"><div style="display:flex;flex-direction:column;gap:6px"><p class="in-title">Päringu kokkuvõte</p><p class="in-sub">Kontrolli üle. Teksti saab muuta.</p></div>' +
+          '<div class="field"><label for="i-brief" class="sr-only">Lähteülesanne</label><textarea id="i-brief" class="brief" data-in="brief" rows="16" maxlength="12000">' + esc(S.brief) + '</textarea></div>' +
+          (S.send === 'error' ? '<div class="err" role="alert"><b>Päringut ei saadetud.</b><span>' + esc(S.sendErr) + ' Sinu sisestatud andmed on alles — proovi uuesti või kirjuta otse eva@secondsun.ee või helista +372 5664 1159.</span></div>' : '') + '</div>';
+      }
+      if (!sent) {
+        var first = idx === 0, last = S.step === 'summary';
+        f = (first ? '<span></span>' : '<button type="button" class="ghost" data-act="back">← Tagasi</button>');
+        if (last) f += '<button type="button" class="btn btn-gold" data-act="send"' + (S.send === 'sending' ? ' disabled aria-busy="true"' : '') + '>' + (S.send === 'sending' ? 'Saadan…' : 'Saada päring →') + '</button>';
+        else f += '<button type="button" class="btn btn-dark" data-act="next"' + (S.step === 'ai' && (S.ai === 'loading' || S.ai === 'idle') ? ' disabled' : '') + '>' + (S.step === 'ai' && S.ai === 'error' ? 'Jätka ilma täpsustusteta →' : 'Edasi →') + '</button>';
+      }
+      stepEl.innerHTML = h; footEl.innerHTML = f; footEl.hidden = sent;
+    }
+
+    form.addEventListener('submit', function (e) { e.preventDefault(); });
+    form.addEventListener('click', function (e) {
       var b = e.target.closest('[data-act]'); if (!b || b.disabled) return;
-      var a = b.getAttribute('data-act'), cur = S.queue[S.qi] ? B[S.queue[S.qi]] : null;
-      if (a.indexOf('need:') === 0) { var id = a.slice(5), i = S.needs.indexOf(id); if (i >= 0) S.needs.splice(i, 1); else S.needs.push(id); render(); return; }
-      if (a === 'start') { if (!S.needs.length && !S.desc.trim()) return; S.phase = 'q'; S.queue = buildQueue(S.needs); S.qi = 0; S.answers = {}; S.skipped = {}; S.curText = ''; S.curMulti = []; S.typing = true; render(); later(); return; }
-      if (a.indexOf('single:') === 0) { answer(cur.opts[+a.slice(7)]); return; }
-      if (a.indexOf('multi:') === 0) { var o = cur.opts[+a.slice(6)], k = S.curMulti.indexOf(o); if (k >= 0) S.curMulti.splice(k, 1); else S.curMulti.push(o); render(); return; }
-      if (a === 'multiNext') { if (!S.curMulti.length) skip(); else answer(S.curMulti.slice()); return; }
-      if (a === 'textNext') { var v = S.curText.trim(); if (!v) skip(); else answer(v); return; }
-      if (a === 'skip') { skip(); return; }
-      if (a === 'finish') { toSummary(); return; }
-      if (a === 'toContact') { S.phase = 'contact'; render(); return; }
-      if (a === 'toSummary') { S.phase = 'summary'; render(); return; }
-      if (a === 'send') { send(); return; }
-      if (a === 'internal') { S.showInternal = true; render(); return; }
-      if (a === 'reset') { clearTimeout(timer); init(); render(); }
+      var a = b.getAttribute('data-act');
+      if (a === 'next') return next();
+      if (a === 'back') return go(prevFrom(S.step));
+      if (a === 'send') return send();
+      if (a === 'aiRetry') { aiSig = ''; askAi().then(function () { if (S.step !== 'ai') return; if (S.ai === 'none') go(nextFrom('desc')); else render(); }); render(); return; }
+      if (a.indexOf('need:') === 0) { var id = a.slice(5), i = S.needs.indexOf(id); if (i >= 0) S.needs.splice(i, 1); else S.needs.push(id); save(); render(); return; }
+      if (a.indexOf('dl:') === 0) { S.dl = a.slice(3); save(); render(); return; }
+      if (a.indexOf('bud:') === 0) { S.bud = a.slice(4); save(); render(); return; }
+      if (a.indexOf('rm:') === 0) { files.splice(+a.slice(3), 1); S.fileErr = ''; render(); return; }
     });
-    body.addEventListener('input', function (e) {
+    form.addEventListener('input', function (e) {
       var k = e.target.getAttribute('data-in'); if (!k) return;
-      if (k.indexOf('edit:') === 0) S.edits[k.slice(5)] = e.target.value; else S[k] = e.target.value;
-      if (k === 'desc') { var s = $('in-start'); var dis = !S.needs.length && !S.desc.trim(); s.disabled = dis; s.style.background = dis ? '#F3E3BF' : ''; }
-      if (k === 'email') { var b = $('in-send'); var d = S.email.indexOf('@') < 1; b.disabled = d; b.style.background = d ? '#F3E3BF' : ''; }
+      if (k.indexOf('ai:') === 0) S.aiAns[+k.slice(3)] = e.target.value;
+      else { S[k] = e.target.value; if (k === 'brief') S.briefTouched = true; }
+      if (k === 'email' && S.tried && emailOk(S.email)) { e.target.setAttribute('aria-invalid', 'false'); var er = $('i-mail-err'); if (er) er.remove(); }
+      save();
     });
+    form.addEventListener('change', function (e) { if (e.target.id === 'i-files') { addFiles(e.target.files); e.target.value = ''; } });
+    form.addEventListener('keydown', function (e) { if (e.key === 'Enter' && e.target.tagName === 'INPUT' && e.target.type !== 'file') { e.preventDefault(); next(); } });
+    form.addEventListener('dragover', function (e) { var d = $('i-drop'); if (d && d.contains(e.target)) { e.preventDefault(); d.classList.add('over'); } });
+    form.addEventListener('dragleave', function () { var d = $('i-drop'); if (d) d.classList.remove('over'); });
+    form.addEventListener('drop', function (e) { var d = $('i-drop'); if (d && d.contains(e.target)) { e.preventDefault(); d.classList.remove('over'); addFiles(e.dataTransfer.files); } });
     render();
   })();
 })();
