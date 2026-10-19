@@ -241,7 +241,7 @@
       var total = S.queue.length;
       var fill = S.phase === 'start' ? 0 : S.phase === 'q' ? (S.qi / (total + 1)) * 100 : S.phase === 'summary' ? 85 : S.phase === 'contact' ? 94 : 100;
       $('in-fill').style.width = fill.toFixed(1) + '%';
-      $('in-right').textContent = S.phase === 'q' ? 'küsimus ' + (S.qi + 1) + ' / ' + total : S.phase === 'summary' ? 'kokkuvõte' : S.phase === 'contact' ? 'kontakt' : S.phase === 'sent' ? 'saadetud' : 'umbes 2 minutit';
+      $('in-right').textContent = S.phase === 'q' ? 'küsimus ' + (S.qi + 1) + ' / ' + total : S.phase === 'summary' ? 'kokkuvõte' : S.phase === 'contact' ? 'kontakt' : S.phase === 'sent' ? 'saadetud' : '';
       var h = '';
       if (S.phase === 'start') {
         var dis = !S.needs.length && !S.desc.trim();
