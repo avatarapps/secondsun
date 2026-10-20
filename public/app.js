@@ -333,6 +333,10 @@
 
     var opt = function (t, on, act) { return '<button type="button" class="opt" aria-pressed="' + on + '" data-act="' + act + '"><span class="box" aria-hidden="true">' + (on ? '✓' : '') + '</span>' + esc(t) + '</button>'; };
     var radio = function (t, on, act) { return '<button type="button" class="chip" role="radio" aria-checked="' + on + '" data-act="' + act + '">' + esc(t) + '</button>'; };
+    var dateChip = function () {
+      var on = S.dl === 'date' && !!S.dlDate;
+      return '<label class="chip chip-date" role="radio" aria-checked="' + on + '"><span>' + (on ? esc(S.dlDate.split('-').reverse().join('.')) : 'Vali kuupäev') + '</span><input type="date" data-in="dlDate" aria-label="Tähtaja kuupäev" value="' + esc(S.dlDate) + '"></label>';
+    };
 
     function render() {
       var sent = S.send === 'sent', v = visible(), idx = v.indexOf(S.step);
@@ -370,10 +374,8 @@
         h += '</div>';
       } else if (S.step === 'frame') {
         h = '<div class="in-pad" style="gap:26px"><p class="in-title">Projekti raamid</p>';
-        if (!S.known.deadline) h += '<div class="grp" role="radiogroup" aria-labelledby="i-dl-l"><span class="lbl" id="i-dl-l">Kas sul on kindel tähtaeg?</span><div class="chips">' + radio('Jah, kuupäev', S.dl === 'date', 'dl:date') + radio('Võimalikult kiiresti', S.dl === 'asap', 'dl:asap') + radio('Paindlik', S.dl === 'flex', 'dl:flex') + '</div>' +
-          (S.dl === 'date' ? '<label class="inline">Kuupäev <input class="inline-in" type="date" data-in="dlDate" value="' + esc(S.dlDate) + '"></label>' : '') + '</div>';
-        if (!S.known.budget) h += '<div class="grp" role="radiogroup" aria-labelledby="i-bd-l"><span class="lbl" id="i-bd-l">Projekti eelarve</span><div class="chips">' + radio('Summa', S.bud === 'sum', 'bud:sum') + radio('Ei tea veel', S.bud === 'unknown', 'bud:unknown') + '</div>' +
-          (S.bud === 'sum' ? '<label class="inline">Summa <input class="inline-in" type="text" inputmode="numeric" maxlength="40" placeholder="€" data-in="budget" value="' + esc(S.budget) + '"></label>' : '') + '</div>';
+        if (!S.known.deadline) h += '<div class="grp" role="radiogroup" aria-labelledby="i-dl-l"><span class="lbl" id="i-dl-l">Kas sul on kindel tähtaeg?</span><div class="chips">' + dateChip() + radio('Võimalikult kiiresti', S.dl === 'asap', 'dl:asap') + radio('Paindlik', S.dl === 'flex', 'dl:flex') + '</div></div>';
+        if (!S.known.budget) h += '<div class="grp" role="radiogroup" aria-labelledby="i-bd-l"><span class="lbl" id="i-bd-l">Projekti eelarve</span><div class="chips">' + '<input class="chip chip-in" type="text" inputmode="numeric" maxlength="40" placeholder="Summa €" aria-label="Eelarve summa eurodes" data-in="budget" value="' + esc(S.bud === 'sum' ? S.budget : '') + '">' + radio('Ei tea veel', S.bud === 'unknown', 'bud:unknown') + '</div></div>';
         h += '</div>';
       } else if (S.step === 'summary') {
         h = '<div class="in-pad" style="gap:14px"><div style="display:flex;flex-direction:column;gap:6px"><p class="in-title">Päringu kokkuvõte</p><p class="in-sub">Kontrolli üle. Teksti saab muuta.</p></div>' +
@@ -398,18 +400,26 @@
       if (a === 'send') return send();
       if (a === 'aiRetry') { aiSig = ''; askAi().then(function () { if (S.step !== 'ai') return; if (S.ai === 'none') go(nextFrom('desc')); else render(); }); render(); return; }
       if (a.indexOf('need:') === 0) { var id = a.slice(5), i = S.needs.indexOf(id); if (i >= 0) S.needs.splice(i, 1); else S.needs.push(id); save(); render(); return; }
-      if (a.indexOf('dl:') === 0) { S.dl = a.slice(3); save(); render(); return; }
-      if (a.indexOf('bud:') === 0) { S.bud = a.slice(4); save(); render(); return; }
+      if (a.indexOf('dl:') === 0) { S.dl = a.slice(3); S.dlDate = ''; save(); render(); return; }
+      if (a.indexOf('bud:') === 0) { S.bud = a.slice(4); S.budget = ''; save(); render(); return; }
       if (a.indexOf('rm:') === 0) { files.splice(+a.slice(3), 1); S.fileErr = ''; render(); return; }
     });
     form.addEventListener('input', function (e) {
       var k = e.target.getAttribute('data-in'); if (!k) return;
       if (k.indexOf('ai:') === 0) S.aiAns[+k.slice(3)] = e.target.value;
       else { S[k] = e.target.value; if (k === 'brief') S.briefTouched = true; }
+      if (k === 'budget') { S.bud = S.budget.trim() ? 'sum' : ''; var u = form.querySelector('[data-act="bud:unknown"]'); if (u) u.setAttribute('aria-checked', 'false'); }
       if (k === 'email' && S.tried && emailOk(S.email)) { e.target.setAttribute('aria-invalid', 'false'); var er = $('i-mail-err'); if (er) er.remove(); }
       save();
     });
-    form.addEventListener('change', function (e) { if (e.target.id === 'i-files') { addFiles(e.target.files); e.target.value = ''; } });
+    form.addEventListener('change', function (e) {
+      if (e.target.id === 'i-files') { addFiles(e.target.files); e.target.value = ''; }
+      if (e.target.getAttribute('data-in') === 'dlDate') { S.dlDate = e.target.value; S.dl = S.dlDate ? 'date' : ''; save(); render(); }
+    });
+    form.addEventListener('click', function (e) {
+      var c = e.target.closest('.chip-date'); if (!c) return;
+      var inp = c.querySelector('input'); if (inp && inp.showPicker) { e.preventDefault(); try { inp.showPicker(); } catch (x) { inp.focus(); } }
+    });
     form.addEventListener('keydown', function (e) { if (e.key === 'Enter' && e.target.tagName === 'INPUT' && e.target.type !== 'file') { e.preventDefault(); next(); } });
     form.addEventListener('dragover', function (e) { var d = $('i-drop'); if (d && d.contains(e.target)) { e.preventDefault(); d.classList.add('over'); } });
     form.addEventListener('dragleave', function () { var d = $('i-drop'); if (d) d.classList.remove('over'); });
