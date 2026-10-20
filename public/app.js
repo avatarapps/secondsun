@@ -185,16 +185,37 @@
     io.observe(card);
   })();
 
-  /* ---------------- 03 portal ---------------- */
+  /* ---------------- 03 portal (runs by itself while visible; a tap still works) ---------------- */
   (function portal() {
     var btn = $('reorder'); if (!btn) return;
-    var on = false;
-    btn.addEventListener('click', function () {
-      on = !on;
-      $('ph-new').hidden = !on; $('biz-new').hidden = !on; $('biz-hint').hidden = on;
-      btn.textContent = on ? 'Tellitud ✓ · alusta uuesti' : 'Telli uuesti';
+    var on = false, timer = 0, seen = false, holdUntil = 0;
+    function set(v) {
+      on = v;
+      $('ph-new').hidden = !on; $('biz-new').hidden = !on;
+      btn.textContent = on ? 'Tellitud ✓' : 'Telli uuesti';
       btn.className = on ? 'btn-reset' : 'btn-reorder';
-    });
+    }
+    function loop() {
+      clearTimeout(timer); if (!seen) return;
+      var wait = Math.max(0, holdUntil - Date.now());
+      timer = setTimeout(function () {
+        if (!seen) return;
+        if (on) { set(false); timer = setTimeout(loop, 1600); return; }
+        btn.classList.add('tap');
+        setTimeout(function () { btn.classList.remove('tap'); set(true); timer = setTimeout(loop, 3600); }, 260);
+      }, wait || 900);
+    }
+    // Reserve the 'ordered' height so the page below never jumps while the demo loops.
+    function lock() {
+      var ph = btn.closest('.phone'), bz = document.querySelector('.biz'), was = on;
+      ph.style.minHeight = bz.style.minHeight = '';
+      set(true); var h1 = ph.offsetHeight, h2 = bz.offsetHeight; set(was);
+      ph.style.minHeight = h1 + 'px'; bz.style.minHeight = h2 + 'px';
+    }
+    lock(); window.addEventListener('resize', function () { clearTimeout(lock.t); lock.t = setTimeout(lock, 150); });
+    btn.addEventListener('click', function () { set(!on); holdUntil = Date.now() + 6000; loop(); });
+    if (reduce || !('IntersectionObserver' in window)) return;
+    new IntersectionObserver(function (en) { seen = en[0].isIntersecting; if (seen) loop(); else clearTimeout(timer); }, { threshold: 0.35 }).observe(btn.closest('.portal'));
   })();
 
   /* ---------------- Intake ---------------- */
