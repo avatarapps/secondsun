@@ -170,19 +170,25 @@
     show();
   })();
 
-  /* ---------------- 01 automate (runs once, when first seen) ---------------- */
+  /* ---------------- 01 automate (first run when seen, then repeats while visible) ---------------- */
   (function automate() {
     var card = $('task-card'); if (!card) return;
-    var states = card.querySelectorAll('.task-state'), done = false;
+    var states = card.querySelectorAll('.task-state'), seen = false, timer = 0, ts = [];
+    function each(fn) { Array.prototype.forEach.call(states, fn); }
     function run() {
-      if (done) return; done = true;
-      Array.prototype.forEach.call(states, function (s, i) {
-        setTimeout(function () { s.textContent = '✓ automaatne'; s.classList.add('on'); }, reduce ? 0 : 400 + i * 450);
-      });
+      each(function (s, i) { ts.push(setTimeout(function () { s.textContent = '✓ automaatne'; s.classList.add('on'); }, reduce ? 0 : 400 + i * 450)); });
+      if (reduce) return;
+      timer = setTimeout(reset, 400 + states.length * 450 + 4200);
+    }
+    function reset() {
+      each(function (s) { s.textContent = 'käsitsi'; s.classList.remove('on'); });
+      timer = setTimeout(function () { if (seen) run(); else timer = 0; }, 1400);
     }
     if (!('IntersectionObserver' in window)) { run(); return; }
-    var io = new IntersectionObserver(function (en) { if (en[0].isIntersecting) { io.disconnect(); run(); } }, { threshold: 0.6 });
-    io.observe(card);
+    new IntersectionObserver(function (en) {
+      seen = en[0].isIntersecting;
+      if (seen && !timer) run();
+    }, { threshold: 0.6 }).observe(card);
   })();
 
   /* ---------------- 03 portal (runs by itself while visible; a tap still works) ---------------- */
