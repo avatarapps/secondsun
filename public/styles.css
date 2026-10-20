@@ -210,7 +210,7 @@ h1, h2 { text-wrap: balance; }
 .statement .second .marker { color: var(--ink); }
 
 /* DataDisco */
-.dd { background: var(--ink); color: #FFFFFF; padding-block: 112px 0; overflow: hidden; }
+.dd { background: var(--ink); color: #FFFFFF; padding-block: 112px 120px; overflow: hidden; }
 .dd-top { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 430px); gap: clamp(48px, 7vw, 120px); align-items: end; }
 .dd-title { display: flex; flex-direction: column; gap: 26px; min-width: 0; }
 .dd h2 { margin: 0 0 0 -0.055em; font-size: clamp(68px, 13vw, 196px); line-height: .8; letter-spacing: -0.075em; font-weight: 650; }
@@ -219,14 +219,57 @@ h1, h2 { text-wrap: balance; }
 .dd-copy { display: flex; flex-direction: column; gap: 26px; padding-bottom: 4px; }
 .dd-copy p { margin: 0; font-size: 19px; line-height: 1.55; color: var(--night-text); }
 .dd-copy .btn { align-self: flex-start; }
-.dd-stage { margin-top: 80px; display: flex; justify-content: center; }
-.dd-browser { width: min(1280px, 100%); border-radius: 18px 18px 0 0; background: #1A2233; border: 1px solid #2A3447; border-bottom: 0; overflow: hidden; box-shadow: 0 -20px 80px -20px rgba(245, 165, 36, .18); transition: transform .5s cubic-bezier(.2, .8, .2, 1); }
-.dd-stage:hover .dd-browser { transform: translateY(-6px); }
-.dd-bar { padding: 13px 18px; border-bottom: 1px solid #2A3447; display: flex; align-items: center; gap: 14px; }
-.dd-dots { display: flex; gap: 6px; flex: none; }
-.dd-dots i { width: 10px; height: 10px; border-radius: 50%; background: #3A4458; display: inline-block; }
-.dd-url { flex: 1; min-width: 0; max-width: 420px; margin: 0 auto; padding: 6px 12px; border-radius: 8px; background: #111827; text-align: center; font-family: var(--mono); font-size: 12px; color: #A3ACBA; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.dd-browser img { width: 100%; height: auto; background: #F7F9FB; }
+.dd-stage { margin-top: 88px; }
+/* DataDisco product view — real data from datadisco.ee (Tallinna Maraton 2026), drawn in DataDisco's own system */
+.ddp { position: relative; border-radius: 28px; overflow: hidden; background: #F9FCFD; background-image: radial-gradient(60% 70% at 18% 0%, rgba(0, 209, 198, .10), transparent 70%), radial-gradient(45% 60% at 100% 0%, rgba(255, 45, 122, .09), transparent 70%); font-family: 'Inter', system-ui, sans-serif; color: #17181D; box-shadow: 0 60px 120px -50px rgba(0, 209, 198, .35), 0 40px 90px -40px rgba(255, 45, 122, .25); }
+.ddp-stripes { position: absolute; right: 0; top: 0; width: 560px; height: 104px; opacity: .95; }
+.ddp-grid { position: relative; padding: 52px 56px 48px; display: grid; grid-template-columns: minmax(0, 1fr) 360px; grid-template-areas: "head route" "rings route" "prof prof" "facts facts"; column-gap: 72px; row-gap: 36px; }
+.ddp-head { grid-area: head; display: flex; flex-direction: column; gap: 18px; padding-top: 6px; }
+.ddp-eyebrow { font-size: 13px; letter-spacing: .14em; color: #667085; }
+.ddp-title { font-size: 58px; line-height: .95; font-weight: 700; letter-spacing: -0.045em; }
+.ddp-chips { display: flex; gap: 8px; }
+.ddp-chips span { display: inline-flex; align-items: center; height: 38px; padding: 0 17px; border-radius: 999px; color: #FFFFFF; font-size: 15px; font-weight: 700; }
+.ddp-chips .a { background: linear-gradient(90deg, #006A6B, #00D1C6); }
+.ddp-chips .b { background: #FF2D7A; }
+.ddp-rings { grid-area: rings; display: flex; gap: 36px; align-items: flex-start; }
+.ddp-fact { width: 170px; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.ddp-fact > span:not(.ddp-ring) { font-size: 13px; line-height: 1.3; color: #667085; text-align: center; }
+.ddp-ring { position: relative; width: 128px; height: 128px; flex: none; }
+.ddp-ring svg { display: block; width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 0 14px rgba(0, 209, 198, .32)); }
+.ddp-ring-C svg { filter: drop-shadow(0 0 14px rgba(255, 45, 122, .28)); }
+.ddp-ring b { position: absolute; inset: 0; color: #17181D; display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: 700; letter-spacing: -0.03em; }
+.ddp-ring b.long { font-size: 19px; }
+.ddp .nw { white-space: nowrap; }
+.ddp-route { grid-area: route; justify-self: end; align-self: start; margin-top: 78px; width: 360px; height: auto; overflow: visible; }
+.ddp-route polyline { fill: none; stroke-linejoin: round; stroke-linecap: round; }
+.ddp-route .c { stroke: #FFFFFF; stroke-width: 13; }
+.ddp-route .r { stroke: #006A6B; stroke-width: 6.5; }
+.ddp-route .s { stroke: #00D1C6; stroke-width: 9; filter: drop-shadow(0 0 6px rgba(0, 209, 198, .6)); }
+.ddp-route .hd { fill: #FFFFFF; stroke: #17181D; stroke-width: 4; }
+.ddp-route .hc { fill: #00D1C6; }
+.ddp-route .st { fill: #17181D; stroke: #FFFFFF; stroke-width: 3; }
+.ddp-route text { font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 1.2px; fill: #FFFFFF; }
+.ddp-prof { grid-area: prof; padding-top: 20px; min-width: 0; }
+.ddp-plot { position: relative; height: 190px; }
+.ddp-plot svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.ddp-plot .tk { stroke: #E5E9EE; stroke-width: 1; vector-effect: non-scaling-stroke; }
+.ddp-plot .sg { stroke: #006A6B; stroke-opacity: .5; stroke-width: 1; vector-effect: non-scaling-stroke; }
+.ddp-plot .ln { fill: none; stroke: #17181D; stroke-width: 1.6; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.ddp-plot .hl { fill: none; stroke: #00D1C6; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.ddp-h { position: absolute; width: 12px; height: 12px; transform: translate(-50%, -50%); border-radius: 50%; background: #FFFFFF; border: 3px solid #006A6B; }
+.ddp-km { position: absolute; bottom: -16px; padding: 4px 9px; border-radius: 999px; background: #FFFFFF; border: 1px solid #E5E9EE; font-size: 12px; font-weight: 600; white-space: nowrap; }
+.ddp-km-a { transform: translateX(calc(-100% - 4px)); }
+.ddp-km-b { transform: translateX(4px); }
+.ddp-tag { position: absolute; transform: translate(-50%, calc(-100% - 14px)); padding: 6px 12px; border-radius: 999px; background: #FFECF4; color: #C2185B; font-size: 13px; font-weight: 600; white-space: nowrap; }
+.ddp-axis { position: relative; height: 18px; margin-top: 30px; }
+.ddp-axis span { position: absolute; transform: translateX(-50%); font-size: 13px; color: #667085; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.ddp-axis .s { transform: none; }
+.ddp-axis .e { transform: translateX(-100%); }
+.ddp-facts { grid-area: facts; display: flex; gap: 28px; }
+.ddp-facts div { flex: 1; min-width: 0; display: flex; align-items: baseline; gap: 12px; padding-left: 22px; border-left: 2px solid #E5E9EE; }
+.ddp-facts div:first-child { border-left-color: #00D1C6; }
+.ddp-facts b { font-size: 26px; font-weight: 700; letter-spacing: -0.03em; white-space: nowrap; }
+.ddp-facts span { font-size: 15px; line-height: 1.35; color: #667085; }
 
 /* contact */
 .contact { padding-block: 128px 104px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 620px); gap: clamp(48px, 6vw, 96px); align-items: start; }
@@ -325,12 +368,14 @@ h1, h2 { text-wrap: balance; }
   .arrow::after { right: -6px; top: auto; bottom: -2px; border-left: 7px solid transparent; border-right: 7px solid transparent; border-top: 10px solid var(--ink); border-bottom: 0; }
   .biz { min-height: 0; }
   .dd-top { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+  .ddp-grid { grid-template-columns: minmax(0, 1fr); grid-template-areas: "head" "rings" "prof" "facts"; padding: 44px 40px 40px; }
+  .ddp-route { display: none; }
+  .ddp-facts { flex-direction: column; gap: 14px; }
   .contact { grid-template-columns: minmax(0, 1fr); gap: 56px; }
 }
 @media (max-width: 900px) {
   .nav-links { display: none; }
-  .dd-stage { margin-top: 40px; padding-bottom: 56px; }
-  .dd-browser { border-radius: 14px; border-bottom: 1px solid #2A3447; }
+  .dd-stage { margin-top: 56px; }
 }
 @media (max-width: 640px) {
   .nav { padding-block: 14px; }
@@ -363,12 +408,30 @@ h1, h2 { text-wrap: balance; }
   .phone { height: 560px; }
   .statement { padding-block: 96px 88px; gap: 32px; }
   .principle { font-size: 16px; }
-  .dd { padding-block: 72px 0; }
+  .dd { padding-block: 72px; }
   .dd-copy p { font-size: 17px; }
   .dd-top { gap: 28px; }
   .dd-title { gap: 18px; }
-  .dd-bar { padding: 10px 12px; gap: 10px; }
-  .dd-url { font-size: 11px; }
+  .dd-stage { margin-top: 40px; }
+  .ddp { border-radius: 18px; box-shadow: 0 30px 60px -30px rgba(0, 209, 198, .4); }
+  .ddp-stripes { width: 118px; height: 32px; opacity: .9; }
+  .ddp-grid { grid-template-areas: "head" "prof" "rings"; padding: 20px 16px 16px; row-gap: 18px; }
+  .ddp-head { gap: 10px; padding-top: 0; }
+  .ddp-eyebrow, .ddp-facts, .ddp-km { display: none; }
+  .ddp-title { font-size: 22px; line-height: 1; letter-spacing: -0.04em; }
+  .ddp-chips span { height: 26px; padding: 0 12px; font-size: 12px; }
+  .ddp-prof { padding-top: 34px; }
+  .ddp-plot { height: 78px; }
+  .ddp-tag { font-size: 10px; padding: 5px 10px; transform: translate(-50%, calc(-100% - 10px)); }
+  .ddp-axis { margin-top: 12px; }
+  .ddp-axis span { font-size: 10px; }
+  .ddp-rings { gap: 8px; justify-content: space-between; }
+  .ddp-fact { width: auto; flex: 1; min-width: 0; gap: 10px; }
+  .ddp-fact > span:not(.ddp-ring) { font-size: 10.5px; }
+  .ddp-ring { width: 72px; height: 72px; }
+  .ddp-ring svg, .ddp-ring-C svg { filter: drop-shadow(0 0 8px rgba(0, 209, 198, .32)); }
+  .ddp-ring b { font-size: 18px; }
+  .ddp-ring b.long { font-size: 11px; }
   .contact { padding-block: 72px 56px; }
   .contact-text p { font-size: 18px; }
   .direct { margin-top: 4px; }
@@ -389,5 +452,5 @@ h1, h2 { text-wrap: balance; }
   .rm-card { animation: none !important; transition: none; }
   .rm-beam { display: none !important; }
   .fade-in, .pop-in, .slide-in, .typing i { animation: none; }
-  .btn, .dd-browser { transition: none; }
+  .btn { transition: none; }
 }
