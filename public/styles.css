@@ -112,6 +112,7 @@ h1, h2 { text-wrap: balance; }
 
 /* personaalne AI-õpe: one fixed lead, one rotating middle line, one fixed ending */
 .learn { background: var(--ink); color: #FFFFFF; overflow: hidden; }
+.learn-in { padding-block: 88px 80px; display: flex; flex-direction: column; gap: 30px; }
 .learn-big { margin: 0; display: flex; flex-direction: column; font-size: clamp(34px, 5.2vw, 80px); line-height: 1; letter-spacing: -0.055em; font-weight: 650; }
 .learn-lead, .learn-end { display: block; }
 .learn-end { color: #8E98A8; }
@@ -124,14 +125,14 @@ h1, h2 { text-wrap: balance; }
 .learn-old { animation: learnOut .35s ease-in both; }
 @keyframes learnIn { from { opacity: 0; } to { opacity: 1; } }
 @keyframes learnOut { from { opacity: 1; } to { opacity: 0; } }
-.learn-foot { display: flex; justify-content: space-between; align-items: center; gap: 24px 48px; flex-wrap: wrap; padding-top: 28px; border-top: 1px solid var(--night-line); }
+.learn-foot { display: flex; justify-content: space-between; align-items: center; gap: 24px 48px; flex-wrap: wrap; padding-top: 12px; }
 .learn-sub { margin: 0; font-size: 21px; line-height: 1.4; color: var(--night-text); }
 .learn-cta { display: flex; align-items: center; gap: 28px; flex-wrap: wrap; }
 .learn-price { position: relative; display: inline-flex; align-items: center; gap: 10px; font-size: 28px; font-weight: 650; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
 @media (max-width: 640px) {
-  .learn-in { padding-block: 64px 56px; gap: 24px; }
+  .learn-in { padding-block: 64px 56px; gap: 22px; }
   .learn-big { font-size: clamp(30px, 9vw, 40px); letter-spacing: -0.05em; }
-  .learn-foot { padding-top: 22px; gap: 18px; }
+  .learn-foot { padding-top: 8px; gap: 18px; }
   .learn-sub { font-size: 17px; }
   .learn-cta { width: 100%; justify-content: space-between; gap: 16px; }
   .learn-price { font-size: 24px; }

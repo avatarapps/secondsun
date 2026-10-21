@@ -197,7 +197,7 @@
       }
       rot.appendChild(cur);
     }
-    function tick() { i = (i + 1) % lines.length; show(i, !reduce); timer = setTimeout(tick, reduce ? 3000 : 2000); }
+    function tick() { i = (i + 1) % lines.length; show(i, !reduce); timer = setTimeout(tick, reduce ? 3200 : 2600); }
     fitLearn(); show(0, false);
     window.addEventListener('resize', function () { clearTimeout(fitLearn.t); fitLearn.t = setTimeout(fitLearn, 120); });
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitLearn);
