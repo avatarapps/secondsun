@@ -166,7 +166,13 @@
       $('hour-dot').style.background = h.inDay ? '#4ADE80' : '#98A2B3';
       card.classList.remove('pop-in'); void card.offsetWidth; card.classList.add('pop-in');
     }
-    box.addEventListener('click', function (e) { var b = e.target.closest('button'); if (!b) return; cur = +b.getAttribute('data-h'); show(); });
+    var timer = 0, holdUntil = 0, seen = false;
+    function auto() {
+      clearTimeout(timer); if (!seen || reduce) return;
+      timer = setTimeout(function () { if (Date.now() < holdUntil) return auto(); cur = (cur + 1) % H.length; show(); auto(); }, Math.max(2600, holdUntil - Date.now()));
+    }
+    box.addEventListener('click', function (e) { var b = e.target.closest('button'); if (!b) return; cur = +b.getAttribute('data-h'); show(); holdUntil = Date.now() + 6000; auto(); });
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (en) { seen = en[0].isIntersecting; if (seen) auto(); else clearTimeout(timer); }, { threshold: 0.4 }).observe(card);
     show();
   })();
 
