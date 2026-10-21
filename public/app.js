@@ -175,7 +175,6 @@
     var rot = $('learn-rot'), list = $('learn-list'); if (!rot || !list) return;
     var lines = Array.prototype.map.call(list.querySelectorAll('li'), function (li) { return li.textContent; });
     var i = 0, timer = 0;
-    function words(t) { return t.split(' ').map(function (w, k, a) { return '<span class="w" style="animation-delay:' + (120 + k * 26) + 'ms">' + w + (k < a.length - 1 ? ' ' : '') + '</span>'; }).join(''); }
     // Wide screens: shrink just enough that every line fits on one row. Phones: lines wrap.
     // Either way the box keeps the tallest line's height, so a switch never moves the page.
     function fitLearn() {
@@ -191,9 +190,9 @@
     function show(n, animate) {
       var old = rot.querySelector('.learn-cur'), cur = document.createElement('span');
       rot.querySelectorAll('.learn-old').forEach(function (o) { o.remove(); });
-      cur.className = 'learn-cur'; cur.innerHTML = animate ? words(lines[n]) : '<span class="w" style="animation:none">' + lines[n] + '</span>';
+      cur.className = animate ? 'learn-cur' : 'learn-cur still'; cur.textContent = lines[n];
       if (old) {
-        if (animate) { old.className = 'learn-old'; old.querySelectorAll('.w').forEach(function (w, k) { w.style.animationDelay = (k * 12) + 'ms'; }); setTimeout(function () { old.remove(); }, 900); }
+        if (animate) { old.className = 'learn-old'; setTimeout(function () { old.remove(); }, 900); }
         else old.remove();
       }
       rot.appendChild(cur);
