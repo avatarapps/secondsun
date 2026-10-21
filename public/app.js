@@ -214,13 +214,13 @@
     var states = card.querySelectorAll('.task-state'), seen = false, timer = 0, ts = [];
     function each(fn) { Array.prototype.forEach.call(states, fn); }
     function run() {
-      each(function (s, i) { ts.push(setTimeout(function () { s.textContent = '✓ automaatne'; s.classList.add('on'); }, reduce ? 0 : 400 + i * 450)); });
+      each(function (s, i) { ts.push(setTimeout(function () { s.textContent = '✓ automaatne'; s.classList.add('on'); }, reduce ? 0 : 350 + i * 380)); });
       if (reduce) return;
-      timer = setTimeout(reset, 400 + states.length * 450 + 4200);
+      timer = setTimeout(reset, 350 + states.length * 380 + 3400);
     }
     function reset() {
       each(function (s) { s.textContent = 'käsitsi'; s.classList.remove('on'); });
-      timer = setTimeout(function () { if (seen) run(); else timer = 0; }, 1400);
+      timer = setTimeout(function () { if (seen) run(); else timer = 0; }, 1100);
     }
     if (!('IntersectionObserver' in window)) { run(); return; }
     new IntersectionObserver(function (en) {
