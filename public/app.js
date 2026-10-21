@@ -11,7 +11,7 @@
     var capEl = $('rm-cap'), qEl = $('rm-q'), aEl = $('rm-a'), srcEl = $('rm-src'), doneEl = $('rm-done'), statEl = $('rm-stat');
     var tabs = Array.prototype.slice.call(root.querySelectorAll('.rm-tab'));
     var rnd = function (i) { var v = Math.sin(i * 12.9898 + 7.7) * 43758.5453; return v - Math.floor(v); };
-    var CYCLE = 8600, DONE = 2900, WORK = 700;
+    var CYCLE = 7200, DONE = 2900, WORK = 700;
     var all = []; for (var n = 0; n < 240; n++) all.push(n);
     var cols = [0, 165, 330, 495];
     var nf = function (v) { return v.toLocaleString('et-EE'); };
