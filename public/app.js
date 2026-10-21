@@ -138,7 +138,25 @@
     if ('IntersectionObserver' in window) new IntersectionObserver(function (en) { visible = en[0].isIntersecting; }).observe(root);
     function fit() { var w = wrap.clientWidth, s = Math.min(1, w / 650); stage.style.transform = 'scale(' + s + ')'; wrap.style.height = Math.round(320 * s) + 'px'; }
     fit(); window.addEventListener('resize', fit);
+    // Below desktop the panel's height follows its text. Lock it to the tallest question so the page under it never jumps.
+    function lockH() {
+      root.style.minHeight = '';
+      if (window.innerWidth > 1180) return;
+      var keep = [qEl.textContent, aEl.textContent, srcEl.innerHTML, doneEl.hidden, statEl.hidden, statEl.textContent], max = 0;
+      Q.forEach(function (Qd) {
+        qEl.textContent = Qd.q; aEl.textContent = Qd.a;
+        srcEl.innerHTML = Qd.src.map(function (s) { return '<span><i></i>' + esc(s) + '</span>'; }).join('');
+        doneEl.hidden = false; statEl.hidden = true; max = Math.max(max, root.getBoundingClientRect().height);
+        doneEl.hidden = true; statEl.hidden = false;
+        for (var s = 0; s < 5; s++) { statEl.textContent = Qd.stat(1, s); max = Math.max(max, root.getBoundingClientRect().height); }
+      });
+      qEl.textContent = keep[0]; aEl.textContent = keep[1]; srcEl.innerHTML = keep[2]; doneEl.hidden = keep[3]; statEl.hidden = keep[4]; statEl.textContent = keep[5];
+      root.style.minHeight = Math.ceil(max) + 'px';
+    }
+    window.addEventListener('resize', function () { clearTimeout(lockH.t); lockH.t = setTimeout(lockH, 150); });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(lockH);
     setQuestion(0);
+    lockH();
     setInterval(function () {
       if (!visible || document.hidden) return;
       if (t < DONE) { t += 100; tick(); return; }
