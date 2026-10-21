@@ -112,7 +112,6 @@ h1, h2 { text-wrap: balance; }
 
 /* personaalne AI-õpe: one fixed lead, one rotating middle line, one fixed ending */
 .learn { background: var(--ink); color: #FFFFFF; overflow: hidden; }
-.learn-in { padding-block: 88px 80px; display: flex; flex-direction: column; gap: 36px; }
 .learn-big { margin: 0; display: flex; flex-direction: column; font-size: clamp(34px, 5.2vw, 80px); line-height: 1; letter-spacing: -0.055em; font-weight: 650; }
 .learn-lead, .learn-end { display: block; }
 .learn-end { color: #8E98A8; }
@@ -129,10 +128,6 @@ h1, h2 { text-wrap: balance; }
 .learn-sub { margin: 0; font-size: 21px; line-height: 1.4; color: var(--night-text); }
 .learn-cta { display: flex; align-items: center; gap: 28px; flex-wrap: wrap; }
 .learn-price { position: relative; display: inline-flex; align-items: center; gap: 10px; font-size: 28px; font-weight: 650; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
-.learn-i { width: 24px; height: 24px; padding: 0; border-radius: 50%; border: 1.5px solid #8E98A8; background: transparent; color: #D0D5DD; font: 600 13px/1 var(--mono); display: inline-flex; align-items: center; justify-content: center; position: relative; }
-.learn-i::after { content: ""; position: absolute; inset: -10px; }
-.learn-i:hover, .learn-i[aria-expanded="true"] { border-color: var(--gold); color: var(--gold); }
-.learn-tip { position: absolute; left: 0; bottom: calc(100% + 12px); width: max-content; max-width: min(320px, calc(100vw - 40px)); padding: 12px 14px; border-radius: 10px; background: #FFFFFF; color: var(--ink); font-size: 15px; font-weight: 500; line-height: 1.45; letter-spacing: 0; box-shadow: 0 16px 40px -12px rgba(0, 0, 0, .5); z-index: 5; }
 @media (max-width: 640px) {
   .learn-in { padding-block: 64px 56px; gap: 24px; }
   .learn-big { font-size: clamp(30px, 9vw, 40px); letter-spacing: -0.05em; }
@@ -140,6 +135,7 @@ h1, h2 { text-wrap: balance; }
   .learn-sub { font-size: 17px; }
   .learn-cta { width: 100%; justify-content: space-between; gap: 16px; }
   .learn-price { font-size: 24px; }
+  .learn-cta .btn { min-height: 48px; padding: 0 18px; font-size: 16px; }
 }
 
 /* service sections */

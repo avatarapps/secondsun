@@ -206,11 +206,6 @@
       clearTimeout(timer);
       if (en[0].isIntersecting) timer = setTimeout(tick, 1400);
     }, { threshold: 0.4 }).observe(rot);
-    var ib = $('learn-i'), tip = $('learn-tip');
-    function setTip(on) { tip.hidden = !on; ib.setAttribute('aria-expanded', String(on)); }
-    ib.addEventListener('click', function (e) { e.stopPropagation(); setTip(tip.hidden); });
-    document.addEventListener('click', function (e) { if (!tip.hidden && !tip.contains(e.target)) setTip(false); });
-    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !tip.hidden) { setTip(false); ib.focus(); } });
   })();
 
   /* ---------------- 01 automate (first run when seen, then repeats while visible) ---------------- */
