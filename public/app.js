@@ -170,6 +170,50 @@
     show();
   })();
 
+  /* ---------------- personaalne AI-õpe: rotating middle line ---------------- */
+  (function learn() {
+    var rot = $('learn-rot'), list = $('learn-list'); if (!rot || !list) return;
+    var lines = Array.prototype.map.call(list.querySelectorAll('li'), function (li) { return li.textContent; });
+    var i = 0, timer = 0;
+    function words(t) { return t.split(' ').map(function (w, k, a) { return '<span class="w" style="animation-delay:' + (140 + k * 32) + 'ms">' + w + (k < a.length - 1 ? ' ' : '') + '</span>'; }).join(''); }
+    // Wide screens: shrink just enough that every line fits on one row. Phones: lines wrap.
+    // Either way the box keeps the tallest line's height, so a switch never moves the page.
+    function fitLearn() {
+      rot.style.fontSize = '';
+      var m = document.createElement('span'); m.style.cssText = 'position:absolute;visibility:hidden;left:0;top:0;white-space:nowrap';
+      rot.appendChild(m); var w = 0, avail = rot.clientWidth;
+      lines.forEach(function (t) { m.textContent = t; w = Math.max(w, m.offsetWidth); });
+      var k = avail / w; if (k < 1 && k >= 0.6) rot.style.fontSize = (parseFloat(getComputedStyle(rot).fontSize) * k * 0.99) + 'px';
+      m.style.whiteSpace = 'normal'; m.style.width = '100%'; var h = 0;
+      lines.forEach(function (t) { m.textContent = t; h = Math.max(h, m.offsetHeight); });
+      rot.removeChild(m); rot.style.height = h + 'px';
+    }
+    function show(n, animate) {
+      var old = rot.querySelector('.learn-cur'), cur = document.createElement('span');
+      rot.querySelectorAll('.learn-old').forEach(function (o) { o.remove(); });
+      cur.className = 'learn-cur'; cur.innerHTML = animate ? words(lines[n]) : '<span class="w" style="animation:none">' + lines[n] + '</span>';
+      if (old) {
+        if (animate) { old.className = 'learn-old'; old.querySelectorAll('.w').forEach(function (w, k) { w.style.animationDelay = (k * 14) + 'ms'; }); setTimeout(function () { old.remove(); }, 700); }
+        else old.remove();
+      }
+      rot.appendChild(cur);
+    }
+    function tick() { i = (i + 1) % lines.length; show(i, !reduce); timer = setTimeout(tick, reduce ? 3000 : 2000); }
+    fitLearn(); show(0, false);
+    window.addEventListener('resize', function () { clearTimeout(fitLearn.t); fitLearn.t = setTimeout(fitLearn, 120); });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitLearn);
+    if (!('IntersectionObserver' in window)) timer = setTimeout(tick, 2000);
+    else new IntersectionObserver(function (en) {
+      clearTimeout(timer);
+      if (en[0].isIntersecting) timer = setTimeout(tick, 1400);
+    }, { threshold: 0.4 }).observe(rot);
+    var ib = $('learn-i'), tip = $('learn-tip');
+    function setTip(on) { tip.hidden = !on; ib.setAttribute('aria-expanded', String(on)); }
+    ib.addEventListener('click', function (e) { e.stopPropagation(); setTip(tip.hidden); });
+    document.addEventListener('click', function (e) { if (!tip.hidden && !tip.contains(e.target)) setTip(false); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !tip.hidden) { setTip(false); ib.focus(); } });
+  })();
+
   /* ---------------- 01 automate (first run when seen, then repeats while visible) ---------------- */
   (function automate() {
     var card = $('task-card'); if (!card) return;
