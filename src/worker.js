@@ -221,7 +221,11 @@ async function handleFollowups(request, env) {
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
-    if (url.hostname === 'secondsun.ee') { url.hostname = 'www.secondsun.ee'; return Response.redirect(url.toString(), 301); }
+    // One public origin: https://www.secondsun.ee (apex and plain http are permanently redirected).
+    if (url.hostname === 'secondsun.ee' || (url.hostname === 'www.secondsun.ee' && url.protocol === 'http:')) {
+      url.hostname = 'www.secondsun.ee'; url.protocol = 'https:';
+      return Response.redirect(url.toString(), 301);
+    }
     if (url.pathname === '/api/paring') return handleInquiry(request, env);
     if (url.pathname === '/api/tapsustused') return handleFollowups(request, env);
     if (url.pathname === '/api/config') return json({ ok: true, ai: !!env.ANTHROPIC_API_KEY });
@@ -230,6 +234,7 @@ export default {
     out.headers.set('x-content-type-options', 'nosniff');
     out.headers.set('referrer-policy', 'strict-origin-when-cross-origin');
     out.headers.set('x-frame-options', 'DENY');
+    out.headers.set('strict-transport-security', 'max-age=31536000');
     return out;
   }
 };
