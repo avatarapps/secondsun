@@ -469,7 +469,7 @@
       } else if (S.step === 'summary') {
         h = '<div class="in-pad" style="gap:14px"><div style="display:flex;flex-direction:column;gap:6px"><p class="in-title">Päringu kokkuvõte</p><p class="in-sub">Kontrolli üle. Teksti saab muuta.</p></div>' +
           '<div class="field"><label for="i-brief" class="sr-only">Lähteülesanne</label><textarea id="i-brief" class="brief" data-in="brief" rows="16" maxlength="12000">' + esc(S.brief) + '</textarea></div>' +
-          (S.send === 'error' ? '<div class="err" role="alert"><b>Päringut ei saadetud.</b><span>' + esc(S.sendErr) + ' Sinu sisestatud andmed on alles — proovi uuesti või kirjuta otse eva@secondsun.ee või helista +372 5664 1159.</span></div>' : '') + '</div>';
+          (S.send === 'error' ? '<div class="err" role="alert"><b>Päringut ei saadetud.</b><span>' + esc(S.sendErr) + ' Sinu sisestatud andmed on alles — proovi uuesti või kirjuta otse info@secondsun.ee või helista +372 5664 1159.</span></div>' : '') + '</div>';
       }
       if (!sent) {
         var first = idx === 0, last = S.step === 'summary';
