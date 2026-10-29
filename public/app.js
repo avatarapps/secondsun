@@ -308,11 +308,11 @@
     var form = $('in-form'); if (!form) return;
     var stepEl = $('in-step'), footEl = $('in-foot'), scrollEl = $('in-scroll');
     var NEEDS = [
-      { id: 'advisor', t: 'AI-tootenõustaja kodulehele' },
-      { id: 'auto', t: 'Automatiseerida korduvaid tööülesandeid' },
-      { id: 'sys', t: 'Ühendada erinevaid programme ja süsteeme' },
-      { id: 'cs', t: 'Lihtsustada klienditeenindust' },
-      { id: 'prod', t: 'Luua uus digitoode' },
+      { id: 'advisor', t: 'Saada kodulehelt rohkem päringuid (tootenõustaja)' },
+      { id: 'auto', t: 'Vähendada korduvat käsitsitööd' },
+      { id: 'sys', t: 'Panna programmid omavahel suhtlema, et info liiguks ise' },
+      { id: 'prod', t: 'Luua uus digitoode või kliendiportaal' },
+      { id: 'learn', t: 'Õppida AI-d oma töös kasutama' },
       { id: 'other', t: 'Midagi muud või pole veel kindel' }
     ];
     var TITLES = { pilot: 'Tootenõustaja näidis', contact: 'Kontaktandmed', needs: 'Mida soovid paremaks muuta või luua?', desc: 'Räägi sellest lähemalt', ai: 'AI täpsustused', frame: 'Projekti raamid', summary: 'Päringu kokkuvõte' };
@@ -325,7 +325,7 @@
     var S, files = [], startedAt = Date.now(), aiSig = '', aiOn = false;
     function fresh() { return { aiOn: aiOn, mode: 'general', site: '', step: 'needs', name: '', company: '', email: '', phone: '', needs: [], desc: '', ai: 'idle', aiQs: [], aiAns: {}, known: {}, dl: '', dlDate: '', bud: '', budget: '', brief: '', briefTouched: false, send: 'idle', sendErr: '', idem: '', tried: false, fileErr: '' }; }
     S = fresh();
-    try { var d = JSON.parse(localStorage.getItem(DRAFT) || 'null'); if (d && d.v === 1) { ['name', 'company', 'email', 'phone', 'needs', 'desc', 'dl', 'dlDate', 'bud', 'budget', 'site'].forEach(function (k) { if (d[k] !== undefined) S[k] = d[k]; }); } } catch (e) { /* no storage */ }
+    try { var d = JSON.parse(localStorage.getItem(DRAFT) || 'null'); if (d && d.v === 1) { ['name', 'company', 'email', 'phone', 'needs', 'desc', 'dl', 'dlDate', 'bud', 'budget', 'site'].forEach(function (k) { if (d[k] !== undefined) S[k] = d[k]; }); if (Array.isArray(S.needs)) S.needs = S.needs.filter(function (id) { return NEEDS.some(function (n) { return n.id === id; }); }); } } catch (e) { /* no storage */ }
     function save() { try { localStorage.setItem(DRAFT, JSON.stringify({ v: 1, name: S.name, company: S.company, email: S.email, phone: S.phone, needs: S.needs, desc: S.desc, site: S.site, dl: S.dl, dlDate: S.dlDate, bud: S.bud, budget: S.budget })); } catch (e) { /* ignore */ } }
     function clearDraft() { try { localStorage.removeItem(DRAFT); } catch (e) { /* ignore */ } }
 
