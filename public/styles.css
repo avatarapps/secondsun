@@ -178,7 +178,7 @@ h1, h2 { text-wrap: balance; }
 .ld-msg p { margin: 0; font-size: 17px; line-height: 1.38; letter-spacing: -0.01em; }
 .ld-prod { display: inline-flex; margin-top: 12px; padding: 8px 12px; border-radius: 10px; background: #1A2233; border: 1px solid #2A3447; font-size: 14px; font-weight: 600; color: #FFFFFF; }
 .ld-prod { flex-wrap: wrap; column-gap: 4px; }
-.ld-prod .nw { white-space: nowrap; }
+.ld-prod .nw, .svc-cta-pair .nw { white-space: nowrap; }
 .ld-link, .ld-lead { transition: opacity .5s ease, transform .5s cubic-bezier(.2, .8, .2, 1); }
 .ld-link.wait, .ld-lead.wait { opacity: 0; transform: translateY(8px); }
 .ld-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
