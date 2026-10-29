@@ -236,7 +236,7 @@
     ];
     var TITLES = { pilot: 'Tootenõustaja näidis', contact: 'Kontaktandmed', needs: 'Mida soovid paremaks muuta või luua?', desc: 'Räägi sellest lähemalt', ai: 'AI täpsustused', frame: 'Projekti raamid', summary: 'Päringu kokkuvõte' };
     // Value first, contact last. A visitor who came from the advisor offer starts with their website.
-    var ORDER = ['needs', 'desc', 'ai', 'frame', 'contact', 'summary'];
+    var ORDER = ['needs', 'desc', 'ai', 'frame', 'contact'];
     var PILOT = ['pilot'];
     var ALLOWED = ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'csv', 'txt', 'ppt', 'pptx', 'png', 'jpg', 'jpeg', 'webp', 'heic'];
     var MAX_FILES = 5, MAX_FILE = 10 * 1024 * 1024, MAX_TOTAL = 15 * 1024 * 1024;
@@ -345,7 +345,10 @@
       if (S.mode === 'pilot') {
         if (!siteOk(S.site) || !emailOk(S.email)) { S.tried = true; render(); return; }
         S.brief = 'TOOTENÕUSTAJA NÄIDIS\n\nKoduleht: ' + S.site.trim() + '\nE-post: ' + S.email.trim() + '\n\nSoov: näidis, kuidas AI-tootenõustaja selle lehel töötaks.';
-      } else if (!emailOk(S.email)) { go('contact'); S.tried = true; render(); return; }
+      } else {
+        if (!emailOk(S.email)) { S.tried = true; render(); var m0 = $('i-mail'); if (m0) m0.focus(); return; }
+        save(); S.brief = buildBrief();
+      }
       if (!S.idem) S.idem = uuid();
       S.send = 'sending'; S.sendErr = ''; render();
       var fd = new FormData();
@@ -395,7 +398,8 @@
           '<div class="field"><label for="i-org">Ettevõte</label><input id="i-org" data-in="company" type="text" autocomplete="organization" maxlength="200" value="' + esc(S.company) + '"></div>' +
           '<div class="field"><label for="i-mail">E-post *</label><input id="i-mail" data-in="email" type="email" inputmode="email" autocomplete="email" maxlength="200" required aria-invalid="' + bad + '"' + (bad ? ' aria-describedby="i-mail-err"' : '') + ' value="' + esc(S.email) + '"></div>' +
           '<div class="field"><label for="i-tel">Telefon</label><input id="i-tel" data-in="phone" type="tel" inputmode="tel" autocomplete="tel" maxlength="60" value="' + esc(S.phone) + '"></div>' +
-          '</div>' + (bad ? '<p class="f-err" id="i-mail-err">Sisesta e-posti aadress, et saaksime vastata.</p>' : '') + '</div>';
+          '</div>' + (bad ? '<p class="f-err" id="i-mail-err">Sisesta e-posti aadress, et saaksime vastata.</p>' : '') +
+          (S.send === 'error' ? '<div class="err" role="alert"><b>Päringut ei saadetud.</b><span>' + esc(S.sendErr) + ' Sinu sisestatud andmed on alles — proovi uuesti või kirjuta otse info@secondsun.ee või helista +372 5664 1159.</span></div>' : '') + '</div>';
       } else if (S.step === 'needs') {
         h = '<div class="in-pad"><div style="display:flex;flex-direction:column;gap:6px"><p class="in-title">Mida soovid paremaks muuta või luua?</p><p class="in-sub">Vali üks või mitu.</p></div><div class="opts" role="group" aria-label="Soov">' +
           NEEDS.map(function (n) { return opt(n.t, S.needs.indexOf(n.id) >= 0, 'need:' + n.id); }).join('') + '</div>' +
@@ -425,7 +429,7 @@
           (S.send === 'error' ? '<div class="err" role="alert"><b>Päringut ei saadetud.</b><span>' + esc(S.sendErr) + ' Sinu sisestatud andmed on alles — proovi uuesti või kirjuta otse info@secondsun.ee või helista +372 5664 1159.</span></div>' : '') + '</div>';
       }
       if (!sent) {
-        var first = idx === 0, last = S.step === 'summary';
+        var first = idx === 0, last = S.step === 'contact';
         f = (first ? '<span></span>' : '<button type="button" class="ghost" data-act="back">← Tagasi</button>');
         if (S.mode === 'pilot') f = '<button type="button" class="btn btn-gold" data-act="send"' + (S.send === 'sending' ? ' disabled aria-busy="true"' : '') + '>' + (S.send === 'sending' ? 'Saadan…' : 'Saada mulle näidis →') + '</button><button type="button" class="ghost" data-act="general">Muu päring</button>';
         else if (last) f += '<button type="button" class="btn btn-gold" data-act="send"' + (S.send === 'sending' ? ' disabled aria-busy="true"' : '') + '>' + (S.send === 'sending' ? 'Saadan…' : 'Saada päring →') + '</button>';
