@@ -46,18 +46,6 @@
         done: function (i) { var c = (i % 48) % 24; return { x: 116 + c * 3, s: 1, o: 1 }; }
       },
       {
-        tag: 'LEITUD',
-        q: 'Kui palju olulist jääb sul märkamata, sest sa ei jõua kõigel silma peal hoida?',
-        a: 'Sinule olulised uudised ja konkurentide tegemised. Kindlaks ajaks kindlas kohas.',
-        src: ['uudis · tarneajad pikenevad', 'konkurent B · hinnaleht muutus', 'iga tööpäev 08:00 · sinu postkastis'],
-        stat: function (p) { return 'jälgin ' + Math.round(p * 42) + ' allikat · ' + Math.round(p * 5) + ' olulist muutust'; },
-        labels: ['uudisportaalid', 'uudiskirjad', 'LinkedIn', 'konkurent A', 'konkurent B', 'konkurent C'].map(function (t, g) { return { x: g * 108, y: 44, t: t }; }),
-        hideLabelsDone: true,
-        hits: [7, 52, 95, 141, 166, 203],
-        pos: function (i) { var g = Math.floor(i / 40), k = i % 40, c = k % 5, r = Math.floor(k / 5); return { x: g * 108 + c * 15, y: 70 + r * 26, w: 12, h: 17, bg: ['#E4E7EC', '#C7CDD8', '#C7CDD8', '#8FA3C0', '#8FA3C0', '#8FA3C0'][g], d: 700 + g * 300 + r * 22 }; },
-        done: function (i, hit, j) { return hit ? { x: 300, y: 8 + j * 50, s: 1.8, o: 1 } : { x: 330, y: 150, s: 0.3, o: 0 }; }
-      },
-      {
         tag: 'TEHTUD',
         q: 'Sul on hea äriidee. Miks sa pole seda veel teoks teinud?',
         a: 'Sina tunned oma äri. Meie loome sellest läbimõeldud digitoote üleliigsete sammudeta.',
@@ -77,6 +65,18 @@
           if (g === 1) { var row = Math.floor(k / 12), r2 = k % 12; return { x: 240 + (r2 % 6) * 30, y: 76 + row * 52 + Math.floor(r2 / 6) * 21, w: 27, h: 18, bg: '#E4E7EC', o: 1, z: 2 }; }
           return { x: 240 + (k % 6) * 30, y: 244 + Math.floor(k / 6) * 12, w: 27, h: 10, bg: '#F5A524', o: 1, z: 3 };
         }
+      },
+      {
+        tag: 'LEITUD',
+        q: 'Kui palju olulist jääb sul märkamata, sest sa ei jõua kõigel silma peal hoida?',
+        a: 'Sinule olulised uudised ja konkurentide tegemised. Kindlaks ajaks kindlas kohas.',
+        src: ['uudis · tarneajad pikenevad', 'konkurent B · hinnaleht muutus', 'iga tööpäev 08:00 · sinu postkastis'],
+        stat: function (p) { return 'jälgin ' + Math.round(p * 42) + ' allikat · ' + Math.round(p * 5) + ' olulist muutust'; },
+        labels: ['uudisportaalid', 'uudiskirjad', 'LinkedIn', 'konkurent A', 'konkurent B', 'konkurent C'].map(function (t, g) { return { x: g * 108, y: 44, t: t }; }),
+        hideLabelsDone: true,
+        hits: [7, 52, 95, 141, 166, 203],
+        pos: function (i) { var g = Math.floor(i / 40), k = i % 40, c = k % 5, r = Math.floor(k / 5); return { x: g * 108 + c * 15, y: 70 + r * 26, w: 12, h: 17, bg: ['#E4E7EC', '#C7CDD8', '#C7CDD8', '#8FA3C0', '#8FA3C0', '#8FA3C0'][g], d: 700 + g * 300 + r * 22 }; },
+        done: function (i, hit, j) { return hit ? { x: 300, y: 8 + j * 50, s: 1.8, o: 1 } : { x: 330, y: 150, s: 0.3, o: 0 }; }
       }
     ];
     var cards = [];

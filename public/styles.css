@@ -258,12 +258,13 @@ h1, h2 { text-wrap: balance; }
 .biz-item.new > span { padding: 7px 12px; border-radius: 999px; background: var(--gold); font-size: 13px; font-weight: 600; color: var(--ink); }
 
 /* statement */
-.statement { padding-block: 152px 136px; overflow: hidden; display: flex; flex-direction: column; gap: 48px; }
-.statement p.big { margin: 0; font-size: clamp(40px, 7.2vw, 108px); line-height: .96; letter-spacing: -0.065em; font-weight: 650; }
+.statement { padding-block: 120px 112px; display: flex; flex-direction: column; gap: 24px; }
+.statement > * { max-width: 700px; }
+.statement p.big { margin: 0; font-size: clamp(32px, 4vw, 54px); line-height: 1.02; letter-spacing: -0.055em; font-weight: 650; }
 .statement p > span { display: block; text-wrap: balance; }
 .statement .second { color: var(--gray-big); }
 .statement .ln { display: block; }
-.principle { margin: 0; display: flex; align-items: center; gap: 12px; font-size: 17px; font-weight: 500; letter-spacing: -0.01em; color: var(--muted); }
+.principle { margin: 0; display: flex; align-items: center; gap: 12px; font-size: clamp(17px, 1.9vw, 26px); font-weight: 500; letter-spacing: -0.01em; color: var(--muted); }
 .principle i { width: 8px; height: 8px; background: var(--gold); flex: none; }
 .statement .second .marker { color: var(--ink); }
 
@@ -494,9 +495,10 @@ h1, h2 { text-wrap: balance; }
   .biz-body { padding: 16px 20px 20px; gap: 10px; }
   .biz-item { padding: 14px 18px; }
   .biz-item.new { padding: 16px 18px; }
-  .statement { padding-block: 96px 88px; gap: 32px; }
+  .statement { padding-block: 88px 80px; gap: 18px; }
   .statement .ln { display: inline; }
-  .principle { font-size: 16px; }
+  .statement p.big { font-size: clamp(30px, 8.6vw, 34px); }
+  .principle { font-size: 17px; }
   .dd { padding-block: 72px; }
   .dd-copy p { font-size: 17px; }
   .dd-top { gap: 28px; }
