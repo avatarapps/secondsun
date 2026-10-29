@@ -167,90 +167,26 @@
     }, 100);
   })();
 
-  /* ---------------- 02 hours ---------------- */
-  (function hours() {
-    var box = $('hours'); if (!box) return;
-    var H = [
-      { t: '08:10', kind: 'Tellimus', inDay: true }, { t: '13:40', kind: 'Pakkumine', inDay: true },
-      { t: '19:25', kind: 'Broneering', inDay: false }, { t: '23:15', kind: 'Tellimus', inDay: false }, { t: '03:40', kind: 'Broneering', inDay: false }
-    ];
-    var cur = 3, card = $('hour-card');
-    box.innerHTML = H.map(function (h, i) { return '<button type="button" role="tab" data-h="' + i + '">' + h.t + '</button>'; }).join('');
-    function show() {
-      var h = H[cur];
-      Array.prototype.forEach.call(box.children, function (b, i) { b.setAttribute('aria-selected', i === cur ? 'true' : 'false'); });
-      $('hour-big').textContent = h.t; $('hour-kind').textContent = h.kind;
-      $('hour-day').textContent = 'tööpäev ' + (h.inDay ? 'käib' : 'läbi');
-      $('hour-dot').style.background = h.inDay ? '#4ADE80' : '#98A2B3';
-      card.classList.remove('pop-in'); void card.offsetWidth; card.classList.add('pop-in');
+  /* ---------------- 03 kliendid ja müük: question → answer → lead (loops while visible) ---------------- */
+  (function salesLead() {
+    var root = $('ld'); if (!root) return;
+    var steps = root.querySelectorAll('[data-s]'), chip = root.querySelector('.ld-chip[data-s]'), timers = [], seen = false;
+    function set(n) {
+      Array.prototype.forEach.call(steps, function (el) { el.classList.toggle('wait', +el.getAttribute('data-s') > n); });
+      chip.classList.toggle('on', n >= 3);
     }
-    var timer = 0, holdUntil = 0, seen = false;
-    function auto() {
-      clearTimeout(timer); if (!seen || reduce) return;
-      timer = setTimeout(function () { if (Date.now() < holdUntil) return auto(); cur = (cur + 1) % H.length; show(); auto(); }, Math.max(2600, holdUntil - Date.now()));
-    }
-    box.addEventListener('click', function (e) { var b = e.target.closest('button'); if (!b) return; cur = +b.getAttribute('data-h'); show(); holdUntil = Date.now() + 6000; auto(); });
-    if ('IntersectionObserver' in window) new IntersectionObserver(function (en) { seen = en[0].isIntersecting; if (seen) auto(); else clearTimeout(timer); }, { threshold: 0.4 }).observe(card);
-    show();
-  })();
-
-  /* ---------------- personaalne AI-õpe: rotating middle line ---------------- */
-  (function learn() {
-    var rot = $('learn-rot'), list = $('learn-list'); if (!rot || !list) return;
-    var lines = Array.prototype.map.call(list.querySelectorAll('li'), function (li) { return li.textContent; });
-    var i = 0, timer = 0;
-    // Wide screens: shrink just enough that every line fits on one row. Phones: lines wrap.
-    // Either way the box keeps the tallest line's height, so a switch never moves the page.
-    function fitLearn() {
-      rot.style.fontSize = '';
-      var m = document.createElement('span'); m.style.cssText = 'position:absolute;visibility:hidden;left:0;top:0;white-space:nowrap';
-      rot.appendChild(m); var w = 0, avail = rot.clientWidth;
-      lines.forEach(function (t) { m.textContent = t; w = Math.max(w, m.offsetWidth); });
-      var k = avail / w; if (k < 1 && k >= 0.6) rot.style.fontSize = (parseFloat(getComputedStyle(rot).fontSize) * k * 0.99) + 'px';
-      m.style.whiteSpace = 'normal'; m.style.width = '100%'; var h = 0;
-      lines.forEach(function (t) { m.textContent = t; h = Math.max(h, m.offsetHeight); });
-      rot.removeChild(m); rot.style.height = h + 'px';
-    }
-    function show(n, animate) {
-      var old = rot.querySelector('.learn-cur'), cur = document.createElement('span');
-      rot.querySelectorAll('.learn-old').forEach(function (o) { o.remove(); });
-      cur.className = animate ? 'learn-cur' : 'learn-cur still'; cur.textContent = lines[n];
-      if (old) {
-        if (animate) { old.className = 'learn-old'; setTimeout(function () { old.remove(); }, 900); }
-        else old.remove();
-      }
-      rot.appendChild(cur);
-    }
-    function tick() { i = (i + 1) % lines.length; show(i, !reduce); timer = setTimeout(tick, reduce ? 3200 : 2600); }
-    fitLearn(); show(0, false);
-    window.addEventListener('resize', function () { clearTimeout(fitLearn.t); fitLearn.t = setTimeout(fitLearn, 120); });
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitLearn);
-    if (!('IntersectionObserver' in window)) timer = setTimeout(tick, 2000);
-    else new IntersectionObserver(function (en) {
-      clearTimeout(timer);
-      if (en[0].isIntersecting) timer = setTimeout(tick, 1400);
-    }, { threshold: 0.4 }).observe(rot);
-  })();
-
-  /* ---------------- 01 automate (first run when seen, then repeats while visible) ---------------- */
-  (function automate() {
-    var card = $('task-card'); if (!card) return;
-    var states = card.querySelectorAll('.task-state'), seen = false, timer = 0, ts = [];
-    function each(fn) { Array.prototype.forEach.call(states, fn); }
+    function clear() { timers.forEach(clearTimeout); timers = []; }
     function run() {
-      each(function (s, i) { ts.push(setTimeout(function () { s.textContent = '✓ automaatne'; s.classList.add('on'); }, reduce ? 0 : 350 + i * 380)); });
-      if (reduce) return;
-      timer = setTimeout(reset, 350 + states.length * 380 + 3400);
+      clear(); set(0);
+      [[1, 500], [2, 1700], [3, 3100], [4, 3900]].forEach(function (p) { timers.push(setTimeout(function () { set(p[0]); }, p[1])); });
+      timers.push(setTimeout(function () { if (seen) run(); }, 3900 + 4200));
     }
-    function reset() {
-      each(function (s) { s.textContent = 'käsitsi'; s.classList.remove('on'); });
-      timer = setTimeout(function () { if (seen) run(); else timer = 0; }, 1100);
-    }
-    if (!('IntersectionObserver' in window)) { run(); return; }
+    if (reduce || !('IntersectionObserver' in window)) { set(4); return; }
+    set(0);
     new IntersectionObserver(function (en) {
-      seen = en[0].isIntersecting;
-      if (seen && !timer) run();
-    }, { threshold: 0.6 }).observe(card);
+      var was = seen; seen = en[0].isIntersecting;
+      if (seen && !was) run(); else if (!seen) { clear(); set(4); }
+    }, { threshold: 0.45 }).observe(root);
   })();
 
   /* ---------------- 03 portal (runs by itself while visible; a tap still works) ---------------- */
