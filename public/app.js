@@ -18,12 +18,12 @@
     var Q = [
       {
         tag: 'TEHTUD',
-        q: 'Kas iga uus klient tähendab rohkem tööd?',
-        a: 'Päring saab vastuse. Pakkumine läheb teele. Tellimus jõuab süsteemi. Sa ei pea kõrval seisma.',
-        src: ['vastus · 21:14', 'pakkumine · 21:15', 'tellimus → süsteem · 21:16'],
+        q: 'Kes vastab sinu kliendile, kui tööpäev on läbi?',
+        a: 'Klient saab vastuse ka öösel. Hommikul ootab sind valmis päring.',
+        src: ['vastus · 23:41', 'päring · 23:42', 'müüjale · 08:00'],
         stages: [700, 1350, 2000, 2650],
-        stat: function (p, st) { return ['päring saabus · 21:14', 'vastus saadetud · 21:14', 'pakkumine teel · 21:15', 'tellimus süsteemis · 21:16', 'tellimus süsteemis · 21:16'][st]; },
-        labels: ['päring', 'vastus', 'pakkumine', 'tellimus → süsteem'].map(function (t, c) { return { x: cols[c], y: 0, t: t }; }),
+        stat: function (p, st) { return ['küsimus saabus · 23:41', 'vastus saadetud · 23:41', 'päring koostatud · 23:42', 'päring müüjal · 08:00', 'päring müüjal · 08:00'][st]; },
+        labels: ['küsimus', 'vastus', 'päring', 'müüja'].map(function (t, c) { return { x: cols[c], y: 0, t: t }; }),
         lbl: function (c, st) { return { o: '1', c: c <= Math.min(st, 3) ? '#F5A524' : '#8E98A8' }; },
         flow: function (i, st, done) {
           if (i < 200) {
