@@ -175,19 +175,15 @@
     var picks = Array.prototype.slice.call(root.querySelectorAll('[data-pick]'));
     var tail = Array.prototype.slice.call(root.querySelectorAll('.ld-link, .ld-lead'));
     var timers = [], seen = false;
-    // The window keeps one height for the whole story, so the page never moves.
+    // The window holds the whole story, so the question never scrolls away and the page never moves.
     function fit() {
       msgs.forEach(function (m) { m.style.display = 'block'; m.style.visibility = 'hidden'; });
       var h = msgs.map(function (m) { return m.getBoundingClientRect().height; }), gap = 16;
       msgs.forEach(function (m) { m.style.display = ''; m.style.visibility = ''; });
-      view.style.height = Math.ceil(Math.max(h[0] + gap + h[1], h[2] + 30)) + 'px';
+      view.style.height = Math.ceil(h.reduce(function (a, b) { return a + b; }, 0) + gap * (h.length - 1)) + 'px';
       scroll(false);
     }
-    function scroll(anim) {
-      feed.style.transition = anim ? '' : 'none';
-      feed.style.transform = 'translateY(' + (-Math.max(0, feed.scrollHeight - view.clientHeight)) + 'px)';
-      if (!anim) { void feed.offsetHeight; feed.style.transition = ''; }
-    }
+    function scroll() { /* the window fits every message, so nothing scrolls */ }
     function set(n, anim) {
       msgs.forEach(function (m) { m.classList.toggle('in', +m.getAttribute('data-m') <= n); });
       picks.forEach(function (p) { p.classList.toggle('on', +p.getAttribute('data-pick') <= n); });
