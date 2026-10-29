@@ -373,8 +373,9 @@
 
     function render() {
       var sent = S.send === 'sent', v = visible(), idx = v.indexOf(S.step);
-      $('in-title').textContent = sent ? 'Saadetud' : S.mode === 'pilot' ? TITLES.pilot : (idx + 1) + '. ' + TITLES[S.step];
-      $('in-count').textContent = sent || S.mode === 'pilot' ? '' : (idx + 1) + ' / ' + v.length;
+      // The step's own heading says what it asks; the bar shows only where you are.
+      $('in-title').textContent = sent ? 'Saadetud' : S.mode === 'pilot' ? TITLES.pilot : (idx + 1) + ' / ' + v.length;
+      $('in-count').textContent = '';
       $('in-fill').style.width = (sent ? 100 : (idx / v.length) * 100).toFixed(1) + '%';
       var h = '', f = '';
       if (sent) {
