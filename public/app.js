@@ -167,26 +167,107 @@
     }, 100);
   })();
 
-  /* ---------------- 03 kliendid ja müük: question → answer → lead (loops while visible) ---------------- */
+  /* ---------------- 01 kliendid ja müük: question → useful answer → lead (loops while visible) ---------------- */
   (function salesLead() {
     var root = $('ld'); if (!root) return;
-    var steps = root.querySelectorAll('[data-s]'), chip = root.querySelector('.ld-chip[data-s]'), timers = [], seen = false;
-    function set(n) {
-      Array.prototype.forEach.call(steps, function (el) { el.classList.toggle('wait', +el.getAttribute('data-s') > n); });
-      chip.classList.toggle('on', n >= 3);
+    var view = $('ld-view'), feed = $('ld-feed');
+    var msgs = Array.prototype.slice.call(feed.querySelectorAll('.ld-msg'));
+    var picks = Array.prototype.slice.call(root.querySelectorAll('[data-pick]'));
+    var tail = Array.prototype.slice.call(root.querySelectorAll('.ld-link, .ld-lead'));
+    var timers = [], seen = false;
+    // The window keeps one height for the whole story, so the page never moves.
+    function fit() {
+      msgs.forEach(function (m) { m.style.display = 'block'; m.style.visibility = 'hidden'; });
+      var h = msgs.map(function (m) { return m.getBoundingClientRect().height; }), gap = 16;
+      msgs.forEach(function (m) { m.style.display = ''; m.style.visibility = ''; });
+      view.style.height = Math.ceil(Math.max(h[0] + gap + h[1], h[2] + 30)) + 'px';
+      scroll(false);
+    }
+    function scroll(anim) {
+      feed.style.transition = anim ? '' : 'none';
+      feed.style.transform = 'translateY(' + (-Math.max(0, feed.scrollHeight - view.clientHeight)) + 'px)';
+      if (!anim) { void feed.offsetHeight; feed.style.transition = ''; }
+    }
+    function set(n, anim) {
+      msgs.forEach(function (m) { m.classList.toggle('in', +m.getAttribute('data-m') <= n); });
+      picks.forEach(function (p) { p.classList.toggle('on', +p.getAttribute('data-pick') <= n); });
+      tail.forEach(function (t) { t.classList.toggle('wait', n < 6); });
+      scroll(anim);
     }
     function clear() { timers.forEach(clearTimeout); timers = []; }
     function run() {
-      clear(); set(0);
-      [[1, 500], [2, 1700], [3, 3100], [4, 3900]].forEach(function (p) { timers.push(setTimeout(function () { set(p[0]); }, p[1])); });
-      timers.push(setTimeout(function () { if (seen) run(); }, 3900 + 4200));
+      clear(); set(0, false);
+      [[1, 500], [2, 1600], [3, 3000], [4, 3700], [5, 6400], [6, 7200]].forEach(function (p) { timers.push(setTimeout(function () { set(p[0], true); }, p[1])); });
+      timers.push(setTimeout(function () { if (seen) run(); }, 7200 + 4800));
     }
-    if (reduce || !('IntersectionObserver' in window)) { set(4); return; }
-    set(0);
+    fit();
+    window.addEventListener('resize', function () { clearTimeout(fit.t); fit.t = setTimeout(fit, 150); });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+    if (reduce || !('IntersectionObserver' in window)) { set(6, false); return; }
+    set(0, false);
     new IntersectionObserver(function (en) {
       var was = seen; seen = en[0].isIntersecting;
-      if (seen && !was) run(); else if (!seen) { clear(); set(4); }
-    }, { threshold: 0.45 }).observe(root);
+      if (seen && !was) run(); else if (!seen) { clear(); set(6, false); }
+    }, { threshold: 0.4 }).observe(root);
+  })();
+
+  /* ---------------- personaalne AI-õpe: rotating middle line ---------------- */
+  (function learn() {
+    var rot = $('learn-rot'), list = $('learn-list'); if (!rot || !list) return;
+    var lines = Array.prototype.map.call(list.querySelectorAll('li'), function (li) { return li.textContent; });
+    var i = 0, timer = 0;
+    // Wide screens: shrink just enough that every line fits on one row. Phones: lines wrap.
+    // Either way the box keeps the tallest line's height, so a switch never moves the page.
+    function fitLearn() {
+      rot.style.fontSize = '';
+      var m = document.createElement('span'); m.style.cssText = 'position:absolute;visibility:hidden;left:0;top:0;white-space:nowrap';
+      rot.appendChild(m); var w = 0, avail = rot.clientWidth;
+      lines.forEach(function (t) { m.textContent = t; w = Math.max(w, m.offsetWidth); });
+      var k = avail / w; if (k < 1 && k >= 0.6) rot.style.fontSize = (parseFloat(getComputedStyle(rot).fontSize) * k * 0.99) + 'px';
+      m.style.whiteSpace = 'normal'; m.style.width = '100%'; var h = 0;
+      lines.forEach(function (t) { m.textContent = t; h = Math.max(h, m.offsetHeight); });
+      rot.removeChild(m); rot.style.height = h + 'px';
+    }
+    function show(n, animate) {
+      var old = rot.querySelector('.learn-cur'), cur = document.createElement('span');
+      rot.querySelectorAll('.learn-old').forEach(function (o) { o.remove(); });
+      cur.className = animate ? 'learn-cur' : 'learn-cur still'; cur.textContent = lines[n];
+      if (old) {
+        if (animate) { old.className = 'learn-old'; setTimeout(function () { old.remove(); }, 900); }
+        else old.remove();
+      }
+      rot.appendChild(cur);
+    }
+    function tick() { i = (i + 1) % lines.length; show(i, !reduce); timer = setTimeout(tick, reduce ? 3200 : 2600); }
+    fitLearn(); show(0, false);
+    window.addEventListener('resize', function () { clearTimeout(fitLearn.t); fitLearn.t = setTimeout(fitLearn, 120); });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitLearn);
+    if (!('IntersectionObserver' in window)) timer = setTimeout(tick, 2000);
+    else new IntersectionObserver(function (en) {
+      clearTimeout(timer);
+      if (en[0].isIntersecting) timer = setTimeout(tick, 1400);
+    }, { threshold: 0.4 }).observe(rot);
+  })();
+
+  /* ---------------- 01 automate (first run when seen, then repeats while visible) ---------------- */
+  (function automate() {
+    var card = $('task-card'); if (!card) return;
+    var states = card.querySelectorAll('.task-state'), seen = false, timer = 0, ts = [];
+    function each(fn) { Array.prototype.forEach.call(states, fn); }
+    function run() {
+      each(function (s, i) { ts.push(setTimeout(function () { s.textContent = '✓ automaatne'; s.classList.add('on'); }, reduce ? 0 : 350 + i * 380)); });
+      if (reduce) return;
+      timer = setTimeout(reset, 350 + states.length * 380 + 3400);
+    }
+    function reset() {
+      each(function (s) { s.textContent = 'käsitsi'; s.classList.remove('on'); });
+      timer = setTimeout(function () { if (seen) run(); else timer = 0; }, 1100);
+    }
+    if (!('IntersectionObserver' in window)) { run(); return; }
+    new IntersectionObserver(function (en) {
+      seen = en[0].isIntersecting;
+      if (seen && !timer) run();
+    }, { threshold: 0.6 }).observe(card);
   })();
 
   /* ---------------- 03 portal (runs by itself while visible; a tap still works) ---------------- */
