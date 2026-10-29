@@ -18,6 +18,24 @@
     var Q = [
       {
         tag: 'TEHTUD',
+        q: 'Kas iga uus klient tähendab rohkem tööd?',
+        a: 'Päring saab vastuse. Pakkumine läheb teele. Tellimus jõuab süsteemi. Sa ei pea kõrval seisma.',
+        src: ['vastus · 21:14', 'pakkumine · 21:15', 'tellimus → süsteem · 21:16'],
+        stages: [700, 1350, 2000, 2650],
+        stat: function (p, st) { return ['päring saabus · 21:14', 'vastus saadetud · 21:14', 'pakkumine teel · 21:15', 'tellimus süsteemis · 21:16', 'tellimus süsteemis · 21:16'][st]; },
+        labels: ['päring', 'vastus', 'pakkumine', 'tellimus → süsteem'].map(function (t, c) { return { x: cols[c], y: 0, t: t }; }),
+        lbl: function (c, st) { return { o: '1', c: c <= Math.min(st, 3) ? '#F5A524' : '#8E98A8' }; },
+        flow: function (i, st, done) {
+          if (i < 200) {
+            var c = Math.floor(i / 50), k = i % 50;
+            return { x: cols[c] + 6 + (k % 5) * 29, y: 28 + Math.floor(k / 5) * 28, w: 22, h: 18, bg: '#4E5D78', o: c <= Math.min(st, 3) ? 0.3 : 0.12, z: 1 };
+          }
+          var kk = i - 200, cc = Math.min(st, 3);
+          return { x: cols[cc] + 22 + (kk % 5) * 22, y: 70 + Math.floor(kk / 5) * 24, w: 17, h: 14, bg: done || st >= 3 ? '#F5A524' : (st >= 1 ? '#C7CDD8' : '#E4E7EC'), o: 1, z: 3 };
+        }
+      },
+      {
+        tag: 'TEHTUD',
         q: 'Kui palju kulutate aega tööle, mida mitte keegi ei peaks enam käsitsi tegema?',
         a: 'Võida poole aasta töötunnid tagasi.',
         src: ['arved → raamatupidamine', 'e-kirjad → CRM', 'näitlik ajavõit ≈ 1 000 h aastas'],
@@ -38,24 +56,6 @@
         hits: [7, 52, 95, 141, 166, 203],
         pos: function (i) { var g = Math.floor(i / 40), k = i % 40, c = k % 5, r = Math.floor(k / 5); return { x: g * 108 + c * 15, y: 70 + r * 26, w: 12, h: 17, bg: ['#E4E7EC', '#C7CDD8', '#C7CDD8', '#8FA3C0', '#8FA3C0', '#8FA3C0'][g], d: 700 + g * 300 + r * 22 }; },
         done: function (i, hit, j) { return hit ? { x: 300, y: 8 + j * 50, s: 1.8, o: 1 } : { x: 330, y: 150, s: 0.3, o: 0 }; }
-      },
-      {
-        tag: 'TEHTUD',
-        q: 'Kas iga uus klient tähendab rohkem tööd?',
-        a: 'Päring saab vastuse. Pakkumine läheb teele. Tellimus jõuab süsteemi. Sa ei pea kõrval seisma.',
-        src: ['vastus · 21:14', 'pakkumine · 21:15', 'tellimus → süsteem · 21:16'],
-        stages: [700, 1350, 2000, 2650],
-        stat: function (p, st) { return ['päring saabus · 21:14', 'vastus saadetud · 21:14', 'pakkumine teel · 21:15', 'tellimus süsteemis · 21:16', 'tellimus süsteemis · 21:16'][st]; },
-        labels: ['päring', 'vastus', 'pakkumine', 'tellimus → süsteem'].map(function (t, c) { return { x: cols[c], y: 0, t: t }; }),
-        lbl: function (c, st) { return { o: '1', c: c <= Math.min(st, 3) ? '#F5A524' : '#8E98A8' }; },
-        flow: function (i, st, done) {
-          if (i < 200) {
-            var c = Math.floor(i / 50), k = i % 50;
-            return { x: cols[c] + 6 + (k % 5) * 29, y: 28 + Math.floor(k / 5) * 28, w: 22, h: 18, bg: '#4E5D78', o: c <= Math.min(st, 3) ? 0.3 : 0.12, z: 1 };
-          }
-          var kk = i - 200, cc = Math.min(st, 3);
-          return { x: cols[cc] + 22 + (kk % 5) * 22, y: 70 + Math.floor(kk / 5) * 24, w: 17, h: 14, bg: done || st >= 3 ? '#F5A524' : (st >= 1 ? '#C7CDD8' : '#E4E7EC'), o: 1, z: 3 };
-        }
       },
       {
         tag: 'TEHTUD',
