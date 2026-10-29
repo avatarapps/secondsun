@@ -234,10 +234,10 @@
       { id: 'prod', t: 'Luua uus digitoode' },
       { id: 'other', t: 'Midagi muud või pole veel kindel' }
     ];
-    var TITLES = { site: 'Sinu koduleht', contact: 'Kontaktandmed', needs: 'Mida soovid paremaks muuta või luua?', desc: 'Räägi sellest lähemalt', ai: 'AI täpsustused', frame: 'Projekti raamid', summary: 'Päringu kokkuvõte' };
+    var TITLES = { pilot: 'Tootenõustaja näidis', contact: 'Kontaktandmed', needs: 'Mida soovid paremaks muuta või luua?', desc: 'Räägi sellest lähemalt', ai: 'AI täpsustused', frame: 'Projekti raamid', summary: 'Päringu kokkuvõte' };
     // Value first, contact last. A visitor who came from the advisor offer starts with their website.
     var ORDER = ['needs', 'desc', 'ai', 'frame', 'contact', 'summary'];
-    var PILOT = ['site', 'desc', 'contact', 'summary'];
+    var PILOT = ['pilot'];
     var ALLOWED = ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'csv', 'txt', 'ppt', 'pptx', 'png', 'jpg', 'jpeg', 'webp', 'heic'];
     var MAX_FILES = 5, MAX_FILE = 10 * 1024 * 1024, MAX_TOTAL = 15 * 1024 * 1024;
     var DRAFT = 'ss-paring-v1';
@@ -314,7 +314,6 @@
       var s = S.step;
       if (s === 'contact' && !validateContact()) { S.tried = true; render(); var m = $('i-mail'); if (m) m.focus(); return; }
       if (s === 'needs' && !S.needs.length) { S.tried = true; render(); return; }
-      if (s === 'site' && !siteOk(S.site)) { S.tried = true; render(); var u = $('i-site'); if (u) u.focus(); return; }
       save();
       if (s === 'desc' && S.aiOn && S.mode !== 'pilot') {
         S.step = 'ai'; render();
@@ -343,11 +342,14 @@
 
     function send() {
       if (S.send === 'sending') return;
-      if (!emailOk(S.email)) { go('contact'); S.tried = true; render(); return; }
+      if (S.mode === 'pilot') {
+        if (!siteOk(S.site) || !emailOk(S.email)) { S.tried = true; render(); return; }
+        S.brief = 'TOOTENÕUSTAJA NÄIDIS\n\nKoduleht: ' + S.site.trim() + '\nE-post: ' + S.email.trim() + '\n\nSoov: näidis, kuidas AI-tootenõustaja selle lehel töötaks.';
+      } else if (!emailOk(S.email)) { go('contact'); S.tried = true; render(); return; }
       if (!S.idem) S.idem = uuid();
       S.send = 'sending'; S.sendErr = ''; render();
       var fd = new FormData();
-      fd.append('meta', JSON.stringify({ name: S.name.trim(), company: S.company.trim(), email: S.email.trim(), phone: S.phone.trim(), needs: needLabels(), brief: S.brief, website: $('in-hp').value, startedAt: startedAt, idem: S.idem }));
+      fd.append('meta', JSON.stringify({ name: S.name.trim(), company: (S.company.trim() || (S.mode === 'pilot' ? S.site.trim() : '')), email: S.email.trim(), phone: S.phone.trim(), needs: needLabels(), brief: S.brief, website: $('in-hp').value, startedAt: startedAt, idem: S.idem }));
       files.forEach(function (f) { fd.append('files', f, f.name); });
       var ctl = window.AbortController ? new AbortController() : null;
       var to = setTimeout(function () { if (ctl) ctl.abort(); }, 60000);
@@ -371,17 +373,20 @@
 
     function render() {
       var sent = S.send === 'sent', v = visible(), idx = v.indexOf(S.step);
-      $('in-title').textContent = sent ? 'Saadetud' : (idx + 1) + '. ' + TITLES[S.step];
-      $('in-count').textContent = sent ? '' : (idx + 1) + ' / ' + v.length;
+      $('in-title').textContent = sent ? 'Saadetud' : S.mode === 'pilot' ? TITLES.pilot : (idx + 1) + '. ' + TITLES[S.step];
+      $('in-count').textContent = sent || S.mode === 'pilot' ? '' : (idx + 1) + ' / ' + v.length;
       $('in-fill').style.width = (sent ? 100 : (idx / v.length) * 100).toFixed(1) + '%';
       var h = '', f = '';
       if (sent) {
-        h = '<div class="in-pad pop-in" style="padding-top:40px"><span class="sent-mark" aria-hidden="true">✓</span><p class="in-title" role="status">Päring saadetud!</p><p style="margin:0;font-size:17px;color:#344054">Võtame sinuga ühendust.</p></div>';
-      } else if (S.step === 'site') {
-        var badS = S.tried && !siteOk(S.site);
-        h = '<div class="in-pad"><label for="i-site" class="in-title">Sinu kodulehe aadress</label>' +
-          '<div class="field"><input id="i-site" data-in="site" type="text" inputmode="url" autocomplete="url" maxlength="200" placeholder="sinufirma.ee" aria-invalid="' + badS + '" value="' + esc(S.site) + '"></div>' +
-          (badS ? '<p class="f-err">Sisesta kodulehe aadress.</p>' : '') + '</div>';
+        h = '<div class="in-pad pop-in" style="padding-top:40px"><span class="sent-mark" aria-hidden="true">✓</span><p class="in-title" role="status">' + (S.mode === 'pilot' ? 'Aitäh!' : 'Päring saadetud!') + '</p><p style="margin:0;font-size:17px;color:#344054">' + (S.mode === 'pilot' ? 'Saadame näidise lingi lähipäevil.' : 'Võtame sinuga ühendust.') + '</p></div>';
+      } else if (S.step === 'pilot') {
+        var badS = S.tried && !siteOk(S.site), badE = S.tried && !emailOk(S.email);
+        h = '<div class="in-pad"><p class="in-title">Vaata, kuidas tootenõustaja sinu lehel töötaks</p>' +
+          '<div class="field"><label for="i-site">Kodulehe aadress</label><input id="i-site" data-in="site" type="text" inputmode="url" autocomplete="url" maxlength="200" placeholder="sinufirma.ee" aria-invalid="' + badS + '" value="' + esc(S.site) + '"></div>' +
+          '<div class="field"><label for="i-mail">E-post</label><input id="i-mail" data-in="email" type="email" inputmode="email" autocomplete="email" maxlength="200" aria-invalid="' + badE + '" value="' + esc(S.email) + '"></div>' +
+          (badS || badE ? '<p class="f-err">' + (badS ? 'Sisesta kodulehe aadress. ' : '') + (badE ? 'Sisesta e-posti aadress.' : '') + '</p>' : '') +
+          '<p class="in-sub">Ehitame sinu lehe põhjal näidise ja saadame lingi lähipäevil.</p>' +
+          (S.send === 'error' ? '<div class="err" role="alert"><b>Ei õnnestunud saata.</b><span>' + esc(S.sendErr) + ' Proovi uuesti või kirjuta info@secondsun.ee.</span></div>' : '') + '</div>';
       } else if (S.step === 'contact') {
         var bad = S.tried && !emailOk(S.email);
         h = '<div class="in-pad"><p class="in-title">Kontaktandmed</p><div class="two">' +
@@ -421,7 +426,8 @@
       if (!sent) {
         var first = idx === 0, last = S.step === 'summary';
         f = (first ? '<span></span>' : '<button type="button" class="ghost" data-act="back">← Tagasi</button>');
-        if (last) f += '<button type="button" class="btn btn-gold" data-act="send"' + (S.send === 'sending' ? ' disabled aria-busy="true"' : '') + '>' + (S.send === 'sending' ? 'Saadan…' : 'Saada päring →') + '</button>';
+        if (S.mode === 'pilot') f = '<button type="button" class="btn btn-gold" data-act="send"' + (S.send === 'sending' ? ' disabled aria-busy="true"' : '') + '>' + (S.send === 'sending' ? 'Saadan…' : 'Saada mulle näidis →') + '</button><button type="button" class="ghost" data-act="general">Muu päring</button>';
+        else if (last) f += '<button type="button" class="btn btn-gold" data-act="send"' + (S.send === 'sending' ? ' disabled aria-busy="true"' : '') + '>' + (S.send === 'sending' ? 'Saadan…' : 'Saada päring →') + '</button>';
         else f += '<button type="button" class="btn btn-dark" data-act="next"' + (S.step === 'ai' && (S.ai === 'loading' || S.ai === 'idle') ? ' disabled' : '') + '>' + (S.step === 'ai' && S.ai === 'error' ? 'Jätka ilma täpsustusteta →' : 'Edasi →') + '</button>';
       }
       stepEl.innerHTML = h; footEl.innerHTML = f; footEl.hidden = sent;
@@ -431,7 +437,7 @@
     document.addEventListener('click', function (e) {
       var t = e.target.closest('[data-intake="pilot"]'); if (!t || S.send === 'sent') return;
       S.mode = 'pilot'; if (S.needs.indexOf('advisor') < 0) S.needs = ['advisor'].concat(S.needs);
-      S.step = 'site'; S.tried = false; render();
+      S.step = 'pilot'; S.tried = false; S.send = 'idle'; render();
     });
     form.addEventListener('submit', function (e) { e.preventDefault(); });
     form.addEventListener('click', function (e) {
@@ -440,6 +446,7 @@
       if (a === 'next') return next();
       if (a === 'back') return go(prevFrom(S.step));
       if (a === 'send') return send();
+      if (a === 'general') { S.mode = 'general'; S.needs = S.needs.filter(function (n) { return n !== 'advisor'; }); S.send = 'idle'; return go('needs'); }
       if (a === 'aiRetry') { aiSig = ''; askAi().then(function () { if (S.step !== 'ai') return; if (S.ai === 'none') go(nextFrom('desc')); else render(); }); render(); return; }
       if (a.indexOf('need:') === 0) { var id = a.slice(5), i = S.needs.indexOf(id); if (i >= 0) S.needs.splice(i, 1); else S.needs.push(id); save(); render(); return; }
       if (a.indexOf('dl:') === 0) { S.dl = a.slice(3); S.dlDate = ''; save(); render(); return; }
@@ -451,6 +458,12 @@
       if (k.indexOf('ai:') === 0) S.aiAns[+k.slice(3)] = e.target.value;
       else { S[k] = e.target.value; if (k === 'brief') S.briefTouched = true; }
       if (k === 'budget') { S.bud = S.budget.trim() ? 'sum' : ''; var u = form.querySelector('[data-act="bud:unknown"]'); if (u) u.setAttribute('aria-checked', 'false'); }
+      if (S.mode === 'pilot' && S.tried && (k === 'site' || k === 'email')) {
+        var okS = siteOk(S.site), okE = emailOk(S.email), fe = form.querySelector('.f-err');
+        if ($('i-site')) $('i-site').setAttribute('aria-invalid', String(!okS));
+        if ($('i-mail')) $('i-mail').setAttribute('aria-invalid', String(!okE));
+        if (fe) { if (okS && okE) fe.remove(); else fe.textContent = (okS ? '' : 'Sisesta kodulehe aadress. ') + (okE ? '' : 'Sisesta e-posti aadress.'); }
+      }
       if (k === 'email' && S.tried && emailOk(S.email)) { e.target.setAttribute('aria-invalid', 'false'); var er = $('i-mail-err'); if (er) er.remove(); }
       save();
     });
@@ -462,7 +475,7 @@
       var c = e.target.closest('.chip-date'); if (!c) return;
       var inp = c.querySelector('input'); if (inp && inp.showPicker) { e.preventDefault(); try { inp.showPicker(); } catch (x) { inp.focus(); } }
     });
-    form.addEventListener('keydown', function (e) { if (e.key === 'Enter' && e.target.tagName === 'INPUT' && e.target.type !== 'file') { e.preventDefault(); next(); } });
+    form.addEventListener('keydown', function (e) { if (e.key === 'Enter' && e.target.tagName === 'INPUT' && e.target.type !== 'file') { e.preventDefault(); if (S.mode === 'pilot') send(); else next(); } });
     form.addEventListener('dragover', function (e) { var d = $('i-drop'); if (d && d.contains(e.target)) { e.preventDefault(); d.classList.add('over'); } });
     form.addEventListener('dragleave', function () { var d = $('i-drop'); if (d) d.classList.remove('over'); });
     form.addEventListener('drop', function (e) { var d = $('i-drop'); if (d && d.contains(e.target)) { e.preventDefault(); d.classList.remove('over'); addFiles(e.dataTransfer.files); } });
