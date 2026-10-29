@@ -227,24 +227,28 @@
     var form = $('in-form'); if (!form) return;
     var stepEl = $('in-step'), footEl = $('in-foot'), scrollEl = $('in-scroll');
     var NEEDS = [
+      { id: 'advisor', t: 'AI-tootenõustaja kodulehele' },
       { id: 'auto', t: 'Automatiseerida korduvaid tööülesandeid' },
       { id: 'sys', t: 'Ühendada erinevaid programme ja süsteeme' },
       { id: 'cs', t: 'Lihtsustada klienditeenindust' },
       { id: 'prod', t: 'Luua uus digitoode' },
       { id: 'other', t: 'Midagi muud või pole veel kindel' }
     ];
-    var TITLES = { contact: 'Kontaktandmed', needs: 'Mida soovid paremaks muuta või luua?', desc: 'Räägi sellest lähemalt', ai: 'AI täpsustused', frame: 'Projekti raamid', summary: 'Päringu kokkuvõte' };
-    var ORDER = ['contact', 'needs', 'desc', 'ai', 'frame', 'summary'];
+    var TITLES = { site: 'Sinu koduleht', contact: 'Kontaktandmed', needs: 'Mida soovid paremaks muuta või luua?', desc: 'Räägi sellest lähemalt', ai: 'AI täpsustused', frame: 'Projekti raamid', summary: 'Päringu kokkuvõte' };
+    // Value first, contact last. A visitor who came from the advisor offer starts with their website.
+    var ORDER = ['needs', 'desc', 'ai', 'frame', 'contact', 'summary'];
+    var PILOT = ['site', 'desc', 'contact', 'summary'];
     var ALLOWED = ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'csv', 'txt', 'ppt', 'pptx', 'png', 'jpg', 'jpeg', 'webp', 'heic'];
     var MAX_FILES = 5, MAX_FILE = 10 * 1024 * 1024, MAX_TOTAL = 15 * 1024 * 1024;
     var DRAFT = 'ss-paring-v1';
     var S, files = [], startedAt = Date.now(), aiSig = '', aiOn = false;
-    function fresh() { return { aiOn: aiOn, step: 'contact', name: '', company: '', email: '', phone: '', needs: [], desc: '', ai: 'idle', aiQs: [], aiAns: {}, known: {}, dl: '', dlDate: '', bud: '', budget: '', brief: '', briefTouched: false, send: 'idle', sendErr: '', idem: '', tried: false, fileErr: '' }; }
+    function fresh() { return { aiOn: aiOn, mode: 'general', site: '', step: 'needs', name: '', company: '', email: '', phone: '', needs: [], desc: '', ai: 'idle', aiQs: [], aiAns: {}, known: {}, dl: '', dlDate: '', bud: '', budget: '', brief: '', briefTouched: false, send: 'idle', sendErr: '', idem: '', tried: false, fileErr: '' }; }
     S = fresh();
-    try { var d = JSON.parse(localStorage.getItem(DRAFT) || 'null'); if (d && d.v === 1) { ['name', 'company', 'email', 'phone', 'needs', 'desc', 'dl', 'dlDate', 'bud', 'budget'].forEach(function (k) { if (d[k] !== undefined) S[k] = d[k]; }); } } catch (e) { /* no storage */ }
-    function save() { try { localStorage.setItem(DRAFT, JSON.stringify({ v: 1, name: S.name, company: S.company, email: S.email, phone: S.phone, needs: S.needs, desc: S.desc, dl: S.dl, dlDate: S.dlDate, bud: S.bud, budget: S.budget })); } catch (e) { /* ignore */ } }
+    try { var d = JSON.parse(localStorage.getItem(DRAFT) || 'null'); if (d && d.v === 1) { ['name', 'company', 'email', 'phone', 'needs', 'desc', 'dl', 'dlDate', 'bud', 'budget', 'site'].forEach(function (k) { if (d[k] !== undefined) S[k] = d[k]; }); } } catch (e) { /* no storage */ }
+    function save() { try { localStorage.setItem(DRAFT, JSON.stringify({ v: 1, name: S.name, company: S.company, email: S.email, phone: S.phone, needs: S.needs, desc: S.desc, site: S.site, dl: S.dl, dlDate: S.dlDate, bud: S.bud, budget: S.budget })); } catch (e) { /* ignore */ } }
     function clearDraft() { try { localStorage.removeItem(DRAFT); } catch (e) { /* ignore */ } }
 
+    var siteOk = function (v) { return /^[^\s]+\.[^\s]{2,}$/.test((v || '').trim()); };
     var emailOk = function (v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test((v || '').trim()); };
     var needLabels = function () { return S.needs.map(function (id) { return (NEEDS.filter(function (n) { return n.id === id; })[0] || { t: id }).t; }); };
     var fmtSize = function (n) { return n < 1024 * 1024 ? Math.max(1, Math.round(n / 1024)) + ' KB' : (n / 1048576).toFixed(1).replace('.', ',') + ' MB'; };
@@ -254,7 +258,7 @@
     // which steps the visitor actually sees
     function needAi() { return S.aiOn && S.ai !== 'none' && S.ai !== 'error'; }
     function needFrame() { return !(S.known.deadline && S.known.budget); }
-    function visible() { return ORDER.filter(function (k) { return (k !== 'ai' || needAi()) && (k !== 'frame' || needFrame()); }); }
+    function visible() { return (S.mode === 'pilot' ? PILOT : ORDER).filter(function (k) { return (k !== 'ai' || needAi()) && (k !== 'frame' || needFrame()); }); }
     function go(step) { S.step = step; S.tried = false; if (step === 'summary' && !S.briefTouched) S.brief = buildBrief(); render(); scrollEl.scrollTop = 0; var top = $('intake').getBoundingClientRect().top; if (top < 0) $('intake').scrollIntoView({ block: 'start', behavior: reduce ? 'auto' : 'smooth' }); }
     function nextFrom(step) { var v = visible(), i = v.indexOf(step); return v[Math.min(v.length - 1, i + 1)]; }
     function prevFrom(step) { var v = visible(), i = v.indexOf(step); return v[Math.max(0, i - 1)]; }
@@ -274,6 +278,7 @@
       L.push('LÄHTEÜLESANNE', '');
       L.push('Kontakt: ' + [S.name.trim(), S.company.trim(), S.email.trim(), S.phone.trim()].filter(Boolean).join(' · '));
       if (!S.company.trim()) unknown.push('ettevõte');
+      if (S.site.trim()) L.push('Koduleht: ' + S.site.trim());
       L.push('Soov: ' + (needLabels().join('; ') || '—'), '');
       L.push('Kirjeldus:', S.desc.trim() || '—');
       if (!S.desc.trim()) unknown.push('kirjeldus');
@@ -309,8 +314,9 @@
       var s = S.step;
       if (s === 'contact' && !validateContact()) { S.tried = true; render(); var m = $('i-mail'); if (m) m.focus(); return; }
       if (s === 'needs' && !S.needs.length) { S.tried = true; render(); return; }
+      if (s === 'site' && !siteOk(S.site)) { S.tried = true; render(); var u = $('i-site'); if (u) u.focus(); return; }
       save();
-      if (s === 'desc' && S.aiOn) {
+      if (s === 'desc' && S.aiOn && S.mode !== 'pilot') {
         S.step = 'ai'; render();
         askAi().then(function () { if (S.step !== 'ai') return; if (S.ai === 'ok') render(); else go(nextFrom('desc')); });
         return;
@@ -371,6 +377,11 @@
       var h = '', f = '';
       if (sent) {
         h = '<div class="in-pad pop-in" style="padding-top:40px"><span class="sent-mark" aria-hidden="true">✓</span><p class="in-title" role="status">Päring saadetud!</p><p style="margin:0;font-size:17px;color:#344054">Võtame sinuga ühendust.</p></div>';
+      } else if (S.step === 'site') {
+        var badS = S.tried && !siteOk(S.site);
+        h = '<div class="in-pad"><label for="i-site" class="in-title">Sinu kodulehe aadress</label>' +
+          '<div class="field"><input id="i-site" data-in="site" type="text" inputmode="url" autocomplete="url" maxlength="200" placeholder="sinufirma.ee" aria-invalid="' + badS + '" value="' + esc(S.site) + '"></div>' +
+          (badS ? '<p class="f-err">Sisesta kodulehe aadress.</p>' : '') + '</div>';
       } else if (S.step === 'contact') {
         var bad = S.tried && !emailOk(S.email);
         h = '<div class="in-pad"><p class="in-title">Kontaktandmed</p><div class="two">' +
@@ -384,7 +395,7 @@
           NEEDS.map(function (n) { return opt(n.t, S.needs.indexOf(n.id) >= 0, 'need:' + n.id); }).join('') + '</div>' +
           (S.tried && !S.needs.length ? '<p class="f-err">Vali vähemalt üks.</p>' : '') + '</div>';
       } else if (S.step === 'desc') {
-        h = '<div class="in-pad"><label for="i-desc" class="in-title">Räägi sellest lähemalt.</label>' +
+        h = '<div class="in-pad"><label for="i-desc" class="in-title">' + (S.mode === 'pilot' ? 'Mida kliendid sinult kõige sagedamini küsivad?' : 'Räägi sellest lähemalt.') + '</label>' +
           '<div class="field"><textarea id="i-desc" data-in="desc" rows="8" maxlength="5000" style="min-height:220px">' + esc(S.desc) + '</textarea></div>' +
           '<div class="grp"><span class="lbl" style="font-size:15px;font-weight:600">Lisamaterjalid</span>' +
           '<label class="drop" id="i-drop"><b>Lisa failid</b><small>PDF, Word, Excel, PowerPoint, CSV, TXT, pildid · kuni 5 faili, igaüks kuni 10 MB</small><input id="i-files" type="file" multiple accept=".' + ALLOWED.join(',.') + '"></label>' +
@@ -416,6 +427,12 @@
       stepEl.innerHTML = h; footEl.innerHTML = f; footEl.hidden = sent;
     }
 
+    // "Proovi 2–4 nädalat tasuta" opens the advisor path: website first, contact last.
+    document.addEventListener('click', function (e) {
+      var t = e.target.closest('[data-intake="pilot"]'); if (!t || S.send === 'sent') return;
+      S.mode = 'pilot'; if (S.needs.indexOf('advisor') < 0) S.needs = ['advisor'].concat(S.needs);
+      S.step = 'site'; S.tried = false; render();
+    });
     form.addEventListener('submit', function (e) { e.preventDefault(); });
     form.addEventListener('click', function (e) {
       var b = e.target.closest('[data-act]'); if (!b || b.disabled) return;
