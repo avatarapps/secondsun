@@ -315,7 +315,7 @@
       { id: 'learn', t: 'Õppida AI-d oma töös kasutama' },
       { id: 'other', t: 'Midagi muud või pole veel kindel' }
     ];
-    var TITLES = { pilot: 'Tootenõustaja näidis', contact: 'Kontaktandmed', needs: 'Mida soovid paremaks muuta või luua?', desc: 'Räägi sellest lähemalt', ai: 'AI täpsustused', frame: 'Projekti raamid', summary: 'Päringu kokkuvõte' };
+    var TITLES = { pilot: 'Tootenõustaja', contact: 'Kontaktandmed', needs: 'Mida soovid paremaks muuta või luua?', desc: 'Räägi sellest lähemalt', ai: 'AI täpsustused', frame: 'Projekti raamid', summary: 'Päringu kokkuvõte' };
     // Value first, contact last. A visitor who came from the advisor offer starts with their website.
     var ORDER = ['needs', 'desc', 'ai', 'frame', 'contact'];
     var PILOT = ['pilot'];
@@ -425,7 +425,7 @@
       if (S.send === 'sending') return;
       if (S.mode === 'pilot') {
         if (!siteOk(S.site) || !emailOk(S.email)) { S.tried = true; render(); return; }
-        S.brief = 'TOOTENÕUSTAJA NÄIDIS\n\nKoduleht: ' + S.site.trim() + '\nE-post: ' + S.email.trim() + '\n\nSoov: näidis, kuidas AI-tootenõustaja selle lehel töötaks.';
+        S.brief = 'TOOTENÕUSTAJA · PAKKUMISE PÄRING\n\nKoduleht: ' + S.site.trim() + '\nE-post: ' + S.email.trim() + '\n\nSoov: kas tootenõustaja sobib sellele lehele, kuidas see töötaks ja mis see maksaks.';
       } else {
         if (!emailOk(S.email)) { S.tried = true; render(); var m0 = $('i-mail'); if (m0) m0.focus(); return; }
         save(); S.brief = buildBrief();
@@ -463,14 +463,14 @@
       $('in-fill').style.width = (sent ? 100 : (idx / v.length) * 100).toFixed(1) + '%';
       var h = '', f = '';
       if (sent) {
-        h = '<div class="in-pad pop-in" style="padding-top:40px"><span class="sent-mark" aria-hidden="true">✓</span><p class="in-title" role="status">' + (S.mode === 'pilot' ? 'Aitäh!' : 'Päring saadetud!') + '</p><p style="margin:0;font-size:17px;color:#344054">' + (S.mode === 'pilot' ? 'Saadame näidise lingi lähipäevil.' : 'Võtame sinuga ühendust.') + '</p></div>';
+        h = '<div class="in-pad pop-in" style="padding-top:40px"><span class="sent-mark" aria-hidden="true">✓</span><p class="in-title" role="status">' + (S.mode === 'pilot' ? 'Aitäh!' : 'Päring saadetud!') + '</p><p style="margin:0;font-size:17px;color:#344054">' + (S.mode === 'pilot' ? 'Vaatame lehe üle ja saadame paari tööpäeva jooksul vastuse.' : 'Võtame sinuga ühendust.') + '</p></div>';
       } else if (S.step === 'pilot') {
         var badS = S.tried && !siteOk(S.site), badE = S.tried && !emailOk(S.email);
-        h = '<div class="in-pad"><p class="in-title">Vaata, kuidas tootenõustaja sinu lehel töötaks</p>' +
+        h = '<div class="in-pad"><p class="in-title">Kas tootenõustaja sobib sinu kodulehele?</p>' +
           '<div class="field"><label for="i-site">Kodulehe aadress</label><input id="i-site" data-in="site" type="text" inputmode="url" autocomplete="url" maxlength="200" placeholder="sinufirma.ee" aria-invalid="' + badS + '" value="' + esc(S.site) + '"></div>' +
           '<div class="field"><label for="i-mail">E-post</label><input id="i-mail" data-in="email" type="email" inputmode="email" autocomplete="email" maxlength="200" aria-invalid="' + badE + '" value="' + esc(S.email) + '"></div>' +
           (badS || badE ? '<p class="f-err">' + (badS ? 'Sisesta kodulehe aadress. ' : '') + (badE ? 'Sisesta e-posti aadress.' : '') + '</p>' : '') +
-          '<p class="in-sub">Ehitame sinu lehe põhjal näidise ja saadame lingi lähipäevil.</p>' +
+          '<p class="in-sub">Vaatame lehe üle ja saadame paari tööpäeva jooksul vastuse: kas see sobib, kuidas see töötaks ja mis see maksaks.</p>' +
           (S.send === 'error' ? '<div class="err" role="alert"><b>Ei õnnestunud saata.</b><span>' + esc(S.sendErr) + ' Proovi uuesti või kirjuta info@secondsun.ee.</span></div>' : '') + '</div>';
       } else if (S.step === 'contact') {
         var bad = S.tried && !emailOk(S.email);
@@ -512,7 +512,7 @@
       if (!sent) {
         var first = idx === 0, last = S.step === 'contact';
         f = (first ? '<span></span>' : '<button type="button" class="ghost" data-act="back">← Tagasi</button>');
-        if (S.mode === 'pilot') f = '<button type="button" class="btn btn-gold" data-act="send"' + (S.send === 'sending' ? ' disabled aria-busy="true"' : '') + '>' + (S.send === 'sending' ? 'Saadan…' : 'Saada mulle näidis →') + '</button><button type="button" class="ghost" data-act="general">Muu päring</button>';
+        if (S.mode === 'pilot') f = '<button type="button" class="btn btn-gold" data-act="send"' + (S.send === 'sending' ? ' disabled aria-busy="true"' : '') + '>' + (S.send === 'sending' ? 'Saadan…' : 'Saada →') + '</button><button type="button" class="ghost" data-act="general">Muu päring</button>';
         else if (last) f += '<button type="button" class="btn btn-gold" data-act="send"' + (S.send === 'sending' ? ' disabled aria-busy="true"' : '') + '>' + (S.send === 'sending' ? 'Saadan…' : 'Saada päring →') + '</button>';
         else f += '<button type="button" class="btn btn-dark" data-act="next"' + (S.step === 'ai' && (S.ai === 'loading' || S.ai === 'idle') ? ' disabled' : '') + '>' + (S.step === 'ai' && S.ai === 'error' ? 'Jätka ilma täpsustusteta →' : 'Edasi →') + '</button>';
       }
