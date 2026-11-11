@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="et">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1440">
+<meta name="robots" content="noindex, nofollow">
+<title>Neljas koht on jama – Eesti sportlased, otse toetajatelt</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;900&amp;family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#FFFFFF}
+</style>
+<style>
+@keyframes nkjRing { 0% { transform: rotate(0); } 2% { transform: rotate(18deg); } 4% { transform: rotate(-16deg); } 6% { transform: rotate(12deg); } 8% { transform: rotate(-8deg); } 10% { transform: rotate(4deg); } 12%, 100% { transform: rotate(0); } }
+@keyframes nkjBellMsg { 0% { opacity: 0; transform: translateY(6px); } 2% { opacity: 1; transform: translateY(0); } 15% { opacity: 1; transform: translateY(0); } 16.6% { opacity: 0; transform: translateY(-6px); } 100% { opacity: 0; } }
+.nkj-bell { transform-origin: 50% 12%; animation: nkjRing 4s ease-in-out infinite; }
+.nkj-bellmsg { position: absolute; left: 0; top: 0; white-space: nowrap; opacity: 0; animation: nkjBellMsg 24s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { .nkj-bell, .nkj-bellmsg { animation: none; } .nkj-bellmsg:first-child { opacity: 1; } }
+</style>
+<style>
+@keyframes nkjSpin { to { transform: rotate(360deg); } }
+@keyframes nkjFade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes nkjRise { from { opacity: 0; transform: translate(-50%, 16px); } to { opacity: 1; transform: translate(-50%, 0); } }
+.nkj-spin { animation: nkjSpin 24s linear infinite; transform-origin: 50% 50%; }
+.nkj-overlay { animation: nkjFade 0.2s ease-out; }
+.nkj-card { animation: nkjRise 0.25s ease-out; }
+@media (prefers-reduced-motion: reduce) { .nkj-spin, .nkj-overlay, .nkj-card { animation: none; } }
+</style>
+<style>#app{width:1440px;margin:0 auto}</style>
+</head>
+<body>
+<div id="app"></div>
+<script type="text/x-template" id="tpl">
+<div style="position: relative; width: 1440px; background: #FFFFFF; font-family: 'Inter', system-ui, sans-serif">
+<section aria-label="Avakampaania" style="height: 900px; position: relative; overflow: hidden; background: {{bg}}; color: #FFFFFF">
+
+<svg width="900" height="620" viewBox="0 0 900 620" style="position: absolute; left: -160px; bottom: -300px; pointer-events: none" aria-hidden="true">
+<circle cx="0" cy="620" r="420" fill="none" stroke="#FFFFFF" stroke-opacity="0.10" stroke-width="3"/>
+<circle cx="0" cy="620" r="490" fill="none" stroke="#FFFFFF" stroke-opacity="0.10" stroke-width="3"/>
+<circle cx="0" cy="620" r="560" fill="none" stroke="#FFFFFF" stroke-opacity="0.10" stroke-width="3"/>
+<circle cx="0" cy="620" r="630" fill="none" stroke="#FFFFFF" stroke-opacity="0.10" stroke-width="3"/>
+</svg>
+
+<header style="position: relative; height: 76px; padding: 0 48px; display: flex; justify-content: space-between; align-items: center">
+<span style="font-family: 'Archivo', sans-serif; font-weight: 900; font-size: 22px; letter-spacing: -0.02em">neljaskohtonjama.ee</span>
+<div aria-live="polite" aria-label="Viimane toetus" style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 600; color: #FFFFFF">
+<svg class="nkj-bell" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M12 3c-3.3 0-5.5 2.6-5.5 5.8v3.4L5 15.2c-.4.7.1 1.6.9 1.6h12.2c.8 0 1.3-.9.9-1.6l-1.5-3V8.8C17.5 5.6 15.3 3 12 3z" fill="#FFD23F"/><path d="M9.6 18.4a2.5 2.5 0 0 0 4.8 0z" fill="#FFD23F"/></svg>
+<span style="position: relative; display: block; width: 300px; height: 18px"><span class="nkj-bellmsg" style="animation-delay: 0s">Tiina K. → Liisi Kask <b style="color: #FFD23F">10&nbsp;€</b></span><span class="nkj-bellmsg" style="animation-delay: 4s">Lainetus → Laura Kuusk <b style="color: #FFD23F">500&nbsp;€</b></span><span class="nkj-bellmsg" style="animation-delay: 8s">Marko P. → Rasmus Vool <b style="color: #FFD23F">25&nbsp;€</b></span><span class="nkj-bellmsg" style="animation-delay: 12s">Klubikaaslased → Kertu Mänd <b style="color: #FFD23F">50&nbsp;€</b></span><span class="nkj-bellmsg" style="animation-delay: 16s">Vanaema Helgi → Kaspar Lill <b style="color: #FFD23F">30&nbsp;€</b></span><span class="nkj-bellmsg" style="animation-delay: 20s">Kiirtee Logistika → Karl Tamm <b style="color: #FFD23F">1&nbsp;000&nbsp;€</b></span></span>
+</div>
+<nav aria-label="Peamenüü" style="display: flex; gap: 26px; font-size: 15px; font-weight: 700"><a href="sportlased.html" style="text-decoration: none; color: #FFFFFF">Sportlased</a><a href="#" style="text-decoration: none; color: #FFFFFF">Ettevõttele</a><a href="#" style="text-decoration: none; color: #FFFFFF">Logi sisse</a></nav>
+</header>
+
+<div style="position: absolute; left: 48px; top: 76px; bottom: 44px; width: 500px; display: flex; flex-direction: column; justify-content: center; gap: 20px">
+<span style="align-self: flex-start; font-size: 13px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; background: #FFFFFF; color: {{red}}; border-radius: 999px; padding: 7px 14px">Avakampaania</span>
+<div>
+<h1 style="margin: 0; font-family: 'Archivo', sans-serif; font-weight: 900; font-size: 100px; line-height: 0.9; letter-spacing: -0.05em">{{cap}} kohta.</h1>
+<p style="margin: 8px 0 0; font-family: 'Archivo', sans-serif; font-weight: 900; font-size: 42px; line-height: 1; letter-spacing: -0.03em; color: #FFD23F">Üks neist ootab sind.</p>
+</div>
+<p style="margin: 0; font-size: 19px; line-height: 1.45; color: #FFE3E3">Siin toetavad fännid ja ettevõtted Eesti sportlasi otse. Medal, finaal või isiklik rekord – <b style="color: #FFFFFF">sinu unistus, sinu teekond.</b></p>
+<div style="background: rgba(255,255,255,0.12); border-radius: 18px; padding: 14px 16px; display: flex; flex-direction: column; gap: 9px">
+<span style="font-size: 15px; font-weight: 700">Avakampaanias kingib Sprinta<br>igale uuele sportlasele <span style="color: #FFD23F; white-space: nowrap">100&nbsp;€ stardiraha</span>:</span>
+<span style="display: flex; gap: 10px; align-items: center; font-size: 15px; color: #FFE3E3"><b style="flex: none; width: 24px; height: 24px; border-radius: 50%; background: #FFFFFF; color: {{red}}; font-size: 13px; display: flex; align-items: center; justify-content: center">1</b>Täida oma profiil</span>
+<span style="display: flex; gap: 10px; align-items: center; font-size: 15px; color: #FFE3E3"><b style="flex: none; width: 24px; height: 24px; border-radius: 50%; background: #FFFFFF; color: {{red}}; font-size: 13px; display: flex; align-items: center; justify-content: center">2</b>Jaga oma kampaaniat Instagramis ja märgi @neljaskohtonjama</span>
+</div>
+<div style="display: flex; align-items: center; gap: 22px">
+<a href="#" onClick="{{openSignup}}" style="background: #FFFFFF; color: {{red}}; text-decoration: none; font-weight: 800; font-size: 17px; border-radius: 999px; padding: 17px 30px; box-shadow: 0 6px 0 rgba(0,0,0,0.18)">Alusta oma kampaaniat</a>
+<a href="#seinal" style="font-weight: 700; font-size: 16px; color: #FFFFFF">Toeta sportlasi →</a>
+</div>
+<span style="font-size: 14px; color: #FFE3E3">Ettevõte? <a href="#" style="font-weight: 700; color: #FFFFFF">Anna sportlasele +500 € →</a></span>
+</div>
+
+<div id="seinal" style="position: absolute; right: 48px; top: 92px; bottom: 44px; width: 800px; background: {{panel}}; border-radius: 30px; padding: 20px 22px 22px; box-sizing: border-box; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; align-items: center; gap: 18px">
+<div style="display: flex; align-items: baseline; gap: 8px; white-space: nowrap">
+<b style="font-family: 'Archivo', sans-serif; font-weight: 900; font-size: 46px; line-height: 1; letter-spacing: -0.03em">{{total}}</b>
+<span style="font-family: 'Archivo', sans-serif; font-weight: 900; font-size: 22px; color: #FFD9DD">/ {{cap}}</span>
+<span style="font-size: 14px; color: #FFD9DD; margin-left: 4px">kohta täidetud</span>
+</div>
+<div style="flex: 1; height: 10px; border-radius: 999px; background: rgba(255,255,255,0.22); overflow: hidden; display: flex"><div style="{{barStyle}}"></div></div>
+<div style="display: flex; align-items: center; gap: 7px">
+<button type="button" onClick="{{prev}}" aria-label="Eelmine leht" style="{{prevStyle}}">‹</button>
+<sc-for list="{{dots}}" as="d" hint-placeholder-count="3"><button type="button" onClick="{{d.go}}" aria-label="{{d.label}}" style="{{d.st}}"></button></sc-for>
+<button type="button" onClick="{{next}}" aria-label="Järgmine leht" style="{{nextStyle}}">›</button>
+</div>
+</div>
+<div style="flex: 1; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); grid-template-rows: repeat(4, minmax(0, 1fr)); gap: 10px">
+<sc-for list="{{slots}}" as="s" hint-placeholder-count="20">
+<sc-if value="{{s.taken}}" hint-placeholder-val="{{ true }}">
+<a href="sportlane.html" style="{{s.box}}">
+<img src="{{s.photo}}" alt="" style="position: absolute; left: 50%; top: 10px; transform: translateX(-50%); width: 85%; height: auto; display: block">
+<sc-if value="{{s.x2}}" hint-placeholder-val="{{ false }}"><span title="Ettevõte andis +500 €" style="position: absolute; top: 8px; right: 8px; background: #FFD23F; color: #111111; font-size: 11px; font-weight: 800; border-radius: 999px; padding: 3px 8px; box-shadow: 0 2px 0 rgba(0,0,0,0.25)">+500 €</span></sc-if>
+<div style="position: relative; background: #FFFFFF; border-radius: 12px; padding: 7px 9px; display: flex; flex-direction: column; gap: 4px; color: #111111; box-shadow: 0 2px 8px rgba(0,0,0,0.18)">
+<b style="font-size: 13px; line-height: 1.15; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{s.name}}</b>
+<span style="font-size: 11px; color: #4A4A4A; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{s.sport}} · {{s.goal}}</span>
+<div style="height: 4px; background: #EDE6E6; border-radius: 999px; overflow: hidden; display: flex"><div style="{{s.bar}}"></div></div>
+</div>
+</a>
+</sc-if>
+<sc-if value="{{s.free}}" hint-placeholder-val="{{ false }}">
+<a href="#" onClick="{{openSignup}}" style="border: 2px dashed rgba(255,255,255,0.45); background: rgba(255,255,255,0.06); border-radius: 18px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none; color: #FFFFFF">
+<span style="font-family: 'Archivo', sans-serif; font-weight: 900; font-size: 28px; line-height: 1">+</span>
+<span style="font-size: 12px; font-weight: 700">Sinu koht</span>
+</a>
+</sc-if>
+</sc-for>
+</div>
+</div>
+<span style="position: absolute; left: 48px; bottom: 14px; font-size: 11px; color: #FFC9CF">Näidisandmed · fotod: Unsplash (kohatäited)</span>
+</section>
+
+<section aria-label="Meie sportlased" style="padding: 80px 48px 88px; background: #FFFFFF; color: #14090B">
+<div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 28px">
+<h2 style="margin: 0; font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 40px; line-height: 1; letter-spacing: -0.03em; color: #C8102E">Meie sportlased</h2>
+<div style="display: flex; gap: 10px">
+<button type="button" onClick="{{popPrev}}" aria-label="Eelmised" style="{{popPrevStyle}}">‹</button>
+<button type="button" onClick="{{popNext}}" aria-label="Järgmised" style="{{popNextStyle}}">›</button>
+</div>
+</div>
+<div style="overflow: hidden; margin: -12px 0 -32px; padding: 12px 0 32px">
+<div style="{{popTrack}}">
+<a href="sportlane.html" style="flex: none; width: 321px; box-sizing: border-box; background: #FFFFFF; border: 1px solid #EADDE0; border-radius: 22px; overflow: hidden; text-decoration: none; color: #14090B; box-shadow: 0 1px 2px rgba(20,9,11,0.04), 0 10px 28px rgba(20,9,11,0.09); display: flex; flex-direction: column; ">
+<div style="position: relative; height: 230px; background: #F3E6E8; overflow: hidden"><img src="img/ph-3775140.jpg" alt="" style="width: 100%; height: 100%; object-fit: cover; object-position: 60% center; display: block"></div>
+<div style="padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 14px">
+<div><div style="font-size: 18px; font-weight: 600; letter-spacing: -0.01em">Liisi Kask</div><div style="font-size: 14px; color: #6B5A5E; margin-top: 3px">Ujumine · EM-i medal</div></div>
+<div style="height: 6px; background: #F3E6E8; border-radius: 999px; overflow: hidden"><div style="width: 23%; height: 100%; background: #C8102E; border-radius: 999px"></div></div>
+<div style="display: flex; justify-content: space-between; font-size: 14px; color: #6B5A5E"><span><span style="color: #14090B; font-weight: 600">2 340 €</span> / 10 000 €</span><span>84 toetajat</span></div>
+</div>
+</a><a href="sportlane.html" style="flex: none; width: 321px; box-sizing: border-box; background: #FFFFFF; border: 1px solid #EADDE0; border-radius: 22px; overflow: hidden; text-decoration: none; color: #14090B; box-shadow: 0 1px 2px rgba(20,9,11,0.04), 0 10px 28px rgba(20,9,11,0.09); display: flex; flex-direction: column; ">
+<div style="position: relative; height: 230px; background: #F3E6E8; overflow: hidden"><img src="img/ph-26597326.jpg" alt="" style="width: 100%; height: 100%; object-fit: cover; object-position: center 62%; display: block"></div>
+<div style="padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 14px">
+<div><div style="font-size: 18px; font-weight: 600; letter-spacing: -0.01em">Laura Kuusk</div><div style="font-size: 14px; color: #6B5A5E; margin-top: 3px">Kergejõustik · 400 m EM-i finaal</div></div>
+<div style="height: 6px; background: #F3E6E8; border-radius: 999px; overflow: hidden"><div style="width: 48%; height: 100%; background: #C8102E; border-radius: 999px"></div></div>
+<div style="display: flex; justify-content: space-between; font-size: 14px; color: #6B5A5E"><span><span style="color: #14090B; font-weight: 600">3 870 €</span> / 8 000 €</span><span>126 toetajat</span></div>
+</div>
+</a><a href="sportlane.html" style="flex: none; width: 321px; box-sizing: border-box; background: #FFFFFF; border: 1px solid #EADDE0; border-radius: 22px; overflow: hidden; text-decoration: none; color: #14090B; box-shadow: 0 1px 2px rgba(20,9,11,0.04), 0 10px 28px rgba(20,9,11,0.09); display: flex; flex-direction: column; ">
+<div style="position: relative; height: 230px; background: #F3E6E8; overflow: hidden"><img src="img/ph-30925309.jpg" alt="" style="width: 100%; height: 100%; object-fit: cover; object-position: center 30%; display: block"></div>
+<div style="padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 14px">
+<div><div style="font-size: 18px; font-weight: 600; letter-spacing: -0.01em">Joonas Raudsepp</div><div style="font-size: 14px; color: #6B5A5E; margin-top: 3px">Maastikuratas · MK top 30</div></div>
+<div style="height: 6px; background: #F3E6E8; border-radius: 999px; overflow: hidden"><div style="width: 38%; height: 100%; background: #C8102E; border-radius: 999px"></div></div>
+<div style="display: flex; justify-content: space-between; font-size: 14px; color: #6B5A5E"><span><span style="color: #14090B; font-weight: 600">960 €</span> / 2 500 €</span><span>40 toetajat</span></div>
+</div>
+</a><a href="sportlane.html" style="flex: none; width: 321px; box-sizing: border-box; background: #FFFFFF; border: 1px solid #EADDE0; border-radius: 22px; overflow: hidden; text-decoration: none; color: #14090B; box-shadow: 0 1px 2px rgba(20,9,11,0.04), 0 10px 28px rgba(20,9,11,0.09); display: flex; flex-direction: column; ">
+<div style="position: relative; height: 230px; background: #F3E6E8; overflow: hidden"><img src="img/ph-6504819.jpg" alt="" style="width: 100%; height: 100%; object-fit: cover; object-position: center 40%; display: block"></div>
+<div style="padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 14px">
+<div><div style="font-size: 18px; font-weight: 600; letter-spacing: -0.01em">Kertu Mänd</div><div style="font-size: 14px; color: #6B5A5E; margin-top: 3px">Kaugushüpe · EM-i finaal</div></div>
+<div style="height: 6px; background: #F3E6E8; border-radius: 999px; overflow: hidden"><div style="width: 30%; height: 100%; background: #C8102E; border-radius: 999px"></div></div>
+<div style="display: flex; justify-content: space-between; font-size: 14px; color: #6B5A5E"><span><span style="color: #14090B; font-weight: 600">1 480 €</span> / 5 000 €</span><span>61 toetajat</span></div>
+</div>
+</a><a href="sportlane.html" style="flex: none; width: 321px; box-sizing: border-box; background: #FFFFFF; border: 1px solid #EADDE0; border-radius: 22px; overflow: hidden; text-decoration: none; color: #14090B; box-shadow: 0 1px 2px rgba(20,9,11,0.04), 0 10px 28px rgba(20,9,11,0.09); display: flex; flex-direction: column; ">
+<div style="position: relative; height: 230px; background: #F3E6E8; overflow: hidden"><img src="img/ph-2403045.jpg" alt="" style="width: 100%; height: 100%; object-fit: cover; object-position: center 30%; display: block"></div>
+<div style="padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 14px">
+<div><div style="font-size: 18px; font-weight: 600; letter-spacing: -0.01em">Mirjam Saar</div><div style="font-size: 14px; color: #6B5A5E; margin-top: 3px">Maratonijooks · alla 2:35</div></div>
+<div style="height: 6px; background: #F3E6E8; border-radius: 999px; overflow: hidden"><div style="width: 74%; height: 100%; background: #C8102E; border-radius: 999px"></div></div>
+<div style="display: flex; justify-content: space-between; font-size: 14px; color: #6B5A5E"><span><span style="color: #14090B; font-weight: 600">2 210 €</span> / 3 000 €</span><span>73 toetajat</span></div>
+</div>
+</a><a href="sportlane.html" style="flex: none; width: 321px; box-sizing: border-box; background: #FFFFFF; border: 1px solid #EADDE0; border-radius: 22px; overflow: hidden; text-decoration: none; color: #14090B; box-shadow: 0 1px 2px rgba(20,9,11,0.04), 0 10px 28px rgba(20,9,11,0.09); display: flex; flex-direction: column; ">
+<div style="position: relative; height: 230px; background: #F3E6E8; overflow: hidden"><img src="img/ph-5196111.jpg" alt="" style="width: 100%; height: 100%; object-fit: cover; object-position: center 35%; display: block"></div>
+<div style="padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 14px">
+<div><div style="font-size: 18px; font-weight: 600; letter-spacing: -0.01em">Kaspar Lill</div><div style="font-size: 14px; color: #6B5A5E; margin-top: 3px">Kergejõustik · 10 000 m EM-i normatiiv</div></div>
+<div style="height: 6px; background: #F3E6E8; border-radius: 999px; overflow: hidden"><div style="width: 32%; height: 100%; background: #C8102E; border-radius: 999px"></div></div>
+<div style="display: flex; justify-content: space-between; font-size: 14px; color: #6B5A5E"><span><span style="color: #14090B; font-weight: 600">640 €</span> / 2 000 €</span><span>29 toetajat</span></div>
+</div>
+</a><a href="sportlane.html" style="flex: none; width: 321px; box-sizing: border-box; background: #FFFFFF; border: 1px solid #EADDE0; border-radius: 22px; overflow: hidden; text-decoration: none; color: #14090B; box-shadow: 0 1px 2px rgba(20,9,11,0.04), 0 10px 28px rgba(20,9,11,0.09); display: flex; flex-direction: column; ">
+<div style="position: relative; height: 230px; background: #F3E6E8; overflow: hidden"><img src="img/ph-9632571.jpg" alt="" style="width: 100%; height: 100%; object-fit: cover; object-position: center 30%; display: block"></div>
+<div style="padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 14px">
+<div><div style="font-size: 18px; font-weight: 600; letter-spacing: -0.01em">Karl Tamm</div><div style="font-size: 14px; color: #6B5A5E; margin-top: 3px">Ujumine · MM-i normatiiv</div></div>
+<div style="height: 6px; background: #F3E6E8; border-radius: 999px; overflow: hidden"><div style="width: 69%; height: 100%; background: #C8102E; border-radius: 999px"></div></div>
+<div style="display: flex; justify-content: space-between; font-size: 14px; color: #6B5A5E"><span><span style="color: #14090B; font-weight: 600">4 120 €</span> / 6 000 €</span><span>97 toetajat</span></div>
+</div>
+</a><a href="sportlane.html" style="flex: none; width: 321px; box-sizing: border-box; background: #FFFFFF; border: 1px solid #EADDE0; border-radius: 22px; overflow: hidden; text-decoration: none; color: #14090B; box-shadow: 0 1px 2px rgba(20,9,11,0.04), 0 10px 28px rgba(20,9,11,0.09); display: flex; flex-direction: column; ">
+<div style="position: relative; height: 230px; background: #F3E6E8; overflow: hidden"><img src="img/ph-8028681.jpg" alt="" style="width: 100%; height: 100%; object-fit: cover; object-position: center 80%; display: block"></div>
+<div style="padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 14px">
+<div><div style="font-size: 18px; font-weight: 600; letter-spacing: -0.01em">Rasmus Vool</div><div style="font-size: 14px; color: #6B5A5E; margin-top: 3px">Triatlon · esimesed MK-punktid</div></div>
+<div style="height: 6px; background: #F3E6E8; border-radius: 999px; overflow: hidden"><div style="width: 46%; height: 100%; background: #C8102E; border-radius: 999px"></div></div>
+<div style="display: flex; justify-content: space-between; font-size: 14px; color: #6B5A5E"><span><span style="color: #14090B; font-weight: 600">1 820 €</span> / 4 000 €</span><span>58 toetajat</span></div>
+</div>
+</a>
+</div>
+</div>
+<div style="display: flex; justify-content: flex-end; margin-top: 28px">
+<a href="sportlased.html" style="display: inline-flex; align-items: center; gap: 10px; border: 1.5px solid #C8102E; color: #C8102E; text-decoration: none; font-weight: 600; font-size: 16px; border-radius: 999px; padding: 13px 24px">Kõik sportlased <span aria-hidden="true">→</span></a>
+</div>
+</section>
+
+
+<section aria-label="Neljanda koha boonus" style="position: relative; overflow: hidden; padding: 112px 48px; background: #C8102E; color: #FFFFFF">
+<span aria-hidden="true" style="position: absolute; right: 250px; top: 50%; transform: translateY(-50%); font-family: 'Archivo', sans-serif; font-weight: 900; font-size: 640px; line-height: 0.8; letter-spacing: -0.06em; color: #D0354E">4.</span>
+<div style="position: relative; display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 80px; align-items: center">
+<div style="display: flex; flex-direction: column; gap: 22px; max-width: 560px">
+<span style="font-size: 14px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #FFD23F">Sprinta eriauhind</span>
+<h2 style="margin: 0; font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 64px; line-height: 1; letter-spacing: -0.035em">Neljanda koha boonus</h2>
+<p style="margin: 0; font-size: 20px; line-height: 1.5; color: #FFE3E6">Neljas koht rahvusvahelisel võistlusel? Sprinta lisab automaatselt <b style="font-weight: 600; color: #FFD23F">+500&nbsp;€</b>.</p>
+<div style="display: flex; align-items: baseline; gap: 14px; margin-top: 14px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.22)">
+<span style="font-size: 14px; color: #FFD0D6">Boonuse toob</span>
+<span style="font-family: 'Archivo', sans-serif; font-weight: 900; font-size: 22px; letter-spacing: 0.06em; color: #FFFFFF">SPRINTA OÜ</span>
+</div>
+</div>
+<a href="sportlane.html" style="flex: none; width: 360px; box-sizing: border-box; background: #FFFFFF; border: 1px solid #EADDE0; border-radius: 22px; overflow: hidden; text-decoration: none; color: #14090B; box-shadow: 0 1px 2px rgba(20,9,11,0.04), 0 10px 28px rgba(20,9,11,0.09); display: flex; flex-direction: column; justify-self: end; border: none; box-shadow: 0 18px 40px rgba(60,0,10,0.25);">
+<div style="position: relative; height: 230px; background: #F3E6E8; overflow: hidden"><img src="img/ph-8028681.jpg" alt="" style="width: 100%; height: 100%; object-fit: cover; object-position: center 80%; display: block"><span style="position: absolute; top: 14px; left: 14px; background: #FFFFFF; border-radius: 999px; padding: 6px 12px; font-size: 13px; font-weight: 600; color: #14090B">4. koht · MK-etapp</span><span style="position: absolute; top: 12px; right: 12px; background: #FFD23F; color: #14090B; border-radius: 12px; padding: 5px 11px; font-family: 'Archivo', sans-serif; font-size: 18px; font-weight: 700; letter-spacing: -0.01em">+500&nbsp;€</span></div>
+<div style="padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 14px">
+<div><div style="font-size: 18px; font-weight: 600; letter-spacing: -0.01em">Rasmus Vool</div><div style="font-size: 14px; color: #6B5A5E; margin-top: 3px">Triatlon · esimesed MK-punktid</div></div>
+<div style="height: 6px; background: #F3E6E8; border-radius: 999px; overflow: hidden"><div style="width: 46%; height: 100%; background: #C8102E; border-radius: 999px"></div></div>
+<div style="display: flex; justify-content: space-between; font-size: 14px; color: #6B5A5E"><span><span style="color: #14090B; font-weight: 600">1 820 €</span> / 4 000 €</span><span>58 toetajat</span></div>
+</div>
+</a>
+</div>
+</section>
+
+<section aria-label="Ettevõtete toetused" style="padding: 88px 48px 72px; background: #FFFFFF; color: #14090B">
+<h2 style="margin: 0 0 28px; font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 40px; line-height: 1; letter-spacing: -0.03em; color: #C8102E">Erisponsori kampaaniad</h2>
+<div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px">
+<div style="display: contents"><a href="sportlane.html" style="width: auto; box-sizing: border-box; background: #FFFFFF; border: 1px solid #EADDE0; border-radius: 22px; overflow: hidden; text-decoration: none; color: #14090B; box-shadow: 0 1px 2px rgba(20,9,11,0.04), 0 10px 28px rgba(20,9,11,0.09); display: flex; flex-direction: column; ">
+<div style="position: relative; height: 230px; background: #F3E6E8; overflow: hidden"><img src="img/ph-2403045.jpg" alt="" style="width: 100%; height: 100%; object-fit: cover; object-position: center 30%; display: block"><span style="position: absolute; top: 14px; left: 14px; background: #FFFFFF; border-radius: 999px; padding: 6px 12px; font-size: 13px; font-weight: 600; color: #14090B">Lainetus</span><span style="position: absolute; top: 12px; right: 12px; background: #FFD23F; color: #14090B; border-radius: 12px; padding: 5px 11px; font-family: 'Archivo', sans-serif; font-size: 18px; font-weight: 700; letter-spacing: -0.01em">+500&nbsp;€</span></div>
+<div style="padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 14px">
+<div><div style="font-size: 18px; font-weight: 600; letter-spacing: -0.01em">Mirjam Saar</div><div style="font-size: 14px; color: #6B5A5E; margin-top: 3px">Maratonijooks · alla 2:35</div></div>
+<div style="height: 6px; background: #F3E6E8; border-radius: 999px; overflow: hidden"><div style="width: 74%; height: 100%; background: #C8102E; border-radius: 999px"></div></div>
+<div style="display: flex; justify-content: space-between; font-size: 14px; color: #6B5A5E"><span><span style="color: #14090B; font-weight: 600">2 210 €</span> / 3 000 €</span><span>73 toetajat</span></div>
+</div>
+</a><a href="sportlane.html" style="width: auto; box-sizing: border-box; background: #FFFFFF; border: 1px solid #EADDE0; border-radius: 22px; overflow: hidden; text-decoration: none; color: #14090B; box-shadow: 0 1px 2px rgba(20,9,11,0.04), 0 10px 28px rgba(20,9,11,0.09); display: flex; flex-direction: column; ">
+<div style="position: relative; height: 230px; background: #F3E6E8; overflow: hidden"><img src="img/ph-5196111.jpg" alt="" style="width: 100%; height: 100%; object-fit: cover; object-position: center 35%; display: block"><span style="position: absolute; top: 14px; left: 14px; background: #FFFFFF; border-radius: 999px; padding: 6px 12px; font-size: 13px; font-weight: 600; color: #14090B">Põhjarannik</span><span style="position: absolute; top: 12px; right: 12px; background: #FFD23F; color: #14090B; border-radius: 12px; padding: 5px 11px; font-family: 'Archivo', sans-serif; font-size: 18px; font-weight: 700; letter-spacing: -0.01em">+500&nbsp;€</span></div>
+<div style="padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 14px">
+<div><div style="font-size: 18px; font-weight: 600; letter-spacing: -0.01em">Kaspar Lill</div><div style="font-size: 14px; color: #6B5A5E; margin-top: 3px">Kergejõustik · 10 000 m EM-i normatiiv</div></div>
+<div style="height: 6px; background: #F3E6E8; border-radius: 999px; overflow: hidden"><div style="width: 32%; height: 100%; background: #C8102E; border-radius: 999px"></div></div>
+<div style="display: flex; justify-content: space-between; font-size: 14px; color: #6B5A5E"><span><span style="color: #14090B; font-weight: 600">640 €</span> / 2 000 €</span><span>29 toetajat</span></div>
+</div>
+</a></div>
+<div style="display: contents"><a href="sportlane.html" style="width: auto; box-sizing: border-box; background: #FFFFFF; border: 1px solid #EADDE0; border-radius: 22px; overflow: hidden; text-decoration: none; color: #14090B; box-shadow: 0 1px 2px rgba(20,9,11,0.04), 0 10px 28px rgba(20,9,11,0.09); display: flex; flex-direction: column; ">
+<div style="position: relative; height: 230px; background: #F3E6E8; overflow: hidden"><img src="img/ph-9632571.jpg" alt="" style="width: 100%; height: 100%; object-fit: cover; object-position: center 30%; display: block"><span style="position: absolute; top: 14px; left: 14px; background: #FFFFFF; border-radius: 999px; padding: 6px 12px; font-size: 13px; font-weight: 600; color: #14090B">Kiirtee Logistika</span><span style="position: absolute; top: 12px; right: 12px; background: #FFD23F; color: #14090B; border-radius: 12px; padding: 5px 11px; font-family: 'Archivo', sans-serif; font-size: 18px; font-weight: 700; letter-spacing: -0.01em">+1&nbsp;000&nbsp;€</span></div>
+<div style="padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 14px">
+<div><div style="font-size: 18px; font-weight: 600; letter-spacing: -0.01em">Karl Tamm</div><div style="font-size: 14px; color: #6B5A5E; margin-top: 3px">Ujumine · MM-i normatiiv</div></div>
+<div style="height: 6px; background: #F3E6E8; border-radius: 999px; overflow: hidden"><div style="width: 69%; height: 100%; background: #C8102E; border-radius: 999px"></div></div>
+<div style="display: flex; justify-content: space-between; font-size: 14px; color: #6B5A5E"><span><span style="color: #14090B; font-weight: 600">4 120 €</span> / 6 000 €</span><span>97 toetajat</span></div>
+</div>
+</a><a href="sportlane.html" style="width: auto; box-sizing: border-box; background: #FFFFFF; border: 1px solid #EADDE0; border-radius: 22px; overflow: hidden; text-decoration: none; color: #14090B; box-shadow: 0 1px 2px rgba(20,9,11,0.04), 0 10px 28px rgba(20,9,11,0.09); display: flex; flex-direction: column; ">
+<div style="position: relative; height: 230px; background: #F3E6E8; overflow: hidden"><img src="img/ph-17979428.jpg" alt="" style="width: 100%; height: 100%; object-fit: cover; object-position: center 40%; display: block"><span style="position: absolute; top: 14px; left: 14px; background: #FFFFFF; border-radius: 999px; padding: 6px 12px; font-size: 13px; font-weight: 600; color: #14090B">Kivisild Ehitus</span><span style="position: absolute; top: 12px; right: 12px; background: #FFD23F; color: #14090B; border-radius: 12px; padding: 5px 11px; font-family: 'Archivo', sans-serif; font-size: 18px; font-weight: 700; letter-spacing: -0.01em">+1&nbsp;000&nbsp;€</span></div>
+<div style="padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 14px">
+<div><div style="font-size: 18px; font-weight: 600; letter-spacing: -0.01em">Grete Pärn</div><div style="font-size: 14px; color: #6B5A5E; margin-top: 3px">Orienteerumine · JWOC-i finaal</div></div>
+<div style="height: 6px; background: #F3E6E8; border-radius: 999px; overflow: hidden"><div style="width: 37%; height: 100%; background: #C8102E; border-radius: 999px"></div></div>
+<div style="display: flex; justify-content: space-between; font-size: 14px; color: #6B5A5E"><span><span style="color: #14090B; font-weight: 600">1 310 €</span> / 3 500 €</span><span>52 toetajat</span></div>
+</div>
+</a></div>
+</div>
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 24px; margin-top: 36px; padding-top: 28px; border-top: 1px solid #F0E4E6">
+<span style="font-size: 18px; color: #14090B"><b style="font-weight: 600">Sinu ettevõte siia?</b> <span style="color: #6B5A5E">Sinu logo sportlase kampaanias ja tema sotsiaalmeedias.</span></span>
+<a href="sportlased.html" style="flex: none; display: inline-flex; align-items: center; gap: 10px; background: #C8102E; color: #FFFFFF; text-decoration: none; font-weight: 600; font-size: 16px; border-radius: 999px; padding: 13px 24px">Vali sportlane <span aria-hidden="true">→</span></a>
+</div>
+</section>
+
+<section aria-label="Uued tulijad" style="padding: 24px 48px 96px; background: #FFFFFF; color: #14090B">
+<div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 28px">
+<h2 style="margin: 0; font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 40px; line-height: 1; letter-spacing: -0.03em; color: #C8102E">Uued tulijad</h2>
+<a href="sportlased.html" style="font-size: 16px; font-weight: 600; color: #C8102E; text-decoration: none">Kõik sportlased →</a>
+</div>
+<div style="display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 16px">
+<a href="sportlane.html" style="background: #FFFFFF; border: 1px solid #EADDE0; border-radius: 22px; overflow: hidden; text-decoration: none; color: #14090B; box-shadow: 0 1px 2px rgba(20,9,11,0.04), 0 10px 28px rgba(20,9,11,0.09); display: flex; flex-direction: column">
+<div style="height: 200px; background: #F3E6E8; overflow: hidden"><img src="img/ph-10060412.jpg" alt="" style="width: 100%; height: 100%; object-fit: cover; object-position: center 25%; display: block"></div>
+<div style="padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 10px; flex: 1">
+<div><div style="font-size: 16px; font-weight: 600; letter-spacing: -0.01em">Kärt Lepp</div><div style="font-size: 13px; color: #6B5A5E; margin-top: 2px">Maanteerattasõit · Eesti MV medal</div></div>
+<div style="margin-top: auto; height: 5px; background: #F3E6E8; border-radius: 999px; overflow: hidden"><div style="width: 4%; height: 100%; background: #C8102E; border-radius: 999px"></div></div>
+<div style="display: flex; justify-content: space-between; font-size: 13px; color: #6B5A5E"><span><span style="color: #14090B; font-weight: 600">120 €</span> / 3 000 €</span><span>6 toetajat</span></div>
+</div>
+</a><a href="sportlane.html" style="background: #FFFFFF; border: 1px solid #EADDE0; border-radius: 22px; overflow: hidden; text-decoration: none; color: #14090B; box-shadow: 0 1px 2px rgba(20,9,11,0.04), 0 10px 28px rgba(20,9,11,0.09); display: flex; flex-direction: column">
+<div style="height: 200px; background: #F3E6E8; overflow: hidden"><img src="img/ph-2278449.jpg" alt="" style="width: 100%; height: 100%; object-fit: cover; object-position: center 40%; display: block"></div>
+<div style="padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 10px; flex: 1">
+<div><div style="font-size: 16px; font-weight: 600; letter-spacing: -0.01em">Siim Ots</div><div style="font-size: 13px; color: #6B5A5E; margin-top: 2px">Kanuuslaalom · MK-etapi finaal</div></div>
+<div style="margin-top: auto; height: 5px; background: #F3E6E8; border-radius: 999px; overflow: hidden"><div style="width: 0%; height: 100%; background: #C8102E; border-radius: 999px"></div></div>
+<div style="display: flex; justify-content: space-between; font-size: 13px; color: #6B5A5E"><span>Ootab esimest toetajat</span></div>
+</div>
+</a><a href="sportlane.html" style="background: #FFFFFF; border: 1px solid #EADDE0; border-radius: 22px; overflow: hidden; text-decoration: none; color: #14090B; box-shadow: 0 1px 2px rgba(20,9,11,0.04), 0 10px 28px rgba(20,9,11,0.09); display: flex; flex-direction: column">
+<div style="height: 200px; background: #F3E6E8; overflow: hidden"><img src="img/ph-7261727.jpg" alt="" style="width: 100%; height: 100%; object-fit: cover; object-position: center 30%; display: block"></div>
+<div style="padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 10px; flex: 1">
+<div><div style="font-size: 16px; font-weight: 600; letter-spacing: -0.01em">Helena Sild</div><div style="font-size: 13px; color: #6B5A5E; margin-top: 2px">Poks · EM-i medal</div></div>
+<div style="margin-top: auto; height: 5px; background: #F3E6E8; border-radius: 999px; overflow: hidden"><div style="width: 5%; height: 100%; background: #C8102E; border-radius: 999px"></div></div>
+<div style="display: flex; justify-content: space-between; font-size: 13px; color: #6B5A5E"><span><span style="color: #14090B; font-weight: 600">260 €</span> / 5 000 €</span><span>11 toetajat</span></div>
+</div>
+</a><a href="sportlane.html" style="background: #FFFFFF; border: 1px solid #EADDE0; border-radius: 22px; overflow: hidden; text-decoration: none; color: #14090B; box-shadow: 0 1px 2px rgba(20,9,11,0.04), 0 10px 28px rgba(20,9,11,0.09); display: flex; flex-direction: column">
+<div style="height: 200px; background: #F3E6E8; overflow: hidden"><img src="img/ph-20419666.jpg" alt="" style="width: 100%; height: 100%; object-fit: cover; object-position: center 30%; display: block"></div>
+<div style="padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 10px; flex: 1">
+<div><div style="font-size: 16px; font-weight: 600; letter-spacing: -0.01em">Triin Rand</div><div style="font-size: 13px; color: #6B5A5E; margin-top: 2px">Mäesuusatamine · esimesed MK-punktid</div></div>
+<div style="margin-top: auto; height: 5px; background: #F3E6E8; border-radius: 999px; overflow: hidden"><div style="width: 1%; height: 100%; background: #C8102E; border-radius: 999px"></div></div>
+<div style="display: flex; justify-content: space-between; font-size: 13px; color: #6B5A5E"><span><span style="color: #14090B; font-weight: 600">35 €</span> / 6 000 €</span><span>2 toetajat</span></div>
+</div>
+</a><a href="sportlane.html" style="background: #FFFFFF; border: 1px solid #EADDE0; border-radius: 22px; overflow: hidden; text-decoration: none; color: #14090B; box-shadow: 0 1px 2px rgba(20,9,11,0.04), 0 10px 28px rgba(20,9,11,0.09); display: flex; flex-direction: column">
+<div style="height: 200px; background: #F3E6E8; overflow: hidden"><img src="img/ph-5687432.jpg" alt="" style="width: 100%; height: 100%; object-fit: cover; object-position: center 35%; display: block"></div>
+<div style="padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 10px; flex: 1">
+<div><div style="font-size: 16px; font-weight: 600; letter-spacing: -0.01em">Markus Ilves</div><div style="font-size: 13px; color: #6B5A5E; margin-top: 2px">Trekisõit · EM-i normatiiv</div></div>
+<div style="margin-top: auto; height: 5px; background: #F3E6E8; border-radius: 999px; overflow: hidden"><div style="width: 7%; height: 100%; background: #C8102E; border-radius: 999px"></div></div>
+<div style="display: flex; justify-content: space-between; font-size: 13px; color: #6B5A5E"><span><span style="color: #14090B; font-weight: 600">310 €</span> / 4 500 €</span><span>14 toetajat</span></div>
+</div>
+</a><a href="sportlane.html" style="background: #FFFFFF; border: 1px solid #EADDE0; border-radius: 22px; overflow: hidden; text-decoration: none; color: #14090B; box-shadow: 0 1px 2px rgba(20,9,11,0.04), 0 10px 28px rgba(20,9,11,0.09); display: flex; flex-direction: column">
+<div style="height: 200px; background: #F3E6E8; overflow: hidden"><img src="img/ph-6847536.jpg" alt="" style="width: 100%; height: 100%; object-fit: cover; object-position: center 30%; display: block"></div>
+<div style="padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 10px; flex: 1">
+<div><div style="font-size: 16px; font-weight: 600; letter-spacing: -0.01em">Hendrik Kõiv</div><div style="font-size: 13px; color: #6B5A5E; margin-top: 2px">Jäähoki · klubileping Soomes</div></div>
+<div style="margin-top: auto; height: 5px; background: #F3E6E8; border-radius: 999px; overflow: hidden"><div style="width: 6%; height: 100%; background: #C8102E; border-radius: 999px"></div></div>
+<div style="display: flex; justify-content: space-between; font-size: 13px; color: #6B5A5E"><span><span style="color: #14090B; font-weight: 600">150 €</span> / 2 500 €</span><span>9 toetajat</span></div>
+</div>
+</a>
+</div>
+</section>
+
+<footer style="padding: 64px 48px 36px; background: #FFFFFF; color: #14090B; display: flex; flex-direction: column; gap: 48px; border-top: 1px solid #F0E4E6">
+<div style="display: flex; justify-content: space-between; gap: 40px">
+<div style="display: flex; flex-direction: column; gap: 10px; max-width: 360px">
+<span style="font-family: 'Archivo', sans-serif; font-weight: 900; font-size: 22px; letter-spacing: -0.02em; color: #C8102E">neljaskohtonjama.ee</span>
+<span style="font-size: 15px; line-height: 1.5; color: #6B5A5E">Eesti sportlased, otse toetajatelt.</span>
+</div>
+<div style="display: flex; gap: 80px; font-size: 15px">
+<div style="display: flex; flex-direction: column; gap: 10px"><b style="color: #9A8A8E; font-size: 12px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase">Platvorm</b><a href="sportlased.html" style="color: #14090B; text-decoration: none">Sportlased</a><a href="#" style="color: #14090B; text-decoration: none">KKK</a></div>
+<div style="display: flex; flex-direction: column; gap: 10px"><b style="color: #9A8A8E; font-size: 12px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase">Koostöö</b><a href="#" style="color: #14090B; text-decoration: none">Ettevõttele</a><a href="#" style="color: #14090B; text-decoration: none">Kontakt</a></div>
+<div style="display: flex; flex-direction: column; gap: 10px"><b style="color: #9A8A8E; font-size: 12px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase">Jälgi</b><a href="#" style="color: #14090B; text-decoration: none">Instagram</a><a href="#" style="color: #14090B; text-decoration: none">Facebook</a></div>
+</div>
+</div>
+<div style="display: flex; justify-content: space-between; border-top: 1px solid #F0E4E6; padding-top: 20px; font-size: 13px; color: #9A8A8E">
+<span>© 2026 Neljaskohtonjama · Tingimused · Privaatsus</span>
+<span>Maksed: pangalink · Apple Pay · kaardid</span>
+</div>
+</footer>
+
+<sc-if value="{{signup}}" hint-placeholder-val="{{ false }}">
+<div class="nkj-overlay" style="position: absolute; inset: 0; z-index: 50; background: rgba(20,9,11,0.55); -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px)">
+<div role="dialog" aria-modal="true" aria-labelledby="nkjSignupTitle" class="nkj-card" style="position: absolute; left: 50%; top: 150px; transform: translateX(-50%); width: 560px; box-sizing: border-box; background: #FFFFFF; color: #14090B; border-radius: 28px; padding: 56px 56px 40px; box-shadow: 0 30px 80px rgba(20,9,11,0.35); display: flex; flex-direction: column; gap: 14px; text-align: center; font-family: 'Inter', system-ui, sans-serif">
+<button type="button" onClick="{{closeSignup}}" aria-label="Sulge" style="position: absolute; top: 18px; left: 18px; width: 40px; height: 40px; border: none; border-radius: 50%; background: #F6EEF0; color: #14090B; font-size: 20px; line-height: 1; cursor: pointer">✕</button>
+<div aria-hidden="true" style="position: absolute; top: -46px; right: -46px; width: 132px; height: 132px; transform: rotate(-12deg)">
+<svg class="nkj-spin" viewBox="0 0 200 200" width="132" height="132" style="position: absolute; inset: 0"><defs><path id="nkjRingM" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0"/></defs><circle cx="100" cy="100" r="98" fill="#FFD23F"/><circle cx="100" cy="100" r="62" fill="none" stroke="#14090B" stroke-opacity="0.15" stroke-width="1.5"/><text font-family="Archivo, sans-serif" font-weight="900" font-size="15" fill="#14090B"><textPath href="#nkjRingM" textLength="486" lengthAdjust="spacing">STARDIRAHA · SPRINTA · STARDIRAHA · SPRINTA · </textPath></text></svg>
+<div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center"><b style="font-family: 'Archivo', sans-serif; font-weight: 900; font-size: 30px; letter-spacing: -0.03em; color: #14090B">100&nbsp;€</b></div>
+</div>
+<h2 id="nkjSignupTitle" style="margin: 0; font-family: 'Archivo', sans-serif; font-weight: 800; font-size: 44px; line-height: 1; letter-spacing: -0.035em">Alusta oma kampaaniat</h2>
+<p style="margin: 0 0 18px; font-size: 16px; color: #6B5A5E">Kampaania loomiseks tuvasta end.</p>
+<a href="sportlane.html" style="display: flex; align-items: center; justify-content: space-between; background: #C8102E; color: #FFFFFF; text-decoration: none; font-weight: 800; font-size: 17px; border-radius: 14px; padding: 18px 22px">Smart-ID<span aria-hidden="true">→</span></a>
+<a href="sportlane.html" style="display: flex; align-items: center; justify-content: space-between; background: #FFF1F3; color: #C8102E; text-decoration: none; font-weight: 800; font-size: 17px; border-radius: 14px; padding: 18px 22px">Mobiil-ID<span aria-hidden="true">→</span></a>
+<span style="margin-top: 12px; font-size: 12px; color: #9A8A8E">Jätkates nõustud <a href="#" style="color: #6B5A5E">kasutustingimustega</a>.</span>
+</div>
+</div>
+</sc-if>
+</div>
+</script>
+<script src="dc-lite.js"></script>
+<script>
+class Component extends DCLogic {
+constructor(props) { super(props); this.state = { page: 1, signup: false, pop: 0 }; }
+renderVals() {
+const p = this.props;
+const bg = p.bg ?? '#C8102E', panel = p.panel ?? 'rgba(255,255,255,0.10)', red = '#C8102E';
+const lights = ['#7CC8FF', '#FFD23F', '#FFFFFF', '#5EE0B8', '#FF9EB5', '#FFA552', '#C6B0FF'];
+const A = (name, sport, goal, pct, x2, img) => ({ name, sport, goal, pct, x2, photo: 'img/' + img + '.png' });
+const full = [
+A('Karl Tamm', 'Sõudmine', 'masters MM-i medal', 92, false, 'karl'),
+A('Laura Kuusk', 'Kergejõustik', '400 m EM-i finaal', 61, true, 'anette'),
+A('Markus Lepp', 'Korvpall 3x3', 'EM-i koht', 45, false, 'rasmus'),
+A('Grete Pärn', 'Orienteerumine', 'JWOC-i finaal', 78, false, 'liisi'),
+A('Siim Org', 'Jalgrattasõit', 'Tour of Estonia', 33, false, 'joonas'),
+A('Helena Rebane', 'Iluuisutamine', 'EM-i vabakava', 57, true, 'mirjam'),
+A('Robin Sepp', 'Purjetamine', 'olümpiakoht', 24, false, 'kaspar'),
+A('Kätlin Kivi', 'Rannavõrkpall', 'EM-i põhiturniir', 69, false, 'kertu'),
+A('Taavi Põder', 'Triatlon', 'Ironman alla 10 h', 88, false, 'karl'),
+A('Elis Mets', 'Ujumine', 'NM-i medal', 50, false, 'liisi'),
+A('Oskar Vaher', 'Judo', 'EM-i pronks', 38, true, 'rasmus'),
+A('Liis Raud', 'Jooks', 'maraton alla 2:40', 74, false, 'anette'),
+A('Andres Kask', 'Laskmine', 'MK-finaal', 29, false, 'karl'),
+A('Kristel Allik', 'Sõudmine', 'U23 MM', 63, false, 'mirjam'),
+A('Rait Luts', 'Jalgpall', 'tõus III liigasse', 47, false, 'joonas'),
+A('Anni Lõhmus', 'Tõkkejooks', 'EM-i finaal', 55, false, 'kertu'),
+A('Ott Jõgi', 'Suusahüpped', 'MK-punktid', 21, false, 'kaspar'),
+A('Eliise Vares', 'Ratsutamine', 'Nationsi karikas', 66, false, 'liisi'),
+A('Kevin Luik', 'Maadlus', 'EM-i medal', 42, false, 'rasmus'),
+A('Pille Hunt', 'Discgolf', 'EM-i top 10', 80, false, 'mirjam')
+];
+const filling = [
+A('Liisi Kask', 'Ujumine', 'EM-i medal', 66, true, 'liisi'),
+A('Anette Ilves', 'Suusatamine', 'MM-i finaal', 84, false, 'anette'),
+A('Rasmus Vool', 'Laskesuusatamine', 'esimesed MK-punktid', 52, false, 'rasmus'),
+A('Kertu Mänd', 'Kõrgushüpe', 'EM-i medal', 36, true, 'kertu'),
+A('Mirjam Saar', 'Tennis', 'esimene ITF-tiitel', 73, false, 'mirjam'),
+A('Joonas Raudsepp', 'Maastikuratas', 'MK top 30', 41, false, 'joonas'),
+A('Kaspar Lill', 'Sõudmine', 'isiklik rekord', 28, false, 'kaspar')
+];
+const cap = p.cap ?? 50;
+const pages = Math.ceil(cap / 20);
+const book = [full, filling];
+while (book.length < pages) book.push([]);
+const page = Math.min(Math.max(this.state.page, 0), pages - 1);
+const list = book[page];
+const capOnPage = Math.min(20, cap - page * 20);
+const offset = page * 3;
+const slots = [];
+for (let k = 0; k < 20; k++) {
+const a = list[k];
+if (a) slots.push({ ...a, taken: true, free: false,
+box: 'position: relative; border-radius: 18px; overflow: hidden; background: ' + lights[(k + offset) % lights.length] + '; display: flex; flex-direction: column; justify-content: flex-end; padding: 7px; text-decoration: none; color: #111111',
+bar: 'width: ' + a.pct + '%; background: ' + red });
+else if (k < capOnPage) slots.push({ taken: false, free: true, x2: false });
+else slots.push({ taken: false, free: false, x2: false });
+}
+const btn = (on) => 'font: inherit; width: 34px; height: 34px; border-radius: 50%; border: none; background: rgba(255,255,255,' + (on ? '0.2' : '0.07') + '); color: #FFFFFF; font-size: 22px; line-height: 1; font-weight: 700; cursor: ' + (on ? 'pointer' : 'default') + '; opacity: ' + (on ? '1' : '0.4') + '; display: flex; align-items: center; justify-content: center; padding: 0 0 3px';
+const total = book.reduce((n, l) => n + l.length, 0);
+const barStyle = 'width: ' + Math.round(total / cap * 100) + '%; background: #FFD23F; border-radius: 999px';
+const dots = [];
+for (let k = 0; k < pages; k++) dots.push({ label: 'Leht ' + (k + 1), go: () => this.setState({ page: k }), st: 'border: none; padding: 0; cursor: pointer; width: ' + (k === page ? '22px' : '8px') + '; height: 8px; border-radius: 999px; background: ' + (k === page ? '#FFFFFF' : 'rgba(255,255,255,0.4)') });
+const popMax = 4, popIdx = Math.min(Math.max(this.state.pop, 0), popMax);
+const popBtn = (on) => 'width: 44px; height: 44px; border-radius: 50%; border: 1.5px solid #E2D0D4; background: #FFFFFF; color: #14090B; font-size: 22px; line-height: 1; padding: 0 0 3px; display: flex; align-items: center; justify-content: center; cursor: ' + (on ? 'pointer' : 'default') + '; opacity: ' + (on ? '1' : '0.35');
+return {
+popTrack: 'display: flex; gap: 20px; transition: transform 0.45s ease; transform: translateX(-' + (popIdx * 341) + 'px)',
+popPrev: () => { if (popIdx > 0) this.setState({ pop: popIdx - 1 }); },
+popNext: () => { if (popIdx < popMax) this.setState({ pop: popIdx + 1 }); },
+popPrevStyle: popBtn(popIdx > 0), popNextStyle: popBtn(popIdx < popMax),
+signup: this.state.signup, openSignup: () => this.setState({ signup: true }), closeSignup: () => this.setState({ signup: false }),
+slots, dots, barStyle, cap, bg, panel, red, total, pages,
+prev: () => { if (page > 0) this.setState({ page: page - 1 }); },
+next: () => { if (page < pages - 1) this.setState({ page: page + 1 }); },
+prevStyle: btn(page > 0), nextStyle: btn(page < pages - 1)
+};
+}
+}
+DC.boot(Component, {"bg": "#C8102E", "panel": "rgba(255,255,255,0.10)", "cap": 50});
+</script>
+</body>
+</html>
