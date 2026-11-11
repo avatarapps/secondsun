@@ -87,8 +87,8 @@ body{margin:0;background:#FFFFFF}
 <sc-for list="{{slots}}" as="s" hint-placeholder-count="20">
 <sc-if value="{{s.taken}}" hint-placeholder-val="{{ true }}">
 <a href="sportlane.html" style="{{s.box}}">
-<img src="{{s.photo}}" alt="" style="position: absolute; left: 50%; top: 10px; transform: translateX(-50%); width: 85%; height: auto; display: block">
-<sc-if value="{{s.x2}}" hint-placeholder-val="{{ false }}"><span title="Ettevõte andis +500 €" style="position: absolute; top: 8px; right: 8px; background: #FFD23F; color: #111111; font-size: 11px; font-weight: 800; border-radius: 999px; padding: 3px 8px; box-shadow: 0 2px 0 rgba(0,0,0,0.25)">+500 €</span></sc-if>
+<img src="{{s.photo}}" alt="" style="{{s.img}}">
+<sc-if value="{{s.bonus}}" hint-placeholder-val="{{ false }}"><span style="position: absolute; top: 8px; right: 8px; background: #FFD23F; color: #111111; font-size: 11px; font-weight: 800; border-radius: 999px; padding: 3px 8px; box-shadow: 0 2px 0 rgba(0,0,0,0.25)">{{s.bonus}}</span></sc-if>
 <div style="position: relative; background: #FFFFFF; border-radius: 12px; padding: 7px 9px; display: flex; flex-direction: column; gap: 4px; color: #111111; box-shadow: 0 2px 8px rgba(0,0,0,0.18)">
 <b style="font-size: 13px; line-height: 1.15; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{s.name}}</b>
 <span style="font-size: 11px; color: #4A4A4A; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{s.sport}} · {{s.goal}}</span>
@@ -105,7 +105,7 @@ body{margin:0;background:#FFFFFF}
 </sc-for>
 </div>
 </div>
-<span style="position: absolute; left: 48px; bottom: 14px; font-size: 11px; color: #FFC9CF">Näidisandmed · fotod: Unsplash (kohatäited)</span>
+<span style="position: absolute; left: 48px; bottom: 14px; font-size: 11px; color: #FFC9CF">Näidisandmed · fotod: Pexels</span>
 </section>
 
 <section aria-label="Meie sportlased" style="padding: 80px 48px 88px; background: #FFFFFF; color: #14090B">
@@ -342,37 +342,37 @@ renderVals() {
 const p = this.props;
 const bg = p.bg ?? '#C8102E', panel = p.panel ?? 'rgba(255,255,255,0.10)', red = '#C8102E';
 const lights = ['#7CC8FF', '#FFD23F', '#FFFFFF', '#5EE0B8', '#FF9EB5', '#FFA552', '#C6B0FF'];
-const A = (name, sport, goal, pct, x2, img) => ({ name, sport, goal, pct, x2, photo: 'img/' + img + '.png' });
+const A = (name, sport, goal, pct, bonus, ph, pos) => ({ name, sport, goal, pct, bonus, photo: 'img/ph-' + ph + '.jpg', pos: pos || 'center 30%' });
 const full = [
-A('Karl Tamm', 'Sõudmine', 'masters MM-i medal', 92, false, 'karl'),
-A('Laura Kuusk', 'Kergejõustik', '400 m EM-i finaal', 61, true, 'anette'),
-A('Markus Lepp', 'Korvpall 3x3', 'EM-i koht', 45, false, 'rasmus'),
-A('Grete Pärn', 'Orienteerumine', 'JWOC-i finaal', 78, false, 'liisi'),
-A('Siim Org', 'Jalgrattasõit', 'Tour of Estonia', 33, false, 'joonas'),
-A('Helena Rebane', 'Iluuisutamine', 'EM-i vabakava', 57, true, 'mirjam'),
-A('Robin Sepp', 'Purjetamine', 'olümpiakoht', 24, false, 'kaspar'),
-A('Kätlin Kivi', 'Rannavõrkpall', 'EM-i põhiturniir', 69, false, 'kertu'),
-A('Taavi Põder', 'Triatlon', 'Ironman alla 10 h', 88, false, 'karl'),
-A('Elis Mets', 'Ujumine', 'NM-i medal', 50, false, 'liisi'),
-A('Oskar Vaher', 'Judo', 'EM-i pronks', 38, true, 'rasmus'),
-A('Liis Raud', 'Jooks', 'maraton alla 2:40', 74, false, 'anette'),
-A('Andres Kask', 'Laskmine', 'MK-finaal', 29, false, 'karl'),
-A('Kristel Allik', 'Sõudmine', 'U23 MM', 63, false, 'mirjam'),
-A('Rait Luts', 'Jalgpall', 'tõus III liigasse', 47, false, 'joonas'),
-A('Anni Lõhmus', 'Tõkkejooks', 'EM-i finaal', 55, false, 'kertu'),
-A('Ott Jõgi', 'Suusahüpped', 'MK-punktid', 21, false, 'kaspar'),
-A('Eliise Vares', 'Ratsutamine', 'Nationsi karikas', 66, false, 'liisi'),
-A('Kevin Luik', 'Maadlus', 'EM-i medal', 42, false, 'rasmus'),
-A('Pille Hunt', 'Discgolf', 'EM-i top 10', 80, false, 'mirjam')
+A('Liisi Kask', 'Ujumine', 'EM-i medal', 23, '', 3775140, '60% center'),
+A('Laura Kuusk', 'Kergejõustik', '400 m EM-i finaal', 48, '', 26597326, 'center 62%'),
+A('Mirjam Saar', 'Maratonijooks', 'alla 2:35', 74, '+500\u00a0€', 2403045),
+A('Karl Tamm', 'Ujumine', 'MM-i normatiiv', 69, '+1\u00a0000\u00a0€', 9632571),
+A('Kertu Mänd', 'Kaugushüpe', 'EM-i finaal', 30, '', 6504819, 'center 40%'),
+A('Joonas Raudsepp', 'Maastikuratas', 'MK top 30', 38, '', 30925309),
+A('Rasmus Vool', 'Triatlon', 'esimesed MK-punktid', 46, '+500\u00a0€', 8028681, 'center 80%'),
+A('Grete Pärn', 'Orienteerumine', 'JWOC-i finaal', 37, '+1\u00a0000\u00a0€', 17979428, 'center 40%'),
+A('Kaspar Lill', 'Kergejõustik', '10 000 m EM-i normatiiv', 32, '+500\u00a0€', 5196111, 'center 35%'),
+A('Kätlin Kivi', 'Rannavõrkpall', 'EM-i põhiturniir', 42, '', 6180393, '45% center'),
+A('Oskar Vaher', 'Judo', 'EM-i pronks', 38, '', 6765021, 'center 40%'),
+A('Taavi Põder', 'Avaveeujumine', 'EM-i top 8', 57, '', 9030523, 'center 40%'),
+A('Elis Mets', 'Tennis', 'esimene ITF-tiitel', 61, '', 4703202, 'center 25%'),
+A('Tähe 3x3', 'Korvpall 3x3', 'Eesti meistritiitel', 41, '', 5274994, 'center 40%'),
+A('Kevin Luik', 'Maadlus', 'EM-i medal', 29, '', 9632082, 'center 25%'),
+A('Eliise Vares', 'Triatlon', 'Ironman 70.3', 66, '', 8060703, 'center 25%'),
+A('Rait Luts', 'Rajajooks', 'UTMB-i finiš', 53, '', 32132278, '45% center'),
+A('Kristel Allik', 'Gravel', 'MM-i koht', 35, '', 13799114, 'center 25%'),
+A('Anni Lõhmus', 'Tai poks', 'EM-i medal', 44, '', 7991899, 'center 30%'),
+A('Sandra Hunt', 'Ujumine', '50 m EMV medal', 27, '', 18090672, 'center 70%')
 ];
 const filling = [
-A('Liisi Kask', 'Ujumine', 'EM-i medal', 66, true, 'liisi'),
-A('Anette Ilves', 'Suusatamine', 'MM-i finaal', 84, false, 'anette'),
-A('Rasmus Vool', 'Laskesuusatamine', 'esimesed MK-punktid', 52, false, 'rasmus'),
-A('Kertu Mänd', 'Kõrgushüpe', 'EM-i medal', 36, true, 'kertu'),
-A('Mirjam Saar', 'Tennis', 'esimene ITF-tiitel', 73, false, 'mirjam'),
-A('Joonas Raudsepp', 'Maastikuratas', 'MK top 30', 41, false, 'joonas'),
-A('Kaspar Lill', 'Sõudmine', 'isiklik rekord', 28, false, 'kaspar')
+A('Kärt Lepp', 'Maanteerattasõit', 'Eesti MV medal', 4, '', 10060412, 'center 25%'),
+A('Siim Ots', 'Kanuuslaalom', 'MK-etapi finaal', 0, '', 2278449, 'center 40%'),
+A('Helena Sild', 'Poks', 'EM-i medal', 5, '', 7261727, 'center 30%'),
+A('Triin Rand', 'Mäesuusatamine', 'esimesed MK-punktid', 1, '', 20419666, 'center 30%'),
+A('Markus Ilves', 'Trekisõit', 'EM-i normatiiv', 7, '', 5687432, 'center 35%'),
+A('Hendrik Kõiv', 'Jäähoki', 'klubileping Soomes', 6, '', 6847536, 'center 30%'),
+A('Pille Sepp', 'Maanteerattasõit', 'Tour of Estonia', 2, '', 17239253, 'center 40%')
 ];
 const cap = p.cap ?? 50;
 const pages = Math.ceil(cap / 20);
@@ -386,10 +386,10 @@ const slots = [];
 for (let k = 0; k < 20; k++) {
 const a = list[k];
 if (a) slots.push({ ...a, taken: true, free: false,
-box: 'position: relative; border-radius: 18px; overflow: hidden; background: ' + lights[(k + offset) % lights.length] + '; display: flex; flex-direction: column; justify-content: flex-end; padding: 7px; text-decoration: none; color: #111111',
+box: 'position: relative; border-radius: 18px; overflow: hidden; background: #F3E6E8; display: flex; flex-direction: column; justify-content: flex-end; padding: 7px; text-decoration: none; color: #111111', img: 'position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: ' + a.pos + '; display: block',
 bar: 'width: ' + a.pct + '%; background: ' + red });
-else if (k < capOnPage) slots.push({ taken: false, free: true, x2: false });
-else slots.push({ taken: false, free: false, x2: false });
+else if (k < capOnPage) slots.push({ taken: false, free: true, bonus: '' });
+else slots.push({ taken: false, free: false, bonus: '' });
 }
 const btn = (on) => 'font: inherit; width: 34px; height: 34px; border-radius: 50%; border: none; background: rgba(255,255,255,' + (on ? '0.2' : '0.07') + '); color: #FFFFFF; font-size: 22px; line-height: 1; font-weight: 700; cursor: ' + (on ? 'pointer' : 'default') + '; opacity: ' + (on ? '1' : '0.4') + '; display: flex; align-items: center; justify-content: center; padding: 0 0 3px';
 const total = book.reduce((n, l) => n + l.length, 0);
