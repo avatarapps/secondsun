@@ -8,8 +8,8 @@
   /* ---------- headers ---------- */
   header { height: auto !important; padding: 14px 16px !important; flex-wrap: wrap; row-gap: 10px; }
   header > a:first-child, header > span:first-child { font-size: 18px !important; }
-  [aria-label="Viimane toetus"] { position: static !important; transform: none !important; order: 3; width: 100%; font-size: 13px !important; }
-  [aria-label="Viimane toetus"] > span { width: auto !important; flex: 1; }
+  .nkj-toasts { left: 12px; right: 12px; bottom: 12px; width: auto; }
+  .nkj-toast { font-size: 13px; padding: 11px 16px 11px 12px; }
   nav[aria-label="Peamenüü"] { gap: 14px !important; font-size: 14px !important; }
   nav[aria-label="Peamenüü"] > a:not(:first-child) { display: none !important; }
   header[style*="border-bottom"] nav[aria-label="Peamenüü"] > a { display: none !important; }
