@@ -2,7 +2,7 @@
 <html lang="et">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=1440">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
 <title>Liisi Kask – Neljas koht on jama</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,6 +16,7 @@ body{margin:0;background:#FFFFFF}
 @media (prefers-reduced-motion: reduce) { .nkj-bell, .nkj-bellmsg { animation: none; } .nkj-bellmsg:first-child { opacity: 1; } }
 </style>
 <style>#app{width:1440px;margin:0 auto}</style>
+<link rel="stylesheet" href="mobile.css">
 </head>
 <body>
 <div id="app"></div>
@@ -191,6 +192,7 @@ cta: 'Toeta Liisit ' + amt + '\u00a0€'
 }
 }
 DC.boot(Component, {});
+(function () { var app = document.getElementById('app'); function fit() { var w = window.innerWidth; app.style.zoom = (w > 820 && w < 1440) ? String(w / 1440) : ''; } fit(); window.addEventListener('resize', fit); })();
 </script>
 </body>
 </html>

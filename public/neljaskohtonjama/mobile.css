@@ -1,0 +1,110 @@
+/* Neljaskohtonjama demo – mobile layout (overrides the inline desktop styles). */
+.nkj-overlay { position: fixed !important; }
+
+@media (max-width: 820px) {
+  #app, #app > div { width: 100% !important; }
+  body { -webkit-text-size-adjust: 100%; }
+
+  /* ---------- headers ---------- */
+  header { height: auto !important; padding: 14px 16px !important; flex-wrap: wrap; row-gap: 10px; }
+  header > a:first-child, header > span:first-child { font-size: 18px !important; }
+  [aria-label="Viimane toetus"] { position: static !important; transform: none !important; order: 3; width: 100%; font-size: 13px !important; }
+  [aria-label="Viimane toetus"] > span { width: auto !important; flex: 1; }
+  nav[aria-label="Peamenüü"] { gap: 14px !important; font-size: 14px !important; }
+  nav[aria-label="Peamenüü"] > a:not(:first-child) { display: none !important; }
+  header[style*="border-bottom"] nav[aria-label="Peamenüü"] > a { display: none !important; }
+  header[style*="border-bottom"] nav[aria-label="Peamenüü"] > a[style*="background: #C8102E"] { display: inline-block !important; padding: 9px 14px !important; }
+
+  /* ---------- section headings ---------- */
+  h2[style*="font-size: 40px"] { font-size: 30px !important; }
+  h2[style*="font-size: 32px"] { font-size: 26px !important; }
+
+  /* ---------- horizontal card rows ---------- */
+  [aria-label="Ettevõtete toetused"] > div[style*="repeat(4"],
+  [aria-label="Uued tulijad"] > div[style*="repeat(6"],
+  [aria-label="Vaata ka"] > div[style*="repeat(4"],
+  [aria-label="Meie sportlased"] div[style*="margin: -12px 0 -32px"] {
+    display: flex !important; overflow-x: auto !important; scroll-snap-type: x mandatory; gap: 14px !important;
+    margin: -12px -16px -32px !important; padding: 12px 16px 32px !important; scrollbar-width: none;
+  }
+  [aria-label="Ettevõtete toetused"] > div[style*="repeat(4"]::-webkit-scrollbar,
+  [aria-label="Uued tulijad"] > div[style*="repeat(6"]::-webkit-scrollbar,
+  [aria-label="Vaata ka"] > div[style*="repeat(4"]::-webkit-scrollbar,
+  [aria-label="Meie sportlased"] div[style*="margin: -12px 0 -32px"]::-webkit-scrollbar { display: none; }
+  [aria-label="Ettevõtete toetused"] > div[style*="repeat(4"] a,
+  [aria-label="Vaata ka"] > div[style*="repeat(4"] > a,
+  [aria-label="Meie sportlased"] a[style*="width: 321px"] { flex: none !important; width: 272px !important; scroll-snap-align: start; scroll-margin-left: 16px; }
+  [aria-label="Uued tulijad"] > div[style*="repeat(6"] > a { flex: none !important; width: 200px !important; scroll-snap-align: start; scroll-margin-left: 16px; }
+  [aria-label="Meie sportlased"] div[style*="translateX"] { transform: none !important; gap: 14px !important; }
+  [aria-label="Meie sportlased"] > div:first-child > div { display: none !important; }
+
+  /* ---------- homepage: hero ---------- */
+  section[aria-label="Avakampaania"] { height: auto !important; padding-bottom: 28px; }
+  section[aria-label="Avakampaania"] > div[style*="top: 76px"] { position: static !important; width: auto !important; padding: 24px 16px 36px; gap: 18px !important; }
+  section[aria-label="Avakampaania"] h1 { font-size: 66px !important; }
+  section[aria-label="Avakampaania"] h1 + p { font-size: 29px !important; }
+  section[aria-label="Avakampaania"] p[style*="font-size: 19px"] { font-size: 17px !important; }
+  section[aria-label="Avakampaania"] div[style*="gap: 22px"] { flex-wrap: wrap; row-gap: 16px; }
+  [aria-label="Platvorm praegu"] { gap: 16px !important; margin-top: 4px !important; padding-top: 20px !important; }
+  [aria-label="Platvorm praegu"] b { font-size: 24px !important; }
+  [aria-label="Platvorm praegu"] span { font-size: 12px !important; }
+  #seinal { position: static !important; width: auto !important; margin: 0 16px; padding: 14px !important; border-radius: 22px !important; }
+  #seinal > div:first-child { flex-wrap: wrap; gap: 10px !important; }
+  #seinal > div:first-child > div[style*="flex: 1"] { order: 3; flex-basis: 100% !important; }
+  #seinal > div:first-child > div:last-child { margin-left: auto; }
+  #seinal b[style*="font-size: 46px"] { font-size: 36px !important; }
+  #seinal > div[style*="repeat(5"] { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; grid-template-rows: none !important; grid-auto-rows: 176px; }
+  #seinal > div[style*="repeat(5"] > :nth-child(n+9) { display: none !important; }
+  section[aria-label="Avakampaania"] > span[style*="bottom: 14px"] { position: static !important; display: block; padding: 16px 16px 0; }
+
+  /* ---------- homepage: sections ---------- */
+  section[aria-label="Meie sportlased"], section[aria-label="Ettevõtete toetused"], section[aria-label="Uued tulijad"][style*="padding"] { padding-left: 16px !important; padding-right: 16px !important; }
+  section[aria-label="Meie sportlased"], section[aria-label="Ettevõtete toetused"] { padding-top: 52px !important; padding-bottom: 48px !important; }
+  section[aria-label="Uued tulijad"][style*="padding"] { padding-bottom: 56px !important; }
+  [aria-label="Ettevõtete toetused"] > div[style*="justify-content: space-between"] { flex-direction: column; align-items: flex-start !important; }
+  [aria-label="Neljanda koha boonus"] { padding: 60px 16px !important; }
+  [aria-label="Neljanda koha boonus"] > span[aria-hidden] { font-size: 300px !important; right: -18px !important; top: 6px !important; transform: none !important; }
+  [aria-label="Neljanda koha boonus"] > div { grid-template-columns: 1fr !important; gap: 36px !important; }
+  [aria-label="Neljanda koha boonus"] h2 { font-size: 42px !important; }
+  [aria-label="Neljanda koha boonus"] p { font-size: 17px !important; }
+  [aria-label="Neljanda koha boonus"] a[style*="width: 360px"] { width: 100% !important; max-width: 380px; justify-self: start !important; }
+
+  /* ---------- signup dialog ---------- */
+  .nkj-card { width: calc(100% - 32px) !important; top: 104px !important; padding: 64px 22px 28px !important; border-radius: 24px !important; }
+  .nkj-card h2 { font-size: 32px !important; }
+  .nkj-card > div[aria-hidden] { top: -62px !important; right: -8px !important; transform: rotate(-12deg) scale(0.66) !important; }
+
+  /* ---------- Sportlased ---------- */
+  main { padding: 28px 16px 56px !important; }
+  main > div:first-child { flex-direction: column; align-items: stretch !important; gap: 18px !important; }
+  main h1 { font-size: 44px !important; }
+  main input[type="search"] { width: 100% !important; }
+  [aria-label="Sihile lähedal"], main > [aria-label="Uued tulijad"], [aria-label="Kõik sportlased"] { margin-top: 44px !important; }
+  [aria-label="Sihile lähedal"] > div[style*="repeat(4"] { grid-template-columns: 1fr !important; }
+  [aria-label="Sihile lähedal"] a[style*="span 2"] { grid-column: auto !important; grid-template-columns: 1fr !important; }
+  [aria-label="Sihile lähedal"] a[style*="span 2"] > div:first-child { min-height: 280px !important; }
+  [aria-label="Sihile lähedal"] a[style*="span 2"] > div:last-child { padding: 22px 20px 22px !important; gap: 0; }
+  [aria-label="Sihile lähedal"] a[style*="span 2"] > div:last-child > div[style*="margin-top: auto"] { margin-top: 22px !important; }
+  [aria-label="Kõik sportlased"] select[style*="margin-left: auto"] { margin-left: 0 !important; }
+  [aria-label="Kõik sportlased"] > div[style*="repeat(4"] { grid-template-columns: 1fr !important; }
+
+  /* ---------- Sportlase leht ---------- */
+  section[aria-label="Kampaania"] { padding: 16px 16px 0 !important; }
+  section[aria-label="Kampaania"] > div[style*="grid-template-columns"] { grid-template-columns: 1fr !important; gap: 24px !important; }
+  section[aria-label="Kampaania"] div[style*="height: 660px"] { height: 340px !important; border-radius: 22px !important; }
+  section[aria-label="Kampaania"] h1 { font-size: 50px !important; }
+  section[aria-label="Kampaania"] b[style*="font-size: 48px"] { font-size: 38px !important; }
+  section[aria-label="Kampaania"] > div > div:last-child { padding-top: 0 !important; }
+  section[aria-label="Liisi lugu"] { padding: 56px 16px 0 !important; grid-template-columns: 1fr !important; gap: 48px !important; }
+  section[aria-label="Liisi lugu"] div[style*="grid-template-columns: 1fr 1fr"] { grid-template-columns: 1fr !important; }
+  section[aria-label="Liisi lugu"] h2[style*="margin-top: 72px"] { margin-top: 52px !important; }
+  section[aria-label="Liisi lugu"] div[style*="font-size: 18px"] { font-size: 17px !important; }
+  section[aria-label="Vaata ka"] { padding: 64px 16px 56px !important; }
+  [aria-label="Vaata ka"] > div:first-child, [aria-label="Uued tulijad"] > div:first-child { align-items: center !important; }
+
+  /* ---------- footer ---------- */
+  footer { padding: 40px 16px 28px !important; gap: 32px !important; }
+  footer > div:first-child { flex-direction: column; }
+  footer > div:first-child > div:last-child { gap: 36px !important; flex-wrap: wrap; }
+  footer > div:last-child { flex-direction: column; gap: 6px; }
+}
