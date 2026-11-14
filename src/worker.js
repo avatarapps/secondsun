@@ -156,6 +156,71 @@ async function handleInquiry(request, env) {
   return json({ ok: true });
 }
 
+/* ---------- /api/homeview-paring (house configurator demo on avatarapps.github.io) ---------- */
+const HV_ORIGINS = ['https://avatarapps.github.io'];
+function withCors(request, res) {
+  const origin = request.headers.get('origin') || '';
+  if (!HV_ORIGINS.includes(origin)) return res;
+  const out = new Response(res.body, res);
+  out.headers.set('access-control-allow-origin', origin);
+  out.headers.set('access-control-allow-methods', 'POST, OPTIONS');
+  out.headers.set('access-control-allow-headers', 'content-type');
+  out.headers.set('vary', 'origin');
+  return out;
+}
+async function handleHomeview(request, env) {
+  if (request.method === 'OPTIONS') return new Response(null, { status: 204 });
+  if (request.method !== 'POST') return fail(405, 'method', 'Vale päring.');
+  const origin = request.headers.get('origin') || '';
+  if (!HV_ORIGINS.includes(origin)) return fail(403, 'origin', 'Päring ei ole lubatud.');
+  const len = Number(request.headers.get('content-length') || 0);
+  if (len > MAX_BODY) return fail(413, 'too_large', 'Piltide kogumaht võib olla kuni 15 MB.');
+  if (await limited(env, 'RL_SEND', ipOf(request))) return fail(429, 'rate', 'Liiga palju päringuid lühikese aja jooksul. Proovi mõne minuti pärast uuesti.');
+  if (!env.EMAIL || !env.TO_ADDRESS || !env.FROM_ADDRESS) return fail(503, 'not_configured', 'Saatmine pole serveris seadistatud.');
+
+  let form, meta;
+  try { form = await request.formData(); meta = JSON.parse(String(form.get('meta') || '')); } catch { return fail(400, 'form', 'Päringu andmeid ei õnnestunud lugeda.'); }
+  if (clean(meta.website, 200)) return json({ ok: true });                 // honeypot
+  if (!startedOk(meta.startedAt)) return fail(400, 'timing', 'Palun laadi leht uuesti ja proovi siis saata.');
+  const email = oneLine(meta.email, 200);
+  if (!EMAIL_RE.test(email)) return fail(400, 'email', 'E-posti aadress ei tundu õige.');
+  const name = oneLine(meta.name, 200), phone = oneLine(meta.phone, 60), house = oneLine(meta.house, 120) || 'Maja';
+  const rows = Array.isArray(meta.summary) ? meta.summary.slice(0, 20).map((r) => oneLine(r && r[0], 60) + ': ' + oneLine(r && r[1], 200)) : [];
+  const extra = ['Krunt: ' + (oneLine(meta.plot, 300) || '—'), 'Valmidusaste: ' + (oneLine(meta.stage, 60) || '—'),
+    'Ehitusaeg: ' + (oneLine(meta.timing, 60) || '—')];
+  const info = clean(meta.info, 4000);
+  const link = /^https:\/\/avatarapps\.github\.io\//.test(String(meta.link || '')) ? oneLine(meta.link, 600) : '';
+
+  const files = form.getAll('files').filter((f) => f && typeof f === 'object' && 'arrayBuffer' in f);
+  if (files.length > MAX_FILES) return fail(400, 'files_count', 'Korraga saab lisada kuni ' + MAX_FILES + ' pilti.');
+  let total = 0; const attachments = [];
+  for (const f of files) {
+    const fname = oneLine(f.name, 180) || 'pilt';
+    const e = ((/\.([a-z0-9]+)$/i.exec(fname) || [])[1] || '').toLowerCase();
+    if (!['png', 'jpg', 'jpeg', 'webp', 'heic'].includes(e)) return fail(400, 'file_type', '„' + fname + '“: lisada saab ainult pilte.');
+    if (f.size > MAX_FILE) return fail(400, 'file_size', '„' + fname + '“ on suurem kui 10 MB.');
+    total += f.size;
+    if (total > MAX_TOTAL) return fail(400, 'files_total', 'Piltide kogumaht võib olla kuni 15 MB.');
+    const bytes = new Uint8Array(await f.arrayBuffer());
+    if (!bytes.length || !looksLike(e, bytes)) return fail(400, 'file_content', '„' + fname + '“ ei ole korrektne pildifail.');
+    attachments.push({ name: fname, type: ALLOWED[e], bytes });
+  }
+
+  const text = [
+    'Uus päring majade AR-konfiguraatorist', '',
+    ...rows, '',
+    'Nimi: ' + (name || '—'), 'E-post: ' + email, 'Telefon: ' + (phone || '—'), ...extra, '',
+    info || '', link ? 'Konfiguratsioon 3D-s: ' + link : '', '',
+    'Pildid krundilt: ' + (attachments.length ? attachments.map((a) => a.name).join(', ') : '—'), '',
+    'Vasta sellele kirjale, et kirjutada otse kliendile (' + email + ').'
+  ].join('\n');
+  const raw = buildMime({ from: env.FROM_ADDRESS, fromName: 'Maja AR-päring', to: env.TO_ADDRESS, replyTo: email,
+    subject: 'Majapäring: ' + house + (name ? ' – ' + name : ''), text, attachments });
+  try { await env.EMAIL.send(new EmailMessage(env.FROM_ADDRESS, env.TO_ADDRESS, raw)); }
+  catch (err) { console.error('hv send failed', err && err.message); return fail(502, 'send', 'E-posti server ei võtnud päringut vastu.'); }
+  return json({ ok: true });
+}
+
 /* ---------- /api/tapsustused ---------- */
 const SYSTEM = `Sa oled Second Suni veebilehe päringuvormi abiline. Second Sun ehitab ettevõtetele digilahendusi: tööprotsesside automatiseerimine, süsteemide ühendamine, klienditeenindus ja uued digitooted.
 
@@ -227,6 +292,7 @@ export default {
       return Response.redirect(url.toString(), 301);
     }
     if (url.pathname === '/api/paring') return handleInquiry(request, env);
+    if (url.pathname === '/api/homeview-paring') return withCors(request, await handleHomeview(request, env));
     if (url.pathname === '/api/tapsustused') return handleFollowups(request, env);
     if (url.pathname === '/api/config') return json({ ok: true, ai: !!env.ANTHROPIC_API_KEY });
     const res = await env.ASSETS.fetch(request);
