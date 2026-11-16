@@ -16,7 +16,7 @@
     "FROM_ADDRESS": "veeb@secondsun.ee",
     "ANTHROPIC_MODEL": "claude-haiku-5-5",
     // Apple arendajakonto Team ID (homeview.secondsun.ee App Clipi seos). Tühi = seosefaili ei serveerita.
-    "HV_TEAM_ID": ""
+    "HV_TEAM_ID": "57BY6HBJQN"
   }
   // ANTHROPIC_API_KEY on salajane väärtus (Cloudflare → Worker → Settings → Variables and Secrets), mitte siin.
 }
