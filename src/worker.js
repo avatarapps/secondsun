@@ -157,7 +157,7 @@ async function handleInquiry(request, env) {
 }
 
 /* ---------- /api/homeview-paring (house configurator demo on avatarapps.github.io) ---------- */
-const HV_ORIGINS = ['https://avatarapps.github.io'];
+const HV_ORIGINS = ['https://avatarapps.github.io', 'https://homeview.secondsun.ee'];
 function withCors(request, res) {
   const origin = request.headers.get('origin') || '';
   if (!HV_ORIGINS.includes(origin)) return res;
@@ -283,9 +283,41 @@ async function handleFollowups(request, env) {
   return json({ ok: true, questions, known });
 }
 
+// ---- homeview.secondsun.ee: house AR configurator + iOS App Clip links ----
+// Pages are served from GitHub Pages (avatarapps/homeview); this domain only adds
+// the Apple association file and a clean address.
+async function handleHomeviewSite(request, env, url) {
+  if (url.pathname === '/.well-known/apple-app-site-association') {
+    const team = env.HV_TEAM_ID;
+    if (!team) return new Response('not configured', { status: 404 });
+    const body = {
+      applinks: { details: [{ appIDs: [`${team}.ee.secondsun.homeview`], components: [{ '/': '/ar*' }] }] },
+      appclips: { apps: [`${team}.ee.secondsun.homeview.Clip`] },
+    };
+    return new Response(JSON.stringify(body), { headers: { 'content-type': 'application/json', 'cache-control': 'max-age=300' } });
+  }
+  // App Clip link opened where the App Clip isn't available: go back to the configurator it came from.
+  if (url.pathname === '/ar') {
+    let back = '/';
+    try {
+      const m = new URL(url.searchParams.get('m') || '');
+      if (m.hostname === url.hostname) back = new URL('../', m).pathname;
+    } catch {}
+    return Response.redirect(new URL(back, url).toString(), 302);
+  }
+  if (url.pathname === '/i0k9g95har') return Response.redirect(new URL('/i0k9g95har/', url).toString(), 301);
+  const path = url.pathname.startsWith('/i0k9g95har/') ? url.pathname : '/demo' + url.pathname;
+  const upstream = await fetch('https://avatarapps.github.io/homeview' + path + url.search,
+                               { cf: { cacheTtl: 300, cacheEverything: true } });
+  const out = new Response(upstream.body, upstream);
+  out.headers.set('x-robots-tag', 'noindex, nofollow');
+  return out;
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
+    if (url.hostname === 'homeview.secondsun.ee') return handleHomeviewSite(request, env, url);
     // One public origin: https://www.secondsun.ee (apex and plain http are permanently redirected).
     if (url.hostname === 'secondsun.ee' || (url.hostname === 'www.secondsun.ee' && url.protocol === 'http:')) {
       url.hostname = 'www.secondsun.ee'; url.protocol = 'https:';
