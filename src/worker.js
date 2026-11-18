@@ -185,11 +185,12 @@ async function handleHomeview(request, env) {
   const email = oneLine(meta.email, 200);
   if (!EMAIL_RE.test(email)) return fail(400, 'email', 'E-posti aadress ei tundu õige.');
   const name = oneLine(meta.name, 200), phone = oneLine(meta.phone, 60), house = oneLine(meta.house, 120) || 'Maja';
+  const client = oneLine(meta.clientName, 80) || oneLine(meta.client, 40) || 'tundmatu konfiguraator';
   const rows = Array.isArray(meta.summary) ? meta.summary.slice(0, 20).map((r) => oneLine(r && r[0], 60) + ': ' + oneLine(r && r[1], 200)) : [];
   const extra = ['Krunt: ' + (oneLine(meta.plot, 300) || '—'), 'Valmidusaste: ' + (oneLine(meta.stage, 60) || '—'),
     'Ehitusaeg: ' + (oneLine(meta.timing, 60) || '—')];
   const info = clean(meta.info, 4000);
-  const link = /^https:\/\/avatarapps\.github\.io\//.test(String(meta.link || '')) ? oneLine(meta.link, 600) : '';
+  const link = /^https:\/\/(avatarapps\.github\.io|homeview\.secondsun\.ee)\//.test(String(meta.link || '')) ? oneLine(meta.link, 600) : '';
 
   const files = form.getAll('files').filter((f) => f && typeof f === 'object' && 'arrayBuffer' in f);
   if (files.length > MAX_FILES) return fail(400, 'files_count', 'Korraga saab lisada kuni ' + MAX_FILES + ' pilti.');
@@ -207,7 +208,7 @@ async function handleHomeview(request, env) {
   }
 
   const text = [
-    'Uus päring majade AR-konfiguraatorist', '',
+    'Uus päring majade AR-konfiguraatorist: ' + client, '',
     ...rows, '',
     'Nimi: ' + (name || '—'), 'E-post: ' + email, 'Telefon: ' + (phone || '—'), ...extra, '',
     info || '', link ? 'Konfiguratsioon 3D-s: ' + link : '', '',
@@ -215,7 +216,7 @@ async function handleHomeview(request, env) {
     'Vasta sellele kirjale, et kirjutada otse kliendile (' + email + ').'
   ].join('\n');
   const raw = buildMime({ from: env.FROM_ADDRESS, fromName: 'Maja AR-päring', to: env.TO_ADDRESS, replyTo: email,
-    subject: 'Majapäring: ' + house + (name ? ' – ' + name : ''), text, attachments });
+    subject: '[' + client + '] Majapäring: ' + house + (name ? ' – ' + name : ''), text, attachments });
   try { await env.EMAIL.send(new EmailMessage(env.FROM_ADDRESS, env.TO_ADDRESS, raw)); }
   catch (err) { console.error('hv send failed', err && err.message); return fail(502, 'send', 'E-posti server ei võtnud päringut vastu.'); }
   return json({ ok: true });
@@ -305,8 +306,13 @@ async function handleHomeviewSite(request, env, url) {
     } catch {}
     return Response.redirect(new URL(back, url).toString(), 302);
   }
-  if (url.pathname === '/i0k9g95har') return Response.redirect(new URL('/i0k9g95har/', url).toString(), 301);
-  const path = url.pathname.startsWith('/i0k9g95har/') ? url.pathname : '/demo' + url.pathname;
+  // Layout of the Pages repo: /engine/ (shared code), /<client folder>/ (one per manufacturer),
+  // and /demo/ which this domain shows at its root (with /privacy/, /support/ for the App Store).
+  const seg = url.pathname.split('/')[1] || '';
+  const DEMO = ['', 'privacy', 'support', 'tex', 'app'];
+  const isFile = seg.includes('.');
+  if (!isFile && seg && url.pathname === '/' + seg) return Response.redirect(new URL('/' + seg + '/', url).toString(), 301);
+  const path = (DEMO.includes(seg) || isFile) ? '/demo' + url.pathname : url.pathname;
   const upstream = await fetch('https://avatarapps.github.io/homeview' + path + url.search,
                                { cf: { cacheTtl: 300, cacheEverything: true } });
   const out = new Response(upstream.body, upstream);
