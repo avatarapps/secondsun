@@ -299,7 +299,7 @@ async function handleHomeviewSite(request, env, url) {
   }
   // App Clip link: iPhone Safari shows the Homeview AR App Clip card from the Smart App Banner on this page;
   // the App Clip / app opens this same URL (house, model, colours in the query). Elsewhere: link back.
-  if (url.pathname === '/ar') {
+  if (url.pathname === '/ar' || url.pathname.startsWith('/ar/')) {   // /ar/<client folder>: that client's own App Clip card
     let back = '/';
     try {
       const m = new URL(url.searchParams.get('m') || '');
