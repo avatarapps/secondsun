@@ -331,6 +331,10 @@ a{display:block;border-radius:24px;padding:14px 20px;margin:0 0 10px;font-weight
                                { cf: { cacheTtl: 300, cacheEverything: true } });
   const out = new Response(upstream.body, upstream);
   out.headers.set('x-robots-tag', 'noindex, nofollow');
+  // Cloudflare's browser cache default (4 h) kept phones on an old engine after updates: code and pages
+  // must refresh within a minute; models and textures may stay cached for an hour.
+  const code = !isFile || /\.(html|js|css|json)$/i.test(url.pathname);
+  out.headers.set('cache-control', code ? 'public, max-age=60' : 'public, max-age=3600');
   return out;
 }
 
