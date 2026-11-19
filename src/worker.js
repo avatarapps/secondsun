@@ -307,6 +307,8 @@ async function handleHomeviewSite(request, env, url) {
     } catch {}
     const h = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
     const name = h((url.searchParams.get('n') || 'Maja').slice(0, 80));
+    let usdz = '';   // fallback without the App Clip: Apple's built-in AR viewer for the same model, still no app
+    try { const m = new URL(url.searchParams.get('m') || ''); if (m.hostname === url.hostname && m.pathname.endsWith('.usdz')) usdz = m.href; } catch {}
     const html = `<!DOCTYPE html><html lang="et"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex, nofollow">
 <meta name="apple-itunes-app" content="app-id=6835436520, app-clip-bundle-id=ee.secondsun.homeview.Clip, app-clip-display=card">
@@ -314,9 +316,9 @@ async function handleHomeviewSite(request, env, url) {
 <style>body{margin:0;font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#1d1e20;background:#f6f5f2;display:grid;place-items:center;min-height:100vh;text-align:center}
 main{padding:32px 24px;max-width:420px}h1{font-size:22px;margin:0 0 8px}p{color:#5c5f64;margin:0 0 24px}
 a{display:block;border-radius:24px;padding:14px 20px;margin:0 0 10px;font-weight:600;text-decoration:none}
-.p{background:#1d1e20;color:#fff}.s{border:1px solid #1d1e20;color:#1d1e20}</style></head>
-<body><main><h1>${name}</h1><p>Vajuta ülal kaardil „Ava“ – maja avaneb sinu valikutega päris suuruses.</p>
-<a class="p" href="https://apps.apple.com/app/id6835436520">Ava Homeview AR</a>
+.p{background:#1d1e20;color:#fff}.q{padding:0;background:none}.q img{display:block;width:100%;height:auto}.s{border:1px solid #1d1e20;color:#1d1e20}</style></head>
+<body><main><h1>${name}</h1><p>Vajuta kaardil „Vaata“ – maja avaneb sinu valikutega päris suuruses. Kui kaarti ei tule, ava lihtsam AR-vaade.</p>
+${usdz ? `<a class="q" rel="ar" href="${h(usdz)}"><img alt="Ava AR-vaade" src="data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="372" height="52"><rect width="372" height="52" rx="26" fill="#1d1e20"/><text x="186" y="33" font-family="-apple-system,Helvetica,sans-serif" font-size="17" font-weight="600" fill="#fff" text-anchor="middle">Ava AR-vaade</text></svg>')}"></a>` : ''}
 <a class="s" href="${h(back)}">Tagasi maja juurde</a></main></body></html>`;
     return new Response(html, { headers: { 'content-type': 'text/html; charset=utf-8', 'x-robots-tag': 'noindex, nofollow', 'cache-control': 'no-store' } });
   }
