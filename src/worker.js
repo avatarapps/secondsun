@@ -349,6 +349,22 @@ export default {
       url.hostname = 'www.secondsun.ee'; url.protocol = 'https:';
       return Response.redirect(url.toString(), 301);
     }
+    // ELSF pitch demo lives on its own subdomain, served from /elsf/ and kept out of search engines.
+    if (url.hostname === 'www.secondsun.ee' && (url.pathname === '/elsf' || url.pathname.startsWith('/elsf/'))) {
+      return Response.redirect('https://elsf.secondsun.ee' + (url.pathname.slice(5) || '/') + url.search, 301);
+    }
+    if (url.hostname === 'elsf.secondsun.ee') {
+      if (url.protocol === 'http:') { url.protocol = 'https:'; return Response.redirect(url.toString(), 301); }
+      const inner = new URL(url); inner.pathname = '/elsf' + url.pathname;
+      const r = await env.ASSETS.fetch(new Request(inner, request));
+      const o = new Response(r.body, r);
+      const loc = o.headers.get('location');
+      if (loc && loc.includes('/elsf/')) o.headers.set('location', loc.replace(/^(https?:\/\/[^/]+)?\/elsf\//, '/'));
+      o.headers.set('x-robots-tag', 'noindex, nofollow');
+      o.headers.set('x-content-type-options', 'nosniff');
+      o.headers.set('strict-transport-security', 'max-age=31536000');
+      return o;
+    }
     if (url.pathname === '/api/paring') return handleInquiry(request, env);
     if (url.pathname === '/api/homeview-paring') return withCors(request, await handleHomeview(request, env));
     if (url.pathname === '/api/tapsustused') return handleFollowups(request, env);
