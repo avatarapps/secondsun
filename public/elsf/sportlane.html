@@ -304,11 +304,11 @@ a:hover .tb { background: #0166B4; }
   function drawCard(name, msg) {
     var c = document.createElement('canvas'); c.width = 1080; c.height = 1350; var x = c.getContext('2d');
     x.fillStyle = '#0F2033'; x.fillRect(0, 0, 1080, 1350);
-    if (ph.complete && ph.naturalWidth) { var s = Math.max(1080 / ph.naturalWidth, 800 / ph.naturalHeight), w = ph.naturalWidth * s, h = ph.naturalHeight * s; x.drawImage(ph, (1080 - w) / 2 - 60, 0, w, h); }
-    var g = x.createLinearGradient(0, 380, 0, 820); g.addColorStop(0, 'rgba(15,32,51,0)'); g.addColorStop(1, 'rgba(15,32,51,1)'); x.fillStyle = g; x.fillRect(0, 380, 1080, 440);
+    if (ph.complete && ph.naturalWidth) { var s = Math.max(1200 / ph.naturalWidth, 760 / ph.naturalHeight), w = ph.naturalWidth * s, h = ph.naturalHeight * s; x.save(); x.beginPath(); x.rect(0, 160, 1080, 770); x.clip(); x.drawImage(ph, (1080 - w) / 2 - 60, 160, w, h); x.restore(); var g0 = x.createLinearGradient(0, 160, 0, 260); g0.addColorStop(0, 'rgba(15,32,51,1)'); g0.addColorStop(1, 'rgba(15,32,51,0)'); x.fillStyle = g0; x.fillRect(0, 160, 1080, 100); }
+    var g = x.createLinearGradient(0, 560, 0, 930); g.addColorStop(0, 'rgba(15,32,51,0)'); g.addColorStop(1, 'rgba(15,32,51,1)'); x.fillStyle = g; x.fillRect(0, 560, 1080, 380);
     x.fillStyle = '#FFFFFF'; rr(x, 60, 56, 420, 64, 32); x.fill();
     x.fillStyle = '#0166B4'; x.font = '800 30px Saira'; x.fillText('DIGITRIBÜÜN · MM 2027', 92, 99);
-    x.save(); x.translate(540, 820); x.rotate(-0.035);
+    x.save(); x.translate(540, 870); x.rotate(-0.035);
     x.font = '700 60px Saira'; var probe = document.createElement('canvas').getContext('2d'); probe.font = x.font;
     var n = wrap(probe, '„' + msg + '“', 0, 0, 780, 72, 3), bh = 96 + n * 72 + 84, top = -bh / 2;
     x.shadowColor = 'rgba(0,0,0,0.4)'; x.shadowBlur = 40; x.shadowOffsetY = 16; x.fillStyle = '#FFFFFF'; rr(x, -440, top, 880, bh, 34); x.fill(); x.shadowColor = 'transparent';
