@@ -55,6 +55,15 @@ a:hover .tb { background: #0166B4; }
 .igt-h { position: absolute; inset: 0; display: grid; place-items: center; color: #FFFFFF; background: rgba(15,32,51,0.45); opacity: 0; transition: opacity 0.2s; }
 .igt:hover { transform: rotate(0deg) translateY(-6px) scale(1.04) !important; z-index: 2; }
 .igt:hover .igt-h { opacity: 1; }
+.topw { position: relative; }
+.topr { display: grid; grid-auto-flow: column; grid-auto-columns: calc((100% - 60px) / 4); gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; scrollbar-width: none; padding: 4px 0 36px; margin: -4px 0 -36px; }
+.topr::-webkit-scrollbar { display: none; }
+.topr > a { scroll-snap-align: start; }
+.topb { position: absolute; top: 160px; width: 46px; height: 46px; border-radius: 50%; border: 0; display: grid; place-items: center; background: rgba(255,255,255,0.92); color: #0F2033; box-shadow: 0 6px 18px rgba(15,32,51,0.18); cursor: pointer; transition: transform 0.18s, opacity 0.2s; }
+.topb:hover { transform: scale(1.06); }
+.topb[hidden] { display: none; }
+.topb-r { right: -22px; }
+.topb-l { left: -22px; }
 .live-dot { width: 9px; height: 9px; border-radius: 50%; background: #FF6B6B; animation: livePulse 1.6s ease-in-out infinite; }
 @keyframes livePulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
 .cyc { position: absolute; inset: 0; opacity: 0; animation: cyc 30s ease-in-out infinite; }
@@ -80,6 +89,8 @@ a:hover .tb { background: #0166B4; }
   .m-curve { margin: 0 -16px !important; height: 36px !important; }
   .m-sec > div:first-child { flex-wrap: wrap; gap: 8px; }
   .m-top0 { padding-top: 0 !important; }
+  .topb { display: none !important; }
+  .topr { grid-auto-columns: 82%; }
   .rhead { flex-wrap: wrap; gap: 10px; }
   .rhead h3 { font-size: 22px !important; }
   .m-1col img[style*="height: 130px"] { height: 96px !important; }
@@ -147,7 +158,7 @@ a:hover .tb { background: #0166B4; }
 
 <section class="m-sec" style="background: #E9F2FA; padding: 40px 56px 88px">
 <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 28px"><h2 style="margin: 0; font-size: 40px; font-weight: 800">Enim toetatud</h2><a href="sportlased.html" style="font-weight: 600; color: #0166B4">Kõik sportlased →</a></div>
-<div class="m-cards" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px"><a href="sportlane.html" style="display: flex; flex-direction: column; background: #FFFFFF; border-radius: 20px; overflow: hidden; text-decoration: none; color: #0F2033; box-shadow: 0 10px 30px rgba(15,32,51,0.10)">
+<div class="topw"><div class="m-cards topr" id="topr"><a href="sportlane.html" style="display: flex; flex-direction: column; background: #FFFFFF; border-radius: 20px; overflow: hidden; text-decoration: none; color: #0F2033; box-shadow: 0 10px 30px rgba(15,32,51,0.10)">
 <div style="height: 250px; position: relative"><img src="img/ph-17646670.jpg" alt="" style="width: 100%; height: 100%; object-fit: cover; object-position: center 55%">
 <span style="position: absolute; left: 16px; top: 16px; background: #FFFFFF; border-radius: 999px; font-size: 13px; font-weight: 700; color: #0166B4; padding: 5px 12px">+18 toetajat sel nädalal</span></div>
 <div style="padding: 20px 22px 22px; display: flex; flex-direction: column; gap: 12px; flex: 1">
@@ -183,7 +194,45 @@ a:hover .tb { background: #0166B4; }
 <div style="font-size: 14px; color: #5B6F82"><b style="color: #0F2033">2 180 €</b> / 5 000 € · 61 toetajat</div>
 <div style="padding-top: 12px; border-top: 1px solid #E6EEF5; font-size: 14px; color: #3E5266">„Iga sekund loeb.“ <span style="color: #8A9BAC">– Treener Ain</span></div>
 </div>
+</a><a href="sportlane.html" style="display: flex; flex-direction: column; background: #FFFFFF; border-radius: 20px; overflow: hidden; text-decoration: none; color: #0F2033; box-shadow: 0 10px 30px rgba(15,32,51,0.10)">
+<div style="height: 250px; position: relative"><img src="img/ph-35685549.jpg" alt="" style="width: 100%; height: 100%; object-fit: cover; object-position: center 60%">
+<span style="position: absolute; left: 16px; top: 16px; background: #FFFFFF; border-radius: 999px; font-size: 13px; font-weight: 700; color: #0166B4; padding: 5px 12px">+6 toetajat sel nädalal</span></div>
+<div style="padding: 20px 22px 22px; display: flex; flex-direction: column; gap: 12px; flex: 1">
+<div><div style="display: flex; justify-content: space-between; align-items: center; gap: 10px"><div style="font-size: 24px; font-weight: 700; line-height: 1">Merit Saluste</div><span class="tb">Toeta</span></div><div style="margin-top: 8px; font-size: 14px"><span style="display: inline-flex; align-items: center; gap: 7px; color: #5B6F82"><svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true" style="flex: none"><circle cx="8" cy="8" r="7" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="8" cy="8" r="3.6" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="8" cy="8" r="1" fill="currentColor"/></svg><span>koht MM-i ühisstardis</span></span></div></div>
+<div title="39 % kogutud" style="display: inline-flex; align-self: flex-start; gap: 6px; align-items: center; padding: 8px 10px; background: #05080C; border-radius: 8px"><span style="flex: none; width: 20px; height: 20px; border-radius: 50%; background: #FFFFFF; box-shadow: inset 0 0 0 2px #0F2033"></span><span style="flex: none; width: 20px; height: 20px; border-radius: 50%; background: conic-gradient(#FFFFFF 0deg 342deg, #05080C 342deg 360deg); box-shadow: inset 0 0 0 2px #4A5868"></span><span style="flex: none; width: 20px; height: 20px; border-radius: 50%; background: #05080C; box-shadow: inset 0 0 0 3px #05080C, inset 0 0 0 4px #4A5868"></span><span style="flex: none; width: 20px; height: 20px; border-radius: 50%; background: #05080C; box-shadow: inset 0 0 0 3px #05080C, inset 0 0 0 4px #4A5868"></span><span style="flex: none; width: 20px; height: 20px; border-radius: 50%; background: #05080C; box-shadow: inset 0 0 0 3px #05080C, inset 0 0 0 4px #4A5868"></span><span class="num" style="margin-left: 8px; color: #FFFFFF; font-size: 14px; font-weight: 700">39&nbsp;%</span></div>
+<div style="font-size: 14px; color: #5B6F82"><b style="color: #0F2033">1 930 €</b> / 5 000 € · 52 toetajat</div>
+<div style="padding-top: 12px; border-top: 1px solid #E6EEF5; font-size: 14px; color: #3E5266">„Tahame ka kunagi nii sõita!“ <span style="color: #8A9BAC">– Elva noored</span></div>
+</div>
+</a><a href="sportlane.html" style="display: flex; flex-direction: column; background: #FFFFFF; border-radius: 20px; overflow: hidden; text-decoration: none; color: #0F2033; box-shadow: 0 10px 30px rgba(15,32,51,0.10)">
+<div style="height: 250px; position: relative"><img src="img/ph-29290472.jpg" alt="" style="width: 100%; height: 100%; object-fit: cover; object-position: 55% center">
+</div>
+<div style="padding: 20px 22px 22px; display: flex; flex-direction: column; gap: 12px; flex: 1">
+<div><div style="display: flex; justify-content: space-between; align-items: center; gap: 10px"><div style="font-size: 24px; font-weight: 700; line-height: 1">Joosep Kangur</div><span class="tb">Toeta</span></div><div style="margin-top: 8px; font-size: 14px"><span style="display: inline-flex; align-items: center; gap: 7px; color: #5B6F82"><svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true" style="flex: none"><circle cx="8" cy="8" r="7" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="8" cy="8" r="3.6" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="8" cy="8" r="1" fill="currentColor"/></svg><span>MM-i teatemedal</span></span></div></div>
+<div title="31 % kogutud" style="display: inline-flex; align-self: flex-start; gap: 6px; align-items: center; padding: 8px 10px; background: #05080C; border-radius: 8px"><span style="flex: none; width: 20px; height: 20px; border-radius: 50%; background: #FFFFFF; box-shadow: inset 0 0 0 2px #0F2033"></span><span style="flex: none; width: 20px; height: 20px; border-radius: 50%; background: conic-gradient(#FFFFFF 0deg 198deg, #05080C 198deg 360deg); box-shadow: inset 0 0 0 2px #4A5868"></span><span style="flex: none; width: 20px; height: 20px; border-radius: 50%; background: #05080C; box-shadow: inset 0 0 0 3px #05080C, inset 0 0 0 4px #4A5868"></span><span style="flex: none; width: 20px; height: 20px; border-radius: 50%; background: #05080C; box-shadow: inset 0 0 0 3px #05080C, inset 0 0 0 4px #4A5868"></span><span style="flex: none; width: 20px; height: 20px; border-radius: 50%; background: #05080C; box-shadow: inset 0 0 0 3px #05080C, inset 0 0 0 4px #4A5868"></span><span class="num" style="margin-left: 8px; color: #FFFFFF; font-size: 14px; font-weight: 700">31&nbsp;%</span></div>
+<div style="font-size: 14px; color: #5B6F82"><b style="color: #0F2033">1 540 €</b> / 5 000 € · 41 toetajat</div>
+<div style="padding-top: 12px; border-top: 1px solid #E6EEF5; font-size: 14px; color: #3E5266">„Pühapäeval oleme tribüünil!“ <span style="color: #8A9BAC">– Sven L.</span></div>
+</div>
+</a><a href="sportlane.html" style="display: flex; flex-direction: column; background: #FFFFFF; border-radius: 20px; overflow: hidden; text-decoration: none; color: #0F2033; box-shadow: 0 10px 30px rgba(15,32,51,0.10)">
+<div style="height: 250px; position: relative"><img src="img/ph-40411092.jpg" alt="" style="width: 100%; height: 100%; object-fit: cover; object-position: center 55%">
+<span style="position: absolute; left: 16px; top: 16px; background: #FFFFFF; border-radius: 999px; font-size: 13px; font-weight: 700; color: #0166B4; padding: 5px 12px">+5 toetajat sel nädalal</span></div>
+<div style="padding: 20px 22px 22px; display: flex; flex-direction: column; gap: 12px; flex: 1">
+<div><div style="display: flex; justify-content: space-between; align-items: center; gap: 10px"><div style="font-size: 24px; font-weight: 700; line-height: 1">Markus Hein</div><span class="tb">Toeta</span></div><div style="margin-top: 8px; font-size: 14px"><span style="display: inline-flex; align-items: center; gap: 7px; color: #5B6F82"><svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true" style="flex: none"><circle cx="8" cy="8" r="7" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="8" cy="8" r="3.6" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="8" cy="8" r="1" fill="currentColor"/></svg><span>esimesed MK-punktid</span></span></div></div>
+<div title="43 % kogutud" style="display: inline-flex; align-self: flex-start; gap: 6px; align-items: center; padding: 8px 10px; background: #05080C; border-radius: 8px"><span style="flex: none; width: 20px; height: 20px; border-radius: 50%; background: #FFFFFF; box-shadow: inset 0 0 0 2px #0F2033"></span><span style="flex: none; width: 20px; height: 20px; border-radius: 50%; background: #FFFFFF; box-shadow: inset 0 0 0 2px #0F2033"></span><span style="flex: none; width: 20px; height: 20px; border-radius: 50%; background: conic-gradient(#FFFFFF 0deg 54deg, #05080C 54deg 360deg); box-shadow: inset 0 0 0 2px #4A5868"></span><span style="flex: none; width: 20px; height: 20px; border-radius: 50%; background: #05080C; box-shadow: inset 0 0 0 3px #05080C, inset 0 0 0 4px #4A5868"></span><span style="flex: none; width: 20px; height: 20px; border-radius: 50%; background: #05080C; box-shadow: inset 0 0 0 3px #05080C, inset 0 0 0 4px #4A5868"></span><span class="num" style="margin-left: 8px; color: #FFFFFF; font-size: 14px; font-weight: 700">43&nbsp;%</span></div>
+<div style="font-size: 14px; color: #5B6F82"><b style="color: #0F2033">1 720 €</b> / 4 000 € · 37 toetajat</div>
+<div style="padding-top: 12px; border-top: 1px solid #E6EEF5; font-size: 14px; color: #3E5266">„Esimesed MK-punktid tulevad!“ <span style="color: #8A9BAC">– Liina R.</span></div>
+</div>
+</a><a href="sportlane.html" style="display: flex; flex-direction: column; background: #FFFFFF; border-radius: 20px; overflow: hidden; text-decoration: none; color: #0F2033; box-shadow: 0 10px 30px rgba(15,32,51,0.10)">
+<div style="height: 250px; position: relative"><img src="img/ph-29749447.jpg" alt="" style="width: 100%; height: 100%; object-fit: cover; object-position: center 45%">
+<span style="position: absolute; left: 16px; top: 16px; background: #FFFFFF; border-radius: 999px; font-size: 13px; font-weight: 700; color: #0166B4; padding: 5px 12px">+4 toetajat sel nädalal</span></div>
+<div style="padding: 20px 22px 22px; display: flex; flex-direction: column; gap: 12px; flex: 1">
+<div><div style="display: flex; justify-content: space-between; align-items: center; gap: 10px"><div style="font-size: 24px; font-weight: 700; line-height: 1">Anni Põld</div><span class="tb">Toeta</span></div><div style="margin-top: 8px; font-size: 14px"><span style="display: inline-flex; align-items: center; gap: 7px; color: #5B6F82"><svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true" style="flex: none"><circle cx="8" cy="8" r="7" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="8" cy="8" r="3.6" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="8" cy="8" r="1" fill="currentColor"/></svg><span>noorte MM-i medal</span></span></div></div>
+<div title="29 % kogutud" style="display: inline-flex; align-self: flex-start; gap: 6px; align-items: center; padding: 8px 10px; background: #05080C; border-radius: 8px"><span style="flex: none; width: 20px; height: 20px; border-radius: 50%; background: #FFFFFF; box-shadow: inset 0 0 0 2px #0F2033"></span><span style="flex: none; width: 20px; height: 20px; border-radius: 50%; background: conic-gradient(#FFFFFF 0deg 162deg, #05080C 162deg 360deg); box-shadow: inset 0 0 0 2px #4A5868"></span><span style="flex: none; width: 20px; height: 20px; border-radius: 50%; background: #05080C; box-shadow: inset 0 0 0 3px #05080C, inset 0 0 0 4px #4A5868"></span><span style="flex: none; width: 20px; height: 20px; border-radius: 50%; background: #05080C; box-shadow: inset 0 0 0 3px #05080C, inset 0 0 0 4px #4A5868"></span><span style="flex: none; width: 20px; height: 20px; border-radius: 50%; background: #05080C; box-shadow: inset 0 0 0 3px #05080C, inset 0 0 0 4px #4A5868"></span><span class="num" style="margin-left: 8px; color: #FFFFFF; font-size: 14px; font-weight: 700">29&nbsp;%</span></div>
+<div style="font-size: 14px; color: #5B6F82"><b style="color: #0F2033">860 €</b> / 3 000 € · 29 toetajat</div>
+<div style="padding-top: 12px; border-top: 1px solid #E6EEF5; font-size: 14px; color: #3E5266">„Oleme nii uhked.“ <span style="color: #8A9BAC">– Vanaema Helgi</span></div>
+</div>
 </a></div>
+<button type="button" class="topb topb-l" aria-label="Eelmised" hidden><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+<button type="button" class="topb topb-r" aria-label="Järgmised"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
 </section>
 <section class="m-sec m-top0" style="background: #E9F2FA; color: #0F2033; padding: 0 56px 96px">
 <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 30px">
@@ -285,7 +334,22 @@ a:hover .tb { background: #0166B4; }
 <input type="email" required placeholder="Sinu e-post" aria-label="E-post"><button type="submit">Liitu</button></form>
 <div class="nl-ok" hidden>Aitäh! Oled nüüd meie sõber.</div>
 </div>
-<script>setTimeout(function(){ var n = document.getElementById('nl'); if (n) n.hidden = false; }, 4000);</script>
+<script>(function () {
+  var n = document.getElementById('nl'); if (!n) return;
+  var mob = matchMedia('(max-width: 899px)').matches, timeOk = false, scrollOk = !mob, shown = false;
+  function go() { if (!shown && timeOk && scrollOk) { shown = true; n.hidden = false; } }
+  setTimeout(function () { timeOk = true; go(); }, mob ? 10000 : 4000);
+  if (mob) addEventListener('scroll', function () { if (scrollY > innerHeight * 0.8) { scrollOk = true; go(); } }, { passive: true });
+})();
+(function () {
+  var r = document.getElementById('topr'); if (!r) return;
+  var L = document.querySelector('.topb-l'), R = document.querySelector('.topb-r');
+  function step() { var c = r.querySelector('a'); return c ? (c.offsetWidth + 20) * 2 : 400; }
+  function upd() { L.hidden = r.scrollLeft < 8; R.hidden = r.scrollLeft + r.clientWidth > r.scrollWidth - 8; }
+  L.onclick = function () { r.scrollBy({ left: -step() }); };
+  R.onclick = function () { r.scrollBy({ left: step() }); };
+  r.addEventListener('scroll', upd, { passive: true }); upd();
+})();</script>
 <script>(function () {
   var w = document.getElementById('wall0'); if (!w) return;
   var STY = [['#FFFFFF', '#0F2033', '#5B6F82'], ['#CFE5F7', '#0F2033', '#3E5266'], ['#0166B4', '#FFFFFF', '#CFE5F7']], si = 1, ni = 0;
