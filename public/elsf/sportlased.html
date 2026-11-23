@@ -2,7 +2,7 @@
 <html lang="et">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=1440">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
 <title>Sportlased · Digitribüün</title>
 <link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="apple-touch-icon.png"><meta name="theme-color" content="#0F2033">
@@ -53,6 +53,36 @@ a:hover .tb { background: #0166B4; }
 .igf:hover { transform: translateY(-1px); box-shadow: 0 12px 26px rgba(15,32,51,0.24); }
 .igi { display: grid; place-items: center; width: 22px; height: 22px; color: #FFFFFF; }
 .igi svg { width: 18px; height: 18px; }
+@media (max-width: 899px) {
+  .m-shead { padding: 28px 16px 22px !important; }
+  .m-stack { flex-direction: column; align-items: stretch !important; gap: 16px !important; }
+  .m-h1 { font-size: 44px !important; }
+  .m-full { width: 100% !important; }
+  .m-flt { flex-wrap: wrap; margin-top: 16px !important; }
+  .fltr { padding: 9px 14px !important; font-size: 14px !important; }
+  .m-flt select { margin-left: 0 !important; }
+  #grid { grid-template-columns: 1fr !important; gap: 14px !important; }
+  .m-cost { grid-template-columns: 1fr !important; gap: 28px !important; }
+  .m-cost h2 { font-size: 44px !important; }
+  .fact b { font-size: 48px !important; }
+}
+@media (max-width: 899px) {
+  .wrap { width: auto !important; }
+  .cbar { font-size: 11px !important; padding: 5px 12px !important; }
+  .hdr { height: 60px !important; padding: 0 16px !important; }
+  .hdr nav { gap: 0 !important; }
+  .hdr nav a:not(:last-child) { display: none !important; }
+  .m-sec { padding: 48px 16px !important; }
+  .m-sec h2 { font-size: 28px !important; }
+  .m-1col { grid-template-columns: 1fr !important; gap: 14px !important; }
+  .m-cards { display: flex !important; overflow-x: auto; scroll-snap-type: x mandatory; gap: 12px !important; margin: 0 -16px; padding: 0 16px 8px; }
+  .m-cards > a { flex: 0 0 82%; scroll-snap-align: start; }
+  .tst { left: 12px !important; right: 12px !important; bottom: 12px !important; width: auto !important; }
+  .tst > div { left: 0; right: 0; white-space: normal !important; font-size: 14px !important; }
+  .nl { left: 12px !important; right: 12px !important; bottom: 12px !important; width: auto !important; }
+  .crow { grid-template-columns: 1fr auto !important; row-gap: 8px !important; gap: 8px 12px !important; }
+  .crow > div { grid-column: 1 / -1; grid-row: 2; }
+}
 </style>
 </head>
 <body>
@@ -62,18 +92,18 @@ a:hover .tb { background: #0166B4; }
 <a href="index.html" style="display: flex; align-items: center; gap: 12px; color: #FFFFFF; text-decoration: none"><svg viewBox="0 0 40 48" width="38" height="46" aria-hidden="true"><path d="M2 2h36v30c0 7-8 12-18 14C10 44 2 39 2 32z" fill="#0166B4"/><path d="M8 30l6-14 6 9 6-12 6 17" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linejoin="round"/><circle cx="20" cy="11" r="3" fill="#FFFFFF"/></svg><span style="font-weight: 700; font-size: 15px; line-height: 1.1; letter-spacing: 0.02em">EESTI<br>LASKESUUSATAMINE</span></a>
 <nav style="display: flex; align-items: center; gap: 26px; font-size: 14px; font-weight: 500; letter-spacing: 0.04em"><a href="#" style="color: #FFFFFF; text-decoration: none; opacity: 0.85">UUDISED</a><a href="#" style="color: #FFFFFF; text-decoration: none; opacity: 0.85">LIVE</a><a href="#" style="color: #FFFFFF; text-decoration: none; opacity: 0.85">KALENDER</a><a href="#" style="color: #FFFFFF; text-decoration: none; opacity: 0.85">VÕISTLUSSARJAD</a><a href="#" style="color: #FFFFFF; text-decoration: none; opacity: 0.85">INIMESED</a><a href="#" style="color: #FFFFFF; text-decoration: none; opacity: 0.85">FÖDERATSIOON</a><a href="sportlane.html" style="background: #0166B4; color: #FFFFFF; border-radius: 999px; padding: 9px 18px; text-decoration: none; font-weight: 700">TOETA</a></nav>
 </header>
-<section style="background: #0166B4; color: #FFFFFF; padding: 64px 56px 40px">
-<div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 40px">
-<div><h1 style="margin: 0; font-size: 72px; line-height: 0.95; font-weight: 800; letter-spacing: -0.02em">Sportlased</h1>
+<section class="m-shead" style="background: #0166B4; color: #FFFFFF; padding: 64px 56px 40px">
+<div class="m-stack" style="display: flex; justify-content: space-between; align-items: flex-end; gap: 40px">
+<div><h1 class="m-h1" style="margin: 0; font-size: 72px; line-height: 0.95; font-weight: 800; letter-spacing: -0.02em">Sportlased</h1>
 </div>
-<input id="q" class="fld" style="width: 380px; border: 0; padding: 16px 20px" placeholder="Otsi nime järgi" aria-label="Otsi nime järgi">
+<input id="q" class="fld m-full" style="width: 380px; border: 0; padding: 16px 20px" placeholder="Otsi nime järgi" aria-label="Otsi nime järgi">
 </div>
-<div style="margin-top: 32px; display: flex; gap: 10px; align-items: center" id="flt">
+<div class="m-flt" style="margin-top: 32px; display: flex; gap: 10px; align-items: center" id="flt">
 <button class="fltr on" data-f="all">Kõik</button><button class="fltr" data-f="naine">Naised</button><button class="fltr" data-f="mees">Mehed</button><button class="fltr" data-f="tiim">Tiimid</button>
-<select id="srt" class="fld" style="margin-left: auto; width: 230px; border: 0; padding: 12px 16px" aria-label="Järjestus"><option value="sup">Enim toetajaid</option><option value="eur">Enim kogunud</option></select>
+<select id="srt" class="fld m-full" style="margin-left: auto; width: 230px; border: 0; padding: 12px 16px" aria-label="Järjestus"><option value="sup">Enim toetajaid</option><option value="eur">Enim kogunud</option></select>
 </div>
 </section>
-<section style="background: #E9F2FA; padding: 48px 56px 96px">
+<section class="m-sec" style="background: #E9F2FA; padding: 48px 56px 96px">
 <div id="grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px"><a href="sportlane.html" data-k="naine" data-n="liis org" data-sup="143" data-eur="4870" style="display: flex; flex-direction: column; background: #FFFFFF; border-radius: 20px; overflow: hidden; text-decoration: none; color: #0F2033; box-shadow: 0 10px 30px rgba(15,32,51,0.10)">
 <div style="height: 250px; position: relative"><img src="img/ph-17646670.jpg" alt="" style="width: 100%; height: 100%; object-fit: cover; object-position: center 55%">
 <span style="position: absolute; left: 16px; top: 16px; background: #FFFFFF; border-radius: 999px; font-size: 13px; font-weight: 700; color: #0166B4; padding: 5px 12px">+18 toetajat sel nädalal</span></div>
@@ -177,12 +207,12 @@ a:hover .tb { background: #0166B4; }
 </a></div>
 <p id="none" style="display: none; text-align: center; color: #5B6F82; font-size: 18px; margin: 40px 0 0">Kedagi ei leitud.</p>
 </section>
-<section style="background: #FFFFFF; color: #0F2033; padding: 96px 56px; display: grid; grid-template-columns: 440px 1fr; gap: 72px">
+<section class="m-sec m-cost" style="background: #FFFFFF; color: #0F2033; padding: 96px 56px; display: grid; grid-template-columns: 440px 1fr; gap: 72px">
 <div><span style="font-size: 13px; letter-spacing: 0.16em; color: #0166B4; font-weight: 700">MIS MAKSAB ÜKS HOOAEG</span>
 <h2 style="margin: 12px 0 16px; font-size: 56px; line-height: 1; font-weight: 800"><span class="num">67 000 €</span></h2>
 <p style="margin: 0; font-size: 18px; line-height: 1.6; color: #3E5266">Näide ühe koondislase hooaja kuludest. Suure osa sellest katab sportlane ise või tema pere.</p>
 <div class="factcard"><svg class="factspin" viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="56" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="2"/><circle cx="60" cy="60" r="38" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="2"/><circle cx="60" cy="60" r="20" fill="rgba(255,255,255,0.18)"/></svg><div style="position: relative; height: 150px"><div class="fact" style="animation-delay: 0s"><b class="num">20&nbsp;000+</b><span>padrunit laseb tippsportlane ühe hooajaga</span></div><div class="fact" style="animation-delay: 6s"><b class="num">10–30</b><span>paari suuski on sportlasel suurvõistlusel kaasas</span></div><div class="fact" style="animation-delay: 12s"><b class="num">700–1000</b><span>tundi treenib laskesuusataja aastas</span></div><div class="fact" style="animation-delay: 18s"><b class="num">160</b><span>lööki minutis on pulss ka laskmise ajal</span></div><div class="fact" style="animation-delay: 24s"><b class="num">80&nbsp;km/h</b><span>võib kiirus laskumisel ulatuda</span></div><div class="fact" style="animation-delay: 30s"><b class="num">1&nbsp;min</b><span>võib maksta üks möödalask</span></div></div><div class="fdots"><span class="fdot" style="animation-delay: 0s"></span><span class="fdot" style="animation-delay: 6s"></span><span class="fdot" style="animation-delay: 12s"></span><span class="fdot" style="animation-delay: 18s"></span><span class="fdot" style="animation-delay: 24s"></span><span class="fdot" style="animation-delay: 30s"></span></div></div></div>
-<div style="align-self: center"><div style="display: grid; grid-template-columns: 220px 1fr 110px; align-items: center; gap: 20px; padding: 16px 0; border-bottom: 1px solid #D6E3EE"><span style="font-size: 17px">Treeninglaagrid</span><div style="height: 10px; background: #D6E3EE; border-radius: 999px"><div style="width: 100%; height: 100%; background: #0166B4; border-radius: 999px"></div></div><span class="num" style="font-size: 22px; font-weight: 700; text-align: right">22 000 €</span></div><div style="display: grid; grid-template-columns: 220px 1fr 110px; align-items: center; gap: 20px; padding: 16px 0; border-bottom: 1px solid #D6E3EE"><span style="font-size: 17px">Võistlusreisid</span><div style="height: 10px; background: #D6E3EE; border-radius: 999px"><div style="width: 73%; height: 100%; background: #0166B4; border-radius: 999px"></div></div><span class="num" style="font-size: 22px; font-weight: 700; text-align: right">16 000 €</span></div><div style="display: grid; grid-template-columns: 220px 1fr 110px; align-items: center; gap: 20px; padding: 16px 0; border-bottom: 1px solid #D6E3EE"><span style="font-size: 17px">Treener ja füsio</span><div style="height: 10px; background: #D6E3EE; border-radius: 999px"><div style="width: 45%; height: 100%; background: #0166B4; border-radius: 999px"></div></div><span class="num" style="font-size: 22px; font-weight: 700; text-align: right">10 000 €</span></div><div style="display: grid; grid-template-columns: 220px 1fr 110px; align-items: center; gap: 20px; padding: 16px 0; border-bottom: 1px solid #D6E3EE"><span style="font-size: 17px">Suusad ja määrded</span><div style="height: 10px; background: #D6E3EE; border-radius: 999px"><div style="width: 41%; height: 100%; background: #0166B4; border-radius: 999px"></div></div><span class="num" style="font-size: 22px; font-weight: 700; text-align: right">9 000 €</span></div><div style="display: grid; grid-template-columns: 220px 1fr 110px; align-items: center; gap: 20px; padding: 16px 0; border-bottom: 1px solid #D6E3EE"><span style="font-size: 17px">Laskemoon</span><div style="height: 10px; background: #D6E3EE; border-radius: 999px"><div style="width: 27%; height: 100%; background: #0166B4; border-radius: 999px"></div></div><span class="num" style="font-size: 22px; font-weight: 700; text-align: right">6 000 €</span></div><div style="display: grid; grid-template-columns: 220px 1fr 110px; align-items: center; gap: 20px; padding: 16px 0; border-bottom: 1px solid #D6E3EE"><span style="font-size: 17px">Relv ja hooldus</span><div style="height: 10px; background: #D6E3EE; border-radius: 999px"><div style="width: 18%; height: 100%; background: #0166B4; border-radius: 999px"></div></div><span class="num" style="font-size: 22px; font-weight: 700; text-align: right">4 000 €</span></div></div>
+<div style="align-self: center"><div class="crow" style="display: grid; grid-template-columns: 220px 1fr 110px; align-items: center; gap: 20px; padding: 16px 0; border-bottom: 1px solid #D6E3EE"><span style="font-size: 17px">Treeninglaagrid</span><div style="height: 10px; background: #D6E3EE; border-radius: 999px"><div style="width: 100%; height: 100%; background: #0166B4; border-radius: 999px"></div></div><span class="num" style="font-size: 22px; font-weight: 700; text-align: right">22 000 €</span></div><div class="crow" style="display: grid; grid-template-columns: 220px 1fr 110px; align-items: center; gap: 20px; padding: 16px 0; border-bottom: 1px solid #D6E3EE"><span style="font-size: 17px">Võistlusreisid</span><div style="height: 10px; background: #D6E3EE; border-radius: 999px"><div style="width: 73%; height: 100%; background: #0166B4; border-radius: 999px"></div></div><span class="num" style="font-size: 22px; font-weight: 700; text-align: right">16 000 €</span></div><div class="crow" style="display: grid; grid-template-columns: 220px 1fr 110px; align-items: center; gap: 20px; padding: 16px 0; border-bottom: 1px solid #D6E3EE"><span style="font-size: 17px">Treener ja füsio</span><div style="height: 10px; background: #D6E3EE; border-radius: 999px"><div style="width: 45%; height: 100%; background: #0166B4; border-radius: 999px"></div></div><span class="num" style="font-size: 22px; font-weight: 700; text-align: right">10 000 €</span></div><div class="crow" style="display: grid; grid-template-columns: 220px 1fr 110px; align-items: center; gap: 20px; padding: 16px 0; border-bottom: 1px solid #D6E3EE"><span style="font-size: 17px">Suusad ja määrded</span><div style="height: 10px; background: #D6E3EE; border-radius: 999px"><div style="width: 41%; height: 100%; background: #0166B4; border-radius: 999px"></div></div><span class="num" style="font-size: 22px; font-weight: 700; text-align: right">9 000 €</span></div><div class="crow" style="display: grid; grid-template-columns: 220px 1fr 110px; align-items: center; gap: 20px; padding: 16px 0; border-bottom: 1px solid #D6E3EE"><span style="font-size: 17px">Laskemoon</span><div style="height: 10px; background: #D6E3EE; border-radius: 999px"><div style="width: 27%; height: 100%; background: #0166B4; border-radius: 999px"></div></div><span class="num" style="font-size: 22px; font-weight: 700; text-align: right">6 000 €</span></div><div class="crow" style="display: grid; grid-template-columns: 220px 1fr 110px; align-items: center; gap: 20px; padding: 16px 0; border-bottom: 1px solid #D6E3EE"><span style="font-size: 17px">Relv ja hooldus</span><div style="height: 10px; background: #D6E3EE; border-radius: 999px"><div style="width: 18%; height: 100%; background: #0166B4; border-radius: 999px"></div></div><span class="num" style="font-size: 22px; font-weight: 700; text-align: right">4 000 €</span></div></div>
 </section>
 <div style="background: #FFFFFF"><div style="padding: 18px 56px; font-size: 12px; color: #7C8B9A; font-family: Saira, sans-serif">Kontseptsioon · näidisandmed, sportlased ja nimed on väljamõeldud · fotod: Pexels</div></div>
 <div class="tst" aria-live="polite" aria-label="Uued toetused"><div style="animation-delay: 2s"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" style="animation-delay: 2s"><path d="M12 3c-3.3 0-5.5 2.6-5.5 5.8v3.4L5 15.2c-.4.7.1 1.6.9 1.6h12.2c.8 0 1.3-.9.9-1.6l-1.5-3V8.8C17.5 5.6 15.3 3 12 3z" fill="#0166B4"/><path d="M9.6 18.4a2.5 2.5 0 0 0 4.8 0z" fill="#0166B4"/></svg><span>Tiina K. → Liis Org</span><b>10&nbsp;€</b></div><div style="animation-delay: 10s"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" style="animation-delay: 10s"><path d="M12 3c-3.3 0-5.5 2.6-5.5 5.8v3.4L5 15.2c-.4.7.1 1.6.9 1.6h12.2c.8 0 1.3-.9.9-1.6l-1.5-3V8.8C17.5 5.6 15.3 3 12 3z" fill="#0166B4"/><path d="M9.6 18.4a2.5 2.5 0 0 0 4.8 0z" fill="#0166B4"/></svg><span>Marko P. → Kadri Vahtra</span><b>25&nbsp;€</b></div><div style="animation-delay: 18s"><span style="font-size: 20px" aria-hidden="true">🎯</span><span>Kadri Vahtra 5/5 · Ettevõte X → noortele</span><b>+100&nbsp;€</b></div><div style="animation-delay: 26s"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" style="animation-delay: 26s"><path d="M12 3c-3.3 0-5.5 2.6-5.5 5.8v3.4L5 15.2c-.4.7.1 1.6.9 1.6h12.2c.8 0 1.3-.9.9-1.6l-1.5-3V8.8C17.5 5.6 15.3 3 12 3z" fill="#0166B4"/><path d="M9.6 18.4a2.5 2.5 0 0 0 4.8 0z" fill="#0166B4"/></svg><span>Vanaema Helgi → Anni Põld</span><b>20&nbsp;€</b></div><div style="animation-delay: 34s"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" style="animation-delay: 34s"><path d="M12 3c-3.3 0-5.5 2.6-5.5 5.8v3.4L5 15.2c-.4.7.1 1.6.9 1.6h12.2c.8 0 1.3-.9.9-1.6l-1.5-3V8.8C17.5 5.6 15.3 3 12 3z" fill="#0166B4"/><path d="M9.6 18.4a2.5 2.5 0 0 0 4.8 0z" fill="#0166B4"/></svg><span>Kadri M. → Tanel Rebane</span><b>5&nbsp;€</b></div><div style="animation-delay: 42s"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" style="animation-delay: 42s"><path d="M12 3c-3.3 0-5.5 2.6-5.5 5.8v3.4L5 15.2c-.4.7.1 1.6.9 1.6h12.2c.8 0 1.3-.9.9-1.6l-1.5-3V8.8C17.5 5.6 15.3 3 12 3z" fill="#0166B4"/><path d="M9.6 18.4a2.5 2.5 0 0 0 4.8 0z" fill="#0166B4"/></svg><span>Treener Ain → Merit Saluste</span><b>40&nbsp;€</b></div></div>
