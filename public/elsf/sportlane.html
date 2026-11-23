@@ -27,6 +27,13 @@ html, body { overflow-x: hidden; }
 .fld { font: inherit; font-size: 16px; width: 100%; border: 1.5px solid #D3DFEA; border-radius: 12px; padding: 14px 16px; color: #0F2033; background: #FFFFFF; }
 .fltr { font: inherit; font-size: 15px; font-weight: 700; border: 0; border-radius: 999px; padding: 11px 20px; cursor: pointer; background: rgba(255,255,255,0.16); color: #FFFFFF; }
 .fltr.on { background: #FFFFFF; color: #0166B4; }
+.taxl { display: flex; align-items: center; gap: 10px; font-size: 15px; color: #3E5266; cursor: pointer; }
+.taxl input { width: 18px; height: 18px; accent-color: #0166B4; margin: 0; }
+#taxf[hidden] { display: none !important; }
+.ty { position: fixed; inset: 0; z-index: 80; background: rgba(15,32,51,0.55); display: grid; place-items: center; }
+.ty[hidden] { display: none; }
+.ty-c { width: 820px; display: grid; grid-template-columns: 300px 1fr; background: #FFFFFF; color: #0F2033; border-radius: 24px; overflow: hidden; box-shadow: 0 30px 80px rgba(0,0,0,0.35); animation: tyIn 0.35s ease-out; }
+@keyframes tyIn { from { opacity: 0; transform: translateY(16px) scale(0.98); } to { opacity: 1; transform: none; } }
 .igf { display: inline-flex; align-items: center; gap: 12px; padding: 8px 18px 8px 8px; border-radius: 999px; background: #FFFFFF; color: #0F2033; text-decoration: none; font-size: 15px; line-height: 1.2; box-shadow: 0 6px 18px rgba(15,32,51,0.08); }
 .igi { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; color: #FFFFFF; background: radial-gradient(circle at 30% 107%, #FDF497 0%, #FD5949 45%, #D6249F 60%, #285AEB 90%); }
 </style>
@@ -54,14 +61,21 @@ html, body { overflow-x: hidden; }
 <div><b class="num" style="font-size: 52px; font-weight: 800">3 240 €</b> <span style="color: #5B6F82; font-size: 18px">/ 6 000 €</span></div>
 <div style="display: flex; align-items: center; gap: 16px"><div style="display: inline-flex; align-self: flex-start; gap: 6px; align-items: center; padding: 8px 10px; background: #05080C; border-radius: 8px"><span style="flex: none; width: 30px; height: 30px; border-radius: 50%; background: #FFFFFF; box-shadow: inset 0 0 0 2px #0F2033"></span><span style="flex: none; width: 30px; height: 30px; border-radius: 50%; background: #FFFFFF; box-shadow: inset 0 0 0 2px #0F2033"></span><span style="flex: none; width: 30px; height: 30px; border-radius: 50%; background: #05080C; box-shadow: inset 0 0 0 4px #05080C, inset 0 0 0 6px #4A5868"></span><span style="flex: none; width: 30px; height: 30px; border-radius: 50%; background: #05080C; box-shadow: inset 0 0 0 4px #05080C, inset 0 0 0 6px #4A5868"></span><span style="flex: none; width: 30px; height: 30px; border-radius: 50%; background: #05080C; box-shadow: inset 0 0 0 4px #05080C, inset 0 0 0 6px #4A5868"></span><span class="num" style="margin-left: 8px; color: #FFFFFF; font-size: 14px; font-weight: 700">2/5</span></div><span style="font-size: 15px; color: #3E5266"><b style="color: #0F2033">88</b> toetajat tribüünil</span></div>
 </div>
-<div style="background: #FFFFFF; border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 14px; box-shadow: 0 12px 34px rgba(15,32,51,0.08)">
+<form id="don" style="background: #FFFFFF; border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 14px; box-shadow: 0 12px 34px rgba(15,32,51,0.08)">
 <b style="font-size: 18px">Vali summa</b>
-<div id="chips" style="display: grid; grid-template-columns: repeat(4, 1fr) 1.15fr; gap: 8px"><button class="chipb" data-v="5">5&nbsp;€</button><button class="chipb" data-v="10">10&nbsp;€</button><button class="chipb on" data-v="25">25&nbsp;€</button><button class="chipb" data-v="50">50&nbsp;€</button><input class="fld" id="other" inputmode="numeric" placeholder="Muu €" aria-label="Muu summa" style="height: 52px; padding: 0 12px; text-align: center; font-weight: 700"></div>
-<input class="fld" maxlength="40" autocomplete="name" placeholder="Sinu nimi tribüünil" aria-label="Sinu nimi tribüünil">
+<div id="chips" style="display: grid; grid-template-columns: repeat(4, 1fr) 1.15fr; gap: 8px"><button type="button" class="chipb" data-v="5">5&nbsp;€</button><button type="button" class="chipb" data-v="10">10&nbsp;€</button><button type="button" class="chipb on" data-v="25">25&nbsp;€</button><button type="button" class="chipb" data-v="50">50&nbsp;€</button><input class="fld" id="other" inputmode="numeric" placeholder="Muu €" aria-label="Muu summa" style="height: 52px; padding: 0 12px; text-align: center; font-weight: 700"></div>
+<input class="fld" id="nm" maxlength="40" autocomplete="name" placeholder="Sinu nimi tribüünil" aria-label="Sinu nimi tribüünil">
 <input class="fld" maxlength="80" placeholder="Hõige Kadrile (valikuline)" aria-label="Hõige Kadrile">
-<a href="#" id="cta" style="display: flex; align-items: center; justify-content: center; height: 58px; border-radius: 999px; background: #0166B4; color: #FFFFFF; text-decoration: none; font-weight: 700; font-size: 18px">Toeta Kadrit 25&nbsp;€</a>
-<span style="text-align: center; font-size: 13px; color: #8A9BAC">Pangalink · Apple Pay · kaardid</span>
+<label class="taxl"><input type="checkbox" id="tax"> Soovin tulumaksutagastust</label>
+<div id="taxf" hidden style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px">
+<input class="fld tf" autocomplete="given-name" placeholder="Eesnimi" aria-label="Eesnimi">
+<input class="fld tf" autocomplete="family-name" placeholder="Perekonnanimi" aria-label="Perekonnanimi">
+<input class="fld tf" inputmode="numeric" pattern="[0-9]{11}" maxlength="11" placeholder="Isikukood" aria-label="Isikukood" title="11 numbrit" style="grid-column: 1 / -1">
+<span style="grid-column: 1 / -1; font-size: 13px; color: #5B6F82">Annetus kajastub sinu eeltäidetud tuludeklaratsioonis.</span>
 </div>
+<button type="submit" id="cta" style="display: flex; align-items: center; justify-content: center; height: 58px; border: 0; border-radius: 999px; background: #0166B4; color: #FFFFFF; font: 700 18px Saira, sans-serif; cursor: pointer">Toeta Kadrit 25&nbsp;€</button>
+<span style="text-align: center; font-size: 13px; color: #8A9BAC">Pangalink · Apple Pay · kaardid</span>
+</form>
 </div>
 </div>
 </section>
@@ -125,6 +139,16 @@ html, body { overflow-x: hidden; }
 </div>
 </a></div>
 </section>
+<div id="ty" class="ty" hidden role="dialog" aria-modal="true" aria-labelledby="tyh"><div class="ty-c">
+<img src="img/ph-9286562.jpg" alt="Kadri Vahtra" style="width: 300px; height: 100%; min-height: 380px; object-fit: cover; object-position: 30% center">
+<div style="padding: 36px 36px 32px; display: flex; flex-direction: column; gap: 16px">
+<span style="font-size: 13px; letter-spacing: 0.14em; font-weight: 700; color: #0166B4">KADRI SÕNUM SULLE</span>
+<h3 id="tyh" style="margin: 0; font-size: 40px; line-height: 1; font-weight: 800">Aitäh!</h3>
+<p style="margin: 0; font-size: 21px; line-height: 1.4; font-weight: 600">„Iga toetus on nagu kaasaelaja rajaserval. Kui Tehvandil tiiru jõuan, tean, et sina oled ka seal.“</p>
+<b style="font-size: 17px">– Kadri</b>
+<div style="margin-top: auto; padding-top: 14px; border-top: 1px solid #E6EEF5; font-size: 15px; color: #3E5266"><b id="tya" style="color: #0F2033">25 €</b> jõudis Kadrini · sinu nimi on nüüd tribüünil</div>
+<button id="tyc" type="button" style="align-self: flex-start; border: 0; border-radius: 999px; background: #0F2033; color: #FFFFFF; font: 700 16px Saira, sans-serif; padding: 13px 24px; cursor: pointer">Sulge</button>
+</div></div></div>
 <div style="background: #FFFFFF"><div style="padding: 18px 56px; font-size: 12px; color: #7C8B9A; font-family: Saira, sans-serif">Kontseptsioon · näidisandmed, sportlased ja nimed on väljamõeldud · fotod: Pexels</div></div>
 <div class="tst" aria-live="polite" aria-label="Uued toetused"><div style="animation-delay: 2s"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" style="animation-delay: 2s"><path d="M12 3c-3.3 0-5.5 2.6-5.5 5.8v3.4L5 15.2c-.4.7.1 1.6.9 1.6h12.2c.8 0 1.3-.9.9-1.6l-1.5-3V8.8C17.5 5.6 15.3 3 12 3z" fill="#0166B4"/><path d="M9.6 18.4a2.5 2.5 0 0 0 4.8 0z" fill="#0166B4"/></svg><span>Tiina K. → Liis Org</span><b>10&nbsp;€</b></div><div style="animation-delay: 10s"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" style="animation-delay: 10s"><path d="M12 3c-3.3 0-5.5 2.6-5.5 5.8v3.4L5 15.2c-.4.7.1 1.6.9 1.6h12.2c.8 0 1.3-.9.9-1.6l-1.5-3V8.8C17.5 5.6 15.3 3 12 3z" fill="#0166B4"/><path d="M9.6 18.4a2.5 2.5 0 0 0 4.8 0z" fill="#0166B4"/></svg><span>Marko P. → Kadri Vahtra</span><b>25&nbsp;€</b></div><div style="animation-delay: 18s"><span style="font-size: 20px" aria-hidden="true">🎯</span><span>Kadri Vahtra 5/5 · Ettevõte X → noortele</span><b>+100&nbsp;€</b></div><div style="animation-delay: 26s"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" style="animation-delay: 26s"><path d="M12 3c-3.3 0-5.5 2.6-5.5 5.8v3.4L5 15.2c-.4.7.1 1.6.9 1.6h12.2c.8 0 1.3-.9.9-1.6l-1.5-3V8.8C17.5 5.6 15.3 3 12 3z" fill="#0166B4"/><path d="M9.6 18.4a2.5 2.5 0 0 0 4.8 0z" fill="#0166B4"/></svg><span>Vanaema Helgi → Anni Põld</span><b>20&nbsp;€</b></div><div style="animation-delay: 34s"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" style="animation-delay: 34s"><path d="M12 3c-3.3 0-5.5 2.6-5.5 5.8v3.4L5 15.2c-.4.7.1 1.6.9 1.6h12.2c.8 0 1.3-.9.9-1.6l-1.5-3V8.8C17.5 5.6 15.3 3 12 3z" fill="#0166B4"/><path d="M9.6 18.4a2.5 2.5 0 0 0 4.8 0z" fill="#0166B4"/></svg><span>Kadri M. → Tanel Rebane</span><b>5&nbsp;€</b></div><div style="animation-delay: 42s"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" style="animation-delay: 42s"><path d="M12 3c-3.3 0-5.5 2.6-5.5 5.8v3.4L5 15.2c-.4.7.1 1.6.9 1.6h12.2c.8 0 1.3-.9.9-1.6l-1.5-3V8.8C17.5 5.6 15.3 3 12 3z" fill="#0166B4"/><path d="M9.6 18.4a2.5 2.5 0 0 0 4.8 0z" fill="#0166B4"/></svg><span>Treener Ain → Merit Saluste</span><b>40&nbsp;€</b></div></div>
 <script>
@@ -133,6 +157,18 @@ html, body { overflow-x: hidden; }
   function set(v) { cta.innerHTML = 'Toeta Kadrit ' + v + '&nbsp;€'; }
   chips.forEach(function (c) { c.addEventListener('click', function () { chips.forEach(function (x) { x.classList.remove('on'); }); c.classList.add('on'); other.value = ''; set(c.dataset.v); }); });
   other.addEventListener('input', function () { var v = parseInt(other.value, 10); if (v > 0) { chips.forEach(function (x) { x.classList.remove('on'); }); set(v); } });
+  var tax = document.getElementById('tax'), taxf = document.getElementById('taxf');
+  tax.addEventListener('change', function () { taxf.hidden = !tax.checked; taxf.querySelectorAll('.tf').forEach(function (i) { i.required = tax.checked; }); });
+  var ty = document.getElementById('ty');
+  document.getElementById('don').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var on = document.querySelector('#chips .chipb.on'), v = on ? on.dataset.v : (parseInt(other.value, 10) || 25), n = document.getElementById('nm').value.trim();
+    document.getElementById('tyh').textContent = n ? 'Aitäh, ' + n.split(' ')[0] + '!' : 'Aitäh!';
+    document.getElementById('tya').textContent = v + ' €';
+    ty.hidden = false;
+  });
+  document.getElementById('tyc').addEventListener('click', function () { ty.hidden = true; });
+  ty.addEventListener('click', function (e) { if (e.target === ty) ty.hidden = true; });
 })();
 </script>
 </div>
