@@ -35,6 +35,10 @@ html, body { overflow-x: hidden; }
 .nl-ok { font-size: 16px; font-weight: 600; color: #0166B4; }
 @keyframes nlIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
 .slot { position: relative; height: 112px; }
+#hp .hp-live { display: none; } #hp[data-s="live"] .hp-live { display: block; } #hp[data-s="live"] .hp-pre { display: none; }
+.hp-sw { position: absolute; top: 16px; right: 18px; display: flex; gap: 2px; padding: 3px; border-radius: 999px; background: rgba(255,255,255,0.08); }
+.hp-sw button { border: 0; background: transparent; color: #8FA6BC; font: 600 12px Saira, sans-serif; padding: 5px 12px; border-radius: 999px; cursor: pointer; }
+#hp[data-s="pre"] .hp-sw [data-v="pre"], #hp[data-s="live"] .hp-sw [data-v="live"] { background: rgba(255,255,255,0.16); color: #FFFFFF; }
 .live-dot { width: 9px; height: 9px; border-radius: 50%; background: #FF6B6B; animation: livePulse 1.6s ease-in-out infinite; }
 @keyframes livePulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
 .cyc { position: absolute; inset: 0; opacity: 0; animation: cyc 30s ease-in-out infinite; }
@@ -145,17 +149,28 @@ html, body { overflow-x: hidden; }
 </div>
 </section>
 
-<section style="background: #FFFFFF; padding: 96px 56px">
-<div style="background: #0F2033; color: #FFFFFF; border-radius: 24px; padding: 52px 56px; display: grid; grid-template-columns: 1.15fr 1fr; gap: 56px; align-items: center">
-<div><span style="font-size: 13px; letter-spacing: 0.16em; color: #8EC3EC; font-weight: 700">ETTEVÕTTELE</span>
-<h2 style="margin: 10px 0 14px; font-size: 42px; font-weight: 800; line-height: 1">Tabamuspartner</h2>
-<p style="margin: 0 0 24px; font-size: 20px; line-height: 1.5; color: #D6E4F0"><b style="color: #FFFFFF">20&nbsp;€</b> iga Eesti koondislase tabamuse eest kodusel MM-il. Kogu summa läheb noortekoondisele, kõige rohkem <b style="color: #FFFFFF">10 000&nbsp;€</b>.</p>
-<a href="#" style="background: #FFFFFF; color: #0F2033; text-decoration: none; font-weight: 700; border-radius: 999px; padding: 14px 26px">Hakka tabamuspartneriks</a></div>
-<div>
+<section id="hp" data-s="pre" style="background: #FFFFFF; padding: 96px 56px">
+<div style="background: #0F2033; color: #FFFFFF; border-radius: 24px; padding: 52px 56px; display: grid; grid-template-columns: 1.1fr 1fr; gap: 56px; align-items: center; position: relative">
+<div class="hp-sw"><button data-v="pre">Enne MM-i</button><button data-v="live">MM-i ajal</button></div>
+<div><div style="display: flex; align-items: center; gap: 14px"><span style="font-size: 13px; letter-spacing: 0.16em; color: #8EC3EC; font-weight: 700">TABAMUSPARTNER</span><span style="display: inline-flex; align-items: center; gap: 8px; background: #FFFFFF; color: #0F2033; border-radius: 10px; padding: 7px 12px 7px 8px; font-weight: 800; font-size: 15px; letter-spacing: 0.02em"><span style="display: grid; place-items: center; width: 24px; height: 24px; border-radius: 6px; background: #0F2033; color: #FFE58A; font-size: 15px">X</span>Ettevõte X</span></div>
+<h2 style="margin: 18px 0 14px; font-size: 42px; font-weight: 800; line-height: 1">Iga tabamus läheb noortele</h2>
+<p style="margin: 0; font-size: 20px; line-height: 1.5; color: #D6E4F0">Ettevõte X maksab kodusel MM-il iga Eesti koondislase tabamuse eest <b style="color: #FFFFFF">20&nbsp;€</b> noortekoondisele. Mängus on 500 märki ehk kuni <b style="color: #FFFFFF">10 000&nbsp;€</b>.</p></div>
+<div class="hp-pre">
+<div style="font-size: 13px; font-weight: 700; letter-spacing: 0.12em; color: #FFE58A">ENNUSTUSMÄNG</div>
+<div style="margin: 10px 0 18px; font-size: 24px; font-weight: 700; line-height: 1.25">Kui palju laseb Eesti koondis noortele kokku?</div>
+<form class="hp-f" onsubmit="event.preventDefault(); this.hidden=true; this.nextElementSibling.hidden=false;" style="display: grid; grid-template-columns: 150px 1fr auto; gap: 10px">
+<label style="position: relative"><input required inputmode="numeric" placeholder="8 000" aria-label="Sinu ennustus eurodes" style="width: 100%; padding: 14px 34px 14px 16px; border-radius: 12px; border: 0; font: 700 18px Saira, sans-serif"><span style="position: absolute; right: 14px; top: 14px; color: #5B6F82; font-weight: 700">€</span></label>
+<input required type="email" placeholder="E-post" aria-label="E-post" style="padding: 14px 16px; border-radius: 12px; border: 0; font: 500 16px Saira, sans-serif">
+<button style="background: #FFE58A; color: #0F2033; border: 0; border-radius: 12px; padding: 0 22px; font: 800 16px Saira, sans-serif; cursor: pointer">Ennusta</button>
+</form>
+<div hidden style="padding: 14px 16px; border-radius: 12px; background: rgba(255,229,138,0.14); color: #FFE58A; font-weight: 700">Ennustus kirjas. Loendur käivitub 10.02 segateatega.</div>
+<div style="margin-top: 14px; font-size: 14px; line-height: 1.6; color: #B9CCDD">Lähim ennustus võidab Ettevõte X auhinna · ennustused kuni 9.02<br>Mängi ka Instagramis: kommenteeri oma summa <b style="color: #FFFFFF">@estonianbiathlonteam</b> postituse all</div>
+</div>
+<div class="hp-live">
 <div style="display: flex; justify-content: space-between; align-items: center; font-size: 13px; font-weight: 700; letter-spacing: 0.12em"><span style="display: inline-flex; align-items: center; gap: 8px; color: #FF6B6B"><span class="live-dot"></span>LIVE</span><span style="color: #8FA6BC">NOORTEKOONDISELE</span></div>
 <div style="margin: 12px 0 16px"><b class="num" style="font-size: 60px; font-weight: 800; line-height: 1; color: #FFE58A">4 180 €</b> <span style="font-size: 18px; color: #B9CCDD">/ 10 000 €</span></div>
 <div style="display: flex; height: 14px; border-radius: 999px; overflow: hidden; background: rgba(255,255,255,0.1)"><span style="width: 41.80%; background: #FFE58A"></span></div>
-<div style="margin-top: 10px; font-size: 15px; color: #B9CCDD"><b style="color: #FFFFFF">209</b> / 500 tabamust</div>
+<div style="margin-top: 10px; display: flex; justify-content: space-between; font-size: 15px; color: #B9CCDD"><span><b style="color: #FFFFFF">209</b> / 500 tabamust</span><span>1 284 ennustust · keskmine <b style="color: #FFFFFF">7 860 €</b></span></div>
 </div>
 </div>
 </section>
@@ -217,7 +232,8 @@ html, body { overflow-x: hidden; }
 <div class="nl-ok" hidden>Aitäh! Oled nüüd meie sõber.</div>
 </div>
 <script>setTimeout(function(){ var n = document.getElementById('nl'); if (n) n.hidden = false; }, 4000);</script>
-<div class="tst" aria-live="polite" aria-label="Uued toetused"><div style="animation-delay: 2s"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" style="animation-delay: 2s"><path d="M12 3c-3.3 0-5.5 2.6-5.5 5.8v3.4L5 15.2c-.4.7.1 1.6.9 1.6h12.2c.8 0 1.3-.9.9-1.6l-1.5-3V8.8C17.5 5.6 15.3 3 12 3z" fill="#0166B4"/><path d="M9.6 18.4a2.5 2.5 0 0 0 4.8 0z" fill="#0166B4"/></svg><span>Tiina K. → Liis Org</span><b>10&nbsp;€</b></div><div style="animation-delay: 10s"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" style="animation-delay: 10s"><path d="M12 3c-3.3 0-5.5 2.6-5.5 5.8v3.4L5 15.2c-.4.7.1 1.6.9 1.6h12.2c.8 0 1.3-.9.9-1.6l-1.5-3V8.8C17.5 5.6 15.3 3 12 3z" fill="#0166B4"/><path d="M9.6 18.4a2.5 2.5 0 0 0 4.8 0z" fill="#0166B4"/></svg><span>Marko P. → Kadri Vahtra</span><b>25&nbsp;€</b></div><div style="animation-delay: 18s"><span style="font-size: 20px" aria-hidden="true">🎯</span><span>Kadri Vahtra 5/5 · noortekoondisele</span><b>+100&nbsp;€</b></div><div style="animation-delay: 26s"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" style="animation-delay: 26s"><path d="M12 3c-3.3 0-5.5 2.6-5.5 5.8v3.4L5 15.2c-.4.7.1 1.6.9 1.6h12.2c.8 0 1.3-.9.9-1.6l-1.5-3V8.8C17.5 5.6 15.3 3 12 3z" fill="#0166B4"/><path d="M9.6 18.4a2.5 2.5 0 0 0 4.8 0z" fill="#0166B4"/></svg><span>Vanaema Helgi → Anni Põld</span><b>20&nbsp;€</b></div><div style="animation-delay: 34s"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" style="animation-delay: 34s"><path d="M12 3c-3.3 0-5.5 2.6-5.5 5.8v3.4L5 15.2c-.4.7.1 1.6.9 1.6h12.2c.8 0 1.3-.9.9-1.6l-1.5-3V8.8C17.5 5.6 15.3 3 12 3z" fill="#0166B4"/><path d="M9.6 18.4a2.5 2.5 0 0 0 4.8 0z" fill="#0166B4"/></svg><span>Kadri M. → Tanel Rebane</span><b>5&nbsp;€</b></div><div style="animation-delay: 42s"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" style="animation-delay: 42s"><path d="M12 3c-3.3 0-5.5 2.6-5.5 5.8v3.4L5 15.2c-.4.7.1 1.6.9 1.6h12.2c.8 0 1.3-.9.9-1.6l-1.5-3V8.8C17.5 5.6 15.3 3 12 3z" fill="#0166B4"/><path d="M9.6 18.4a2.5 2.5 0 0 0 4.8 0z" fill="#0166B4"/></svg><span>Treener Ain → Merit Saluste</span><b>40&nbsp;€</b></div></div>
+<script>document.querySelectorAll('.hp-sw button').forEach(function(b){ b.onclick = function(){ document.getElementById('hp').dataset.s = b.dataset.v; }; });</script>
+<div class="tst" aria-live="polite" aria-label="Uued toetused"><div style="animation-delay: 2s"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" style="animation-delay: 2s"><path d="M12 3c-3.3 0-5.5 2.6-5.5 5.8v3.4L5 15.2c-.4.7.1 1.6.9 1.6h12.2c.8 0 1.3-.9.9-1.6l-1.5-3V8.8C17.5 5.6 15.3 3 12 3z" fill="#0166B4"/><path d="M9.6 18.4a2.5 2.5 0 0 0 4.8 0z" fill="#0166B4"/></svg><span>Tiina K. → Liis Org</span><b>10&nbsp;€</b></div><div style="animation-delay: 10s"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" style="animation-delay: 10s"><path d="M12 3c-3.3 0-5.5 2.6-5.5 5.8v3.4L5 15.2c-.4.7.1 1.6.9 1.6h12.2c.8 0 1.3-.9.9-1.6l-1.5-3V8.8C17.5 5.6 15.3 3 12 3z" fill="#0166B4"/><path d="M9.6 18.4a2.5 2.5 0 0 0 4.8 0z" fill="#0166B4"/></svg><span>Marko P. → Kadri Vahtra</span><b>25&nbsp;€</b></div><div style="animation-delay: 18s"><span style="font-size: 20px" aria-hidden="true">🎯</span><span>Kadri Vahtra 5/5 · Ettevõte X → noortele</span><b>+100&nbsp;€</b></div><div style="animation-delay: 26s"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" style="animation-delay: 26s"><path d="M12 3c-3.3 0-5.5 2.6-5.5 5.8v3.4L5 15.2c-.4.7.1 1.6.9 1.6h12.2c.8 0 1.3-.9.9-1.6l-1.5-3V8.8C17.5 5.6 15.3 3 12 3z" fill="#0166B4"/><path d="M9.6 18.4a2.5 2.5 0 0 0 4.8 0z" fill="#0166B4"/></svg><span>Vanaema Helgi → Anni Põld</span><b>20&nbsp;€</b></div><div style="animation-delay: 34s"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" style="animation-delay: 34s"><path d="M12 3c-3.3 0-5.5 2.6-5.5 5.8v3.4L5 15.2c-.4.7.1 1.6.9 1.6h12.2c.8 0 1.3-.9.9-1.6l-1.5-3V8.8C17.5 5.6 15.3 3 12 3z" fill="#0166B4"/><path d="M9.6 18.4a2.5 2.5 0 0 0 4.8 0z" fill="#0166B4"/></svg><span>Kadri M. → Tanel Rebane</span><b>5&nbsp;€</b></div><div style="animation-delay: 42s"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" style="animation-delay: 42s"><path d="M12 3c-3.3 0-5.5 2.6-5.5 5.8v3.4L5 15.2c-.4.7.1 1.6.9 1.6h12.2c.8 0 1.3-.9.9-1.6l-1.5-3V8.8C17.5 5.6 15.3 3 12 3z" fill="#0166B4"/><path d="M9.6 18.4a2.5 2.5 0 0 0 4.8 0z" fill="#0166B4"/></svg><span>Treener Ain → Merit Saluste</span><b>40&nbsp;€</b></div></div>
 </div>
 <script>(function(){function f(){var w=document.documentElement.clientWidth;document.body.style.zoom=w<1440?(w/1440):"";}f();addEventListener("resize",f);})();</script>
 </body>
