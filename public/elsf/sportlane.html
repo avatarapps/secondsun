@@ -270,7 +270,7 @@ a:hover .tb { background: #0166B4; }
     var on = document.querySelector('#chips .chipb.on'), v = on ? on.dataset.v : (parseInt(other.value, 10) || 25), n = document.getElementById('nm').value.trim();
     document.getElementById('tyh').textContent = n ? 'Aitäh, ' + n.split(' ')[0] + '!' : 'Aitäh!';
     document.getElementById('tya').textContent = v + ' €';
-    var msg = document.getElementById('sh').value.trim() || 'Hoian pöialt!', who = n || 'Toetaja';
+    var msg = document.getElementById('sh').value.trim() || 'Hoian Sulle pöialt!', who = n || 'Toetaja';
     lastShout = [who, msg]; makeCard(who, msg);
     ty.hidden = false;
   });
