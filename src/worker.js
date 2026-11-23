@@ -361,6 +361,7 @@ export default {
       const loc = o.headers.get('location');
       if (loc && loc.includes('/elsf/')) o.headers.set('location', loc.replace(/^(https?:\/\/[^/]+)?\/elsf\//, '/'));
       o.headers.set('x-robots-tag', 'noindex, nofollow');
+      if ((o.headers.get('content-type') || '').includes('text/html')) o.headers.set('cache-control', 'no-cache');
       o.headers.set('x-content-type-options', 'nosniff');
       o.headers.set('strict-transport-security', 'max-age=31536000');
       return o;
