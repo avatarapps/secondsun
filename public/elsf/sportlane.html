@@ -27,8 +27,10 @@ html, body { overflow-x: hidden; }
 .fld { font: inherit; font-size: 16px; width: 100%; border: 1.5px solid #D3DFEA; border-radius: 12px; padding: 14px 16px; color: #0F2033; background: #FFFFFF; }
 .fltr { font: inherit; font-size: 15px; font-weight: 700; border: 0; border-radius: 999px; padding: 11px 20px; cursor: pointer; background: rgba(255,255,255,0.16); color: #FFFFFF; }
 .fltr.on { background: #FFFFFF; color: #0166B4; }
-.share { display: flex; gap: 18px; align-items: center; padding: 14px; background: #FFFFFF; border-radius: 18px; box-shadow: 0 8px 24px rgba(15,32,51,0.06); }
-.shb { font: 700 14px Saira, sans-serif; color: #0F2033; background: #E9F2FA; border: 0; border-radius: 999px; padding: 9px 16px; text-decoration: none; cursor: pointer; }
+.share { display: flex; gap: 14px; align-items: center; padding: 10px 16px 10px 10px; border-radius: 16px; background: rgba(1,102,180,0.06); box-shadow: inset 0 0 0 1.5px rgba(1,102,180,0.16); }
+.share img { flex: none; padding: 4px; background: #FFFFFF; border-radius: 10px; }
+.shb { font: 700 14px Saira, sans-serif; color: #0166B4; background: none; border: 0; padding: 0; text-decoration: none; cursor: pointer; }
+.shb:hover { text-decoration: underline; }
 .taxl { display: flex; align-items: center; gap: 10px; font-size: 15px; color: #3E5266; cursor: pointer; }
 .taxl input { width: 18px; height: 18px; accent-color: #0166B4; margin: 0; }
 #taxf[hidden] { display: none !important; }
@@ -53,12 +55,9 @@ html, body { overflow-x: hidden; }
 <div style="font-size: 14px; color: #5B6F82"><a href="index.html" style="color: #5B6F82; text-decoration: none">Avaleht</a> / <a href="sportlased.html" style="color: #5B6F82; text-decoration: none">Sportlased</a> / Kadri Vahtra</div>
 <div style="margin-top: 22px; display: grid; grid-template-columns: minmax(0, 1fr) 500px; gap: 56px; align-items: start">
 <div style="display: flex; flex-direction: column; gap: 22px">
-<div style="position: relative; height: 470px; border-radius: 26px; overflow: hidden"><img src="img/ph-9286562.jpg" alt="Kadri Vahtra" style="width: 100%; height: 100%; object-fit: cover; object-position: 0% center">
+<div style="position: relative; height: 700px; border-radius: 26px; overflow: hidden"><img src="img/ph-9286562.jpg" alt="Kadri Vahtra" style="width: 100%; height: 100%; object-fit: cover; object-position: 0% center">
 <span style="position: absolute; left: 22px; top: 22px; background: #FFFFFF; border-radius: 999px; padding: 7px 14px; font-size: 14px; font-weight: 700; color: #0166B4">+12 toetajat sel nädalal</span></div>
 <blockquote style="margin: 0; padding-left: 20px; border-left: 4px solid #0166B4; font-size: 24px; line-height: 1.3; font-weight: 700">„Lasketiirus on viis lasku ja kakskümmend sekundit. Kogu ülejäänud aasta on selle jaoks.“</blockquote>
-<div class="share"><img src="qr-kadri-vahtra.svg" alt="QR-kood Kadri toetuslehele" width="104" height="104" style="border-radius: 10px; flex: none">
-<div style="display: flex; flex-direction: column; gap: 10px"><b style="font-size: 17px">Jaga Kadri toetuslehte</b><span style="font-size: 14px; color: #5B6F82">Pane kood oma sotsiaalmeediasse või plakatile</span>
-<div style="display: flex; gap: 8px"><a class="shb" href="qr-kadri-vahtra.png" download>Laadi QR alla</a><button type="button" class="shb" id="cpl">Kopeeri link</button></div></div></div>
 </div>
 <div style="display: flex; flex-direction: column; gap: 22px">
 <div><h1 style="margin: 0; font-size: 68px; line-height: 0.95; font-weight: 800; letter-spacing: -0.02em">Kadri Vahtra</h1>
@@ -83,6 +82,8 @@ html, body { overflow-x: hidden; }
 <button type="submit" id="cta" style="display: flex; align-items: center; justify-content: center; height: 58px; border: 0; border-radius: 999px; background: #0166B4; color: #FFFFFF; font: 700 18px Saira, sans-serif; cursor: pointer">Toeta Kadrit 25&nbsp;€</button>
 <span style="text-align: center; font-size: 13px; color: #8A9BAC">Pangalink · Apple Pay · kaardid</span>
 </form>
+<div class="share"><img src="qr-kadri-vahtra.svg" alt="QR-kood Kadri toetuslehele" width="64" height="64">
+<div><b style="display: block; font-size: 15px">Jaga Kadri toetuslehte</b><span style="display: flex; gap: 16px; margin-top: 4px"><a class="shb" href="qr-kadri-vahtra.png" download>Laadi QR alla</a><button type="button" class="shb" id="cpl">Kopeeri link</button></span></div></div>
 </div>
 </div>
 </section>
