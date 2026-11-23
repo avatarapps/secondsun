@@ -45,9 +45,19 @@ a:hover .tb { background: #0166B4; }
 .taxl { display: flex; align-items: center; gap: 10px; font-size: 15px; color: #3E5266; cursor: pointer; }
 .taxl input { width: 18px; height: 18px; accent-color: #0166B4; margin: 0; }
 #taxf[hidden] { display: none !important; }
+.ty-l { background: #0F2033; padding: 22px; display: flex; flex-direction: column; align-items: center; gap: 10px; color: #8EC3EC; font-size: 13px; font-weight: 700; letter-spacing: 0.08em; }
+.ty-card { width: 300px; height: 375px; border-radius: 14px; box-shadow: 0 12px 30px rgba(0,0,0,0.35); background: #1B2F45; }
+.tyb { border: 0; border-radius: 999px; background: #0166B4; color: #FFFFFF; font: 700 16px Saira, sans-serif; padding: 13px 22px; cursor: pointer; text-decoration: none; }
+.tyb2 { background: #E9F2FA; color: #0F2033; }
+.tyx { border: 0; background: none; color: #5B6F82; font: 600 15px Saira, sans-serif; cursor: pointer; padding: 8px; }
+.pin { position: absolute; inset: 0; animation: pinIn 0.7s cubic-bezier(.2,1.4,.4,1) both; }
+.pin > div { height: 100%; box-sizing: border-box; }
+.pin-new::after { content: 'UUS'; position: absolute; top: -10px; right: -8px; background: #FFE58A; color: #0F2033; font: 800 11px Saira, sans-serif; letter-spacing: 0.08em; padding: 4px 8px; border-radius: 999px; box-shadow: 0 4px 10px rgba(0,0,0,0.25); }
+@keyframes pinIn { 0% { opacity: 0; transform: translateY(-18px) scale(1.12) rotate(-5deg); } 60% { opacity: 1; } 100% { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .pin { animation: none; } }
 .ty { position: fixed; inset: 0; z-index: 80; background: rgba(15,32,51,0.55); display: grid; place-items: center; }
 .ty[hidden] { display: none; }
-.ty-c { width: 820px; display: grid; grid-template-columns: 300px 1fr; background: #FFFFFF; color: #0F2033; border-radius: 24px; overflow: hidden; box-shadow: 0 30px 80px rgba(0,0,0,0.35); animation: tyIn 0.35s ease-out; }
+.ty-c { width: 860px; display: grid; grid-template-columns: 344px 1fr; background: #FFFFFF; color: #0F2033; border-radius: 24px; overflow: hidden; box-shadow: 0 30px 80px rgba(0,0,0,0.35); animation: tyIn 0.35s ease-out; }
 @keyframes tyIn { from { opacity: 0; transform: translateY(16px) scale(0.98); } to { opacity: 1; transform: none; } }
 .igf { display: inline-flex; align-items: center; gap: 9px; padding: 11px 18px 11px 14px; border-radius: 999px; background: #0F2033; color: #FFFFFF; text-decoration: none; font-size: 15px; font-weight: 700; letter-spacing: 0.01em; box-shadow: 0 8px 20px rgba(15,32,51,0.18); transition: transform 0.15s, box-shadow 0.15s; }
 .igf:hover { transform: translateY(-1px); box-shadow: 0 12px 26px rgba(15,32,51,0.24); }
@@ -94,9 +104,13 @@ a:hover .tb { background: #0166B4; }
   .tst { left: 12px !important; right: 12px !important; bottom: 12px !important; width: auto !important; }
   .tst > div { left: 0; right: 0; white-space: normal !important; font-size: 14px !important; }
   .ty-c { width: calc(100vw - 24px) !important; grid-template-columns: 1fr !important; max-height: calc(100vh - 24px); overflow: auto; }
-  .ty-c img { width: 100% !important; height: 170px !important; min-height: 0 !important; }
+  .ty-l { padding: 14px !important; }
+  .ty-card { width: 180px !important; height: 225px !important; }
   .ty-c > div { padding: 22px !important; }
   #tyh { font-size: 30px !important; }
+  .ty-c p { font-size: 16px !important; }
+  .ty-c > div:last-child { gap: 10px !important; }
+  .ty-card { width: 160px !important; height: 200px !important; }
 }
 @media (max-width: 899px) {
   .wrap { width: auto !important; }
@@ -147,7 +161,7 @@ a:hover .tb { background: #0166B4; }
 <b style="font-size: 18px">Vali summa</b>
 <div id="chips" style="display: grid; grid-template-columns: repeat(4, 1fr) 1.15fr; gap: 8px"><button type="button" class="chipb" data-v="5">5&nbsp;€</button><button type="button" class="chipb" data-v="10">10&nbsp;€</button><button type="button" class="chipb on" data-v="25">25&nbsp;€</button><button type="button" class="chipb" data-v="50">50&nbsp;€</button><input class="fld" id="other" inputmode="numeric" placeholder="Muu €" aria-label="Muu summa" style="height: 52px; padding: 0 12px; text-align: center; font-weight: 700"></div>
 <input class="fld" id="nm" maxlength="40" autocomplete="name" placeholder="Sinu nimi" aria-label="Sinu nimi">
-<input class="fld" maxlength="80" placeholder="Hõige Kadrile (valikuline)" aria-label="Hõige Kadrile">
+<input class="fld" id="sh" maxlength="80" placeholder="Hõige Kadrile (valikuline)" aria-label="Hõige Kadrile">
 <label class="taxl"><input type="checkbox" id="tax"> Soovin tulumaksutagastust</label>
 <div id="taxf" hidden style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px">
 <input class="fld tf" autocomplete="given-name" placeholder="Eesnimi" aria-label="Eesnimi">
@@ -180,8 +194,8 @@ a:hover .tb { background: #0166B4; }
 </section>
 
 <section class="m-sec" style="background: #0F2033; color: #FFFFFF; padding: 88px 56px">
-<div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 30px"><h2 style="margin: 0; font-size: 40px; font-weight: 800">Hõiked Kadrile</h2><span style="color: #A9B8C6">8 uut sel nädalal</span></div>
-<div class="m-1col" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px"><div style="transform: rotate(-2deg)"><div style="background: #FFFFFF; color: #0F2033; border-radius: 14px; padding: 16px 18px; box-shadow: 0 8px 20px rgba(0,0,0,0.25)"><div style="font-size: 17px; line-height: 1.35; font-weight: 600">„Rahulik hingamine lamades!“</div><div style="margin-top: 8px; font-size: 13px; color: #5B6F82"><b style="color: #0F2033">Marko P.</b> → Kadri Vahtra</div></div></div><div style="transform: rotate(1.5deg)"><div style="background: #CFE5F7; color: #0F2033; border-radius: 14px; padding: 16px 18px; box-shadow: 0 8px 20px rgba(0,0,0,0.25)"><div style="font-size: 17px; line-height: 1.35; font-weight: 600">„Viis musta, viis valget.“</div><div style="margin-top: 8px; font-size: 13px; color: #3E5266"><b style="color: #0F2033">Klubikaaslased</b> → Kadri Vahtra</div></div></div><div style="transform: rotate(-1deg)"><div style="background: #0166B4; color: #FFFFFF; border-radius: 14px; padding: 16px 18px; box-shadow: 0 8px 20px rgba(0,0,0,0.25)"><div style="font-size: 17px; line-height: 1.35; font-weight: 600">„Hingad sisse, lased, lähed.“</div><div style="margin-top: 8px; font-size: 13px; color: #CFE5F7"><b style="color: #FFFFFF">Peeter V.</b> → Kadri Vahtra</div></div></div><div style="transform: rotate(2deg)"><div style="background: #FFFFFF; color: #0F2033; border-radius: 14px; padding: 16px 18px; box-shadow: 0 8px 20px rgba(0,0,0,0.25)"><div style="font-size: 17px; line-height: 1.35; font-weight: 600">„Oleme Tehvandil esireas!“</div><div style="margin-top: 8px; font-size: 13px; color: #5B6F82"><b style="color: #0F2033">Ema ja isa</b> → Kadri Vahtra</div></div></div><div style="transform: rotate(1deg)"><div style="background: #CFE5F7; color: #0F2033; border-radius: 14px; padding: 16px 18px; box-shadow: 0 8px 20px rgba(0,0,0,0.25)"><div style="font-size: 17px; line-height: 1.35; font-weight: 600">„Sinu jälitussõit oli eelmisel talvel uskumatu.“</div><div style="margin-top: 8px; font-size: 13px; color: #3E5266"><b style="color: #0F2033">Kristiina</b> → Kadri Vahtra</div></div></div><div style="transform: rotate(-1.5deg)"><div style="background: #0166B4; color: #FFFFFF; border-radius: 14px; padding: 16px 18px; box-shadow: 0 8px 20px rgba(0,0,0,0.25)"><div style="font-size: 17px; line-height: 1.35; font-weight: 600">„Sina oled meie eeskuju.“</div><div style="margin-top: 8px; font-size: 13px; color: #CFE5F7"><b style="color: #FFFFFF">Haanja noored</b> → Kadri Vahtra</div></div></div><div style="transform: rotate(-2deg)"><div style="background: #FFFFFF; color: #0F2033; border-radius: 14px; padding: 16px 18px; box-shadow: 0 8px 20px rgba(0,0,0,0.25)"><div style="font-size: 17px; line-height: 1.35; font-weight: 600">„Puhas seeria tuleb!“</div><div style="margin-top: 8px; font-size: 13px; color: #5B6F82"><b style="color: #0F2033">Raido T.</b> → Kadri Vahtra</div></div></div><div style="transform: rotate(1.5deg)"><div style="background: #CFE5F7; color: #0F2033; border-radius: 14px; padding: 16px 18px; box-shadow: 0 8px 20px rgba(0,0,0,0.25)"><div style="font-size: 17px; line-height: 1.35; font-weight: 600">„Iga lask loeb – ja sina tead seda.“</div><div style="margin-top: 8px; font-size: 13px; color: #3E5266"><b style="color: #0F2033">Anu</b> → Kadri Vahtra</div></div></div></div>
+<div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 30px"><h2 style="margin: 0; font-size: 40px; font-weight: 800">Hõiked Kadrile</h2><span style="color: #A9B8C6"><b id="wcnt" style="color: #FFFFFF">8</b> uut sel nädalal</span></div>
+<div class="m-1col" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px"><div id="wall0" style="transform: rotate(-2deg); position: relative"><div style="background: #FFFFFF; color: #0F2033; border-radius: 14px; padding: 16px 18px; box-shadow: 0 8px 20px rgba(0,0,0,0.25)"><div style="font-size: 17px; line-height: 1.35; font-weight: 600">„Rahulik hingamine lamades!“</div><div style="margin-top: 8px; font-size: 13px; color: #5B6F82"><b style="color: #0F2033">Marko P.</b> → Kadri Vahtra</div></div></div><div style="transform: rotate(1.5deg); position: relative"><div style="background: #CFE5F7; color: #0F2033; border-radius: 14px; padding: 16px 18px; box-shadow: 0 8px 20px rgba(0,0,0,0.25)"><div style="font-size: 17px; line-height: 1.35; font-weight: 600">„Viis musta, viis valget.“</div><div style="margin-top: 8px; font-size: 13px; color: #3E5266"><b style="color: #0F2033">Klubikaaslased</b> → Kadri Vahtra</div></div></div><div style="transform: rotate(-1deg); position: relative"><div style="background: #0166B4; color: #FFFFFF; border-radius: 14px; padding: 16px 18px; box-shadow: 0 8px 20px rgba(0,0,0,0.25)"><div style="font-size: 17px; line-height: 1.35; font-weight: 600">„Hingad sisse, lased, lähed.“</div><div style="margin-top: 8px; font-size: 13px; color: #CFE5F7"><b style="color: #FFFFFF">Peeter V.</b> → Kadri Vahtra</div></div></div><div style="transform: rotate(2deg); position: relative"><div style="background: #FFFFFF; color: #0F2033; border-radius: 14px; padding: 16px 18px; box-shadow: 0 8px 20px rgba(0,0,0,0.25)"><div style="font-size: 17px; line-height: 1.35; font-weight: 600">„Oleme Tehvandil esireas!“</div><div style="margin-top: 8px; font-size: 13px; color: #5B6F82"><b style="color: #0F2033">Ema ja isa</b> → Kadri Vahtra</div></div></div><div style="transform: rotate(1deg); position: relative"><div style="background: #CFE5F7; color: #0F2033; border-radius: 14px; padding: 16px 18px; box-shadow: 0 8px 20px rgba(0,0,0,0.25)"><div style="font-size: 17px; line-height: 1.35; font-weight: 600">„Sinu jälitussõit oli eelmisel talvel uskumatu.“</div><div style="margin-top: 8px; font-size: 13px; color: #3E5266"><b style="color: #0F2033">Kristiina</b> → Kadri Vahtra</div></div></div><div style="transform: rotate(-1.5deg); position: relative"><div style="background: #0166B4; color: #FFFFFF; border-radius: 14px; padding: 16px 18px; box-shadow: 0 8px 20px rgba(0,0,0,0.25)"><div style="font-size: 17px; line-height: 1.35; font-weight: 600">„Sina oled meie eeskuju.“</div><div style="margin-top: 8px; font-size: 13px; color: #CFE5F7"><b style="color: #FFFFFF">Haanja noored</b> → Kadri Vahtra</div></div></div><div style="transform: rotate(-2deg); position: relative"><div style="background: #FFFFFF; color: #0F2033; border-radius: 14px; padding: 16px 18px; box-shadow: 0 8px 20px rgba(0,0,0,0.25)"><div style="font-size: 17px; line-height: 1.35; font-weight: 600">„Puhas seeria tuleb!“</div><div style="margin-top: 8px; font-size: 13px; color: #5B6F82"><b style="color: #0F2033">Raido T.</b> → Kadri Vahtra</div></div></div><div style="transform: rotate(1.5deg); position: relative"><div style="background: #CFE5F7; color: #0F2033; border-radius: 14px; padding: 16px 18px; box-shadow: 0 8px 20px rgba(0,0,0,0.25)"><div style="font-size: 17px; line-height: 1.35; font-weight: 600">„Iga lask loeb – ja sina tead seda.“</div><div style="margin-top: 8px; font-size: 13px; color: #3E5266"><b style="color: #0F2033">Anu</b> → Kadri Vahtra</div></div></div></div>
 </section>
 
 <section class="m-fund" style="background: #FFFFFF; padding: 88px 56px; display: grid; grid-template-columns: 360px 1fr; gap: 72px; align-items: start">
@@ -230,14 +244,15 @@ a:hover .tb { background: #0166B4; }
 </a></div>
 </section>
 <div id="ty" class="ty" hidden role="dialog" aria-modal="true" aria-labelledby="tyh"><div class="ty-c">
-<img src="img/ph-9286562.jpg" alt="Kadri Vahtra" style="width: 300px; height: 100%; min-height: 380px; object-fit: cover; object-position: 30% center">
+<div class="ty-l"><img id="tycard" class="ty-card" alt="Sinu hõikekaart" width="300" height="375"><span>Sinu hõikekaart</span></div>
 <div style="padding: 36px 36px 32px; display: flex; flex-direction: column; gap: 16px">
 <span style="font-size: 13px; letter-spacing: 0.14em; font-weight: 700; color: #0166B4">KADRI SÕNUM SULLE</span>
 <h3 id="tyh" style="margin: 0; font-size: 40px; line-height: 1; font-weight: 800">Aitäh!</h3>
 <p style="margin: 0; font-size: 21px; line-height: 1.4; font-weight: 600">„Iga toetus on nagu kaasaelaja rajaserval. Kui Tehvandil tiiru jõuan, tean, et sina oled ka seal.“</p>
 <b style="font-size: 17px">– Kadri</b>
 <div style="margin-top: auto; padding-top: 14px; border-top: 1px solid #E6EEF5; font-size: 15px; color: #3E5266"><b id="tya" style="color: #0F2033">25 €</b> jõudis Kadrini · sinu nimi on nüüd tema toetajate seas</div>
-<button id="tyc" type="button" style="align-self: flex-start; border: 0; border-radius: 999px; background: #0F2033; color: #FFFFFF; font: 700 16px Saira, sans-serif; padding: 13px 24px; cursor: pointer">Sulge</button>
+<div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap"><button id="tysh" type="button" class="tyb">Jaga hõikekaarti</button><a id="tydl" class="tyb tyb2" download="hoige-kadrile.png" href="#">Laadi alla</a><button id="tyc" type="button" class="tyx">Sulge</button></div>
+<span style="font-size: 13px; color: #5B6F82">Sõbrad, kes kaarti näevad, jõuavad otse Kadri toetuslehele.</span>
 </div></div></div>
 <div style="background: #FFFFFF"><div style="padding: 18px 56px; font-size: 12px; color: #7C8B9A; font-family: Saira, sans-serif">Kontseptsioon · näidisandmed, sportlased ja nimed on väljamõeldud · fotod: Pexels</div></div>
 <div class="tst" aria-live="polite" aria-label="Uued toetused"><div style="animation-delay: 2s"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" style="animation-delay: 2s"><path d="M12 3c-3.3 0-5.5 2.6-5.5 5.8v3.4L5 15.2c-.4.7.1 1.6.9 1.6h12.2c.8 0 1.3-.9.9-1.6l-1.5-3V8.8C17.5 5.6 15.3 3 12 3z" fill="#0166B4"/><path d="M9.6 18.4a2.5 2.5 0 0 0 4.8 0z" fill="#0166B4"/></svg><span>Tiina K. → Liis Org</span><b>10&nbsp;€</b></div><div style="animation-delay: 10s"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" style="animation-delay: 10s"><path d="M12 3c-3.3 0-5.5 2.6-5.5 5.8v3.4L5 15.2c-.4.7.1 1.6.9 1.6h12.2c.8 0 1.3-.9.9-1.6l-1.5-3V8.8C17.5 5.6 15.3 3 12 3z" fill="#0166B4"/><path d="M9.6 18.4a2.5 2.5 0 0 0 4.8 0z" fill="#0166B4"/></svg><span>Marko P. → Kadri Vahtra</span><b>25&nbsp;€</b></div><div style="animation-delay: 18s"><span style="font-size: 20px" aria-hidden="true">🎯</span><span>Kadri Vahtra 5/5 · Ettevõte X → noortele</span><b>+100&nbsp;€</b></div><div style="animation-delay: 26s"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" style="animation-delay: 26s"><path d="M12 3c-3.3 0-5.5 2.6-5.5 5.8v3.4L5 15.2c-.4.7.1 1.6.9 1.6h12.2c.8 0 1.3-.9.9-1.6l-1.5-3V8.8C17.5 5.6 15.3 3 12 3z" fill="#0166B4"/><path d="M9.6 18.4a2.5 2.5 0 0 0 4.8 0z" fill="#0166B4"/></svg><span>Vanaema Helgi → Anni Põld</span><b>20&nbsp;€</b></div><div style="animation-delay: 34s"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" style="animation-delay: 34s"><path d="M12 3c-3.3 0-5.5 2.6-5.5 5.8v3.4L5 15.2c-.4.7.1 1.6.9 1.6h12.2c.8 0 1.3-.9.9-1.6l-1.5-3V8.8C17.5 5.6 15.3 3 12 3z" fill="#0166B4"/><path d="M9.6 18.4a2.5 2.5 0 0 0 4.8 0z" fill="#0166B4"/></svg><span>Kadri M. → Tanel Rebane</span><b>5&nbsp;€</b></div><div style="animation-delay: 42s"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" style="animation-delay: 42s"><path d="M12 3c-3.3 0-5.5 2.6-5.5 5.8v3.4L5 15.2c-.4.7.1 1.6.9 1.6h12.2c.8 0 1.3-.9.9-1.6l-1.5-3V8.8C17.5 5.6 15.3 3 12 3z" fill="#0166B4"/><path d="M9.6 18.4a2.5 2.5 0 0 0 4.8 0z" fill="#0166B4"/></svg><span>Treener Ain → Merit Saluste</span><b>40&nbsp;€</b></div></div>
@@ -255,10 +270,74 @@ a:hover .tb { background: #0166B4; }
     var on = document.querySelector('#chips .chipb.on'), v = on ? on.dataset.v : (parseInt(other.value, 10) || 25), n = document.getElementById('nm').value.trim();
     document.getElementById('tyh').textContent = n ? 'Aitäh, ' + n.split(' ')[0] + '!' : 'Aitäh!';
     document.getElementById('tya').textContent = v + ' €';
+    var msg = document.getElementById('sh').value.trim() || 'Hoian pöialt!', who = n || 'Toetaja';
+    lastShout = [who, msg]; makeCard(who, msg);
     ty.hidden = false;
   });
-  document.getElementById('tyc').addEventListener('click', function () { ty.hidden = true; });
-  ty.addEventListener('click', function (e) { if (e.target === ty) ty.hidden = true; });
+
+  // ---- hõigete sein: uus hõige kinnitub seina algusesse, teised jäävad paigale
+  var wall0 = document.getElementById('wall0'), wcnt = document.getElementById('wcnt'), cnt = parseInt(wcnt.textContent, 10);
+  var STY = [['#FFFFFF', '#0F2033', '#5B6F82'], ['#CFE5F7', '#0F2033', '#3E5266'], ['#0166B4', '#FFFFFF', '#CFE5F7']], si = 1;
+  function esc(s) { return s.replace(/[&<>"]/g, function (c) { return {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c]; }); }
+  function pin(from, msg) {
+    var s = STY[si++ % 3], d = document.createElement('div');
+    d.className = 'pin pin-new';
+    d.innerHTML = '<div style="background: ' + s[0] + '; color: ' + s[1] + '; border-radius: 14px; padding: 16px 18px; box-shadow: 0 10px 24px rgba(0,0,0,0.35)"><div style="font-size: 17px; line-height: 1.35; font-weight: 600">„' + esc(msg) + '“</div><div style="margin-top: 8px; font-size: 13px; color: ' + s[2] + '"><b style="color: ' + s[1] + '">' + esc(from) + '</b> → Kadri Vahtra</div></div>';
+    [].forEach.call(wall0.querySelectorAll('.pin-new'), function (o) { o.classList.remove('pin-new'); });
+    wall0.appendChild(d);
+    var olds = wall0.querySelectorAll('.pin'); if (olds.length > 3) wall0.removeChild(olds[0]);
+    wcnt.textContent = ++cnt;
+  }
+  var NEW = [['Kertu', 'Tehvandil näeme!'], ['Rasmus ja isa', 'Viis valget sulle!'], ['Klass 5B', 'Oleme kõik sinu tribüünil!'], ['Tõnu L.', 'Rahu tiirus, tuli rajal!'], ['Elva SK', 'Kogu klubi elab kaasa!'], ['Liina R.', 'Sa oled meie eeskuju!']], ni = 0;
+  setInterval(function () { if (!document.hidden && ty.hidden) pin(NEW[ni][0], NEW[ni++ % NEW.length][1]); if (ni >= NEW.length) ni = 0; }, 9000);
+
+  // ---- jagatav hõikekaart (1080x1350)
+  var ph = new Image(); ph.src = 'img/ph-9286562.jpg';
+  var qr = new Image(); qr.src = 'qr-kadri-vahtra.png';
+  function wrap(ctx, text, x, y, maxW, lh, maxLines) {
+    var words = text.split(' '), line = '', lines = [];
+    words.forEach(function (w) { var t = line ? line + ' ' + w : w; if (ctx.measureText(t).width > maxW && line) { lines.push(line); line = w; } else line = t; });
+    lines.push(line); lines = lines.slice(0, maxLines);
+    lines.forEach(function (l, i) { ctx.fillText(l, x, y + i * lh); }); return lines.length;
+  }
+  function rr(ctx, x, y, w, h, r) { ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath(); }
+  function drawCard(name, msg) {
+    var c = document.createElement('canvas'); c.width = 1080; c.height = 1350; var x = c.getContext('2d');
+    x.fillStyle = '#0F2033'; x.fillRect(0, 0, 1080, 1350);
+    if (ph.complete && ph.naturalWidth) { var s = Math.max(1080 / ph.naturalWidth, 800 / ph.naturalHeight), w = ph.naturalWidth * s, h = ph.naturalHeight * s; x.drawImage(ph, (1080 - w) / 2 - 60, 0, w, h); }
+    var g = x.createLinearGradient(0, 380, 0, 820); g.addColorStop(0, 'rgba(15,32,51,0)'); g.addColorStop(1, 'rgba(15,32,51,1)'); x.fillStyle = g; x.fillRect(0, 380, 1080, 440);
+    x.fillStyle = '#FFFFFF'; rr(x, 60, 56, 420, 64, 32); x.fill();
+    x.fillStyle = '#0166B4'; x.font = '800 30px Saira'; x.fillText('DIGITRIBÜÜN · MM 2027', 92, 99);
+    x.save(); x.translate(540, 820); x.rotate(-0.035);
+    x.font = '700 60px Saira'; var probe = document.createElement('canvas').getContext('2d'); probe.font = x.font;
+    var n = wrap(probe, '„' + msg + '“', 0, 0, 780, 72, 3), bh = 96 + n * 72 + 84, top = -bh / 2;
+    x.shadowColor = 'rgba(0,0,0,0.4)'; x.shadowBlur = 40; x.shadowOffsetY = 16; x.fillStyle = '#FFFFFF'; rr(x, -440, top, 880, bh, 34); x.fill(); x.shadowColor = 'transparent';
+    x.fillStyle = '#0F2033'; wrap(x, '„' + msg + '“', -390, top + 106, 780, 72, 3);
+    x.fillStyle = '#5B6F82'; x.font = '500 36px Saira'; x.fillText(name + ' → Kadri Vahtra', -390, top + 106 + (n - 1) * 72 + 76);
+    x.restore();
+    x.fillStyle = '#FFFFFF'; x.font = '800 56px Saira'; x.fillText('Toeta ka Kadrit', 60, 1148);
+    x.fillStyle = '#8EC3EC'; x.font = '500 34px Saira'; x.fillText('elsf.secondsun.ee/sportlane', 60, 1202);
+    x.fillStyle = '#FFFFFF'; rr(x, 800, 1040, 220, 220, 22); x.fill();
+    if (qr.complete && qr.naturalWidth) x.drawImage(qr, 812, 1052, 196, 196);
+    return c;
+  }
+  var cardCanvas = null, lastShout = null;
+  function makeCard(name, msg) {
+    (document.fonts ? Promise.all([document.fonts.load('800 56px Saira'), document.fonts.load('700 60px Saira')]) : Promise.resolve()).then(function () {
+      cardCanvas = drawCard(name, msg); var u = cardCanvas.toDataURL('image/png');
+      document.getElementById('tycard').src = u; document.getElementById('tydl').href = u;
+    });
+  }
+  document.getElementById('tysh').addEventListener('click', function () {
+    if (!cardCanvas) return;
+    cardCanvas.toBlob(function (b) {
+      var f = new File([b], 'hoige-kadrile.png', { type: 'image/png' }), d = { files: [f], title: 'Hõige Kadrile', text: 'Toetasin Kadri Vahtrat. Toeta sinagi!', url: location.href };
+      if (navigator.canShare && navigator.canShare({ files: [f] })) navigator.share(d).catch(function () {});
+      else document.getElementById('tydl').click();
+    });
+  });
+  document.getElementById('tyc').addEventListener('click', function () { ty.hidden = true; if (lastShout) { pin(lastShout[0], lastShout[1]); lastShout = null; } });
+  ty.addEventListener('click', function (e) { if (e.target === ty) document.getElementById('tyc').click(); });
 })();
 </script>
 </div>
