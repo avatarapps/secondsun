@@ -64,6 +64,13 @@ a:hover .tb { background: #0166B4; }
 .topb[hidden] { display: none; }
 .topb-r { right: -22px; }
 .topb-l { left: -22px; }
+.smsk { display: inline-flex; align-items: baseline; gap: 6px; padding: 7px 12px; border-radius: 10px; background: #F2F7FB; font-size: 13px; color: #5B6F82; }
+.smsk b { font-family: 'Saira Condensed', 'Saira', sans-serif; font-size: 16px; color: #0F2033; letter-spacing: 0.04em; }
+.scr { position: relative; aspect-ratio: 16 / 9; border-radius: 18px; overflow: hidden; background: #0F2033; border: 8px solid #1A2B3D; box-shadow: 0 20px 44px rgba(15,32,51,0.28); }
+.scr-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 40% 20%; }
+.scr-sh { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(15,32,51,0.94) 0%, rgba(15,32,51,0.75) 48%, rgba(15,32,51,0.15) 100%); }
+.scr-tag { position: absolute; top: 14px; left: 18px; font-size: 11px; font-weight: 700; letter-spacing: 0.14em; color: rgba(255,255,255,0.55); }
+.scr-b { position: absolute; left: 24px; right: 20px; bottom: 20px; display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; color: #FFFFFF; }
 .live-dot { width: 9px; height: 9px; border-radius: 50%; background: #FF6B6B; animation: livePulse 1.6s ease-in-out infinite; }
 @keyframes livePulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
 .cyc { position: absolute; inset: 0; opacity: 0; animation: cyc 30s ease-in-out infinite; }
@@ -90,6 +97,12 @@ a:hover .tb { background: #0166B4; }
   .m-sec > div:first-child { flex-wrap: wrap; gap: 8px; }
   .m-top0 { padding-top: 0 !important; }
   .topb { display: none !important; }
+  .m-sms { padding: 0 16px 48px !important; }
+  .m-smsc { grid-template-columns: 1fr !important; padding: 24px 20px !important; gap: 24px !important; }
+  .m-smsc h2 { font-size: 30px !important; }
+  .scr { aspect-ratio: 4 / 5; }
+  .scr-b { flex-direction: column; align-items: flex-start; }
+  .scr-b .num { font-size: 46px !important; }
   .topr { grid-auto-columns: 82%; }
   .rhead { flex-wrap: wrap; gap: 10px; }
   .rhead h3 { font-size: 22px !important; }
@@ -282,6 +295,27 @@ a:hover .tb { background: #0166B4; }
 <div style="margin: 12px 0 16px"><b class="num" style="font-size: 60px; font-weight: 800; line-height: 1; color: #FFE58A">4 180 €</b> <span style="font-size: 18px; color: #B9CCDD">/ 10 000 €</span></div>
 <div style="display: flex; height: 14px; border-radius: 999px; overflow: hidden; background: rgba(255,255,255,0.1)"><span style="width: 41.80%; background: #FFE58A"></span></div>
 <div style="margin-top: 10px; display: flex; justify-content: space-between; font-size: 15px; color: #B9CCDD"><span><b style="color: #FFFFFF">209</b> / 500 tabamust</span><span>1 284 ennustust · keskmine <b style="color: #FFFFFF">7 860 €</b></span></div>
+</div>
+</div>
+</section>
+<section class="m-sec m-sms" style="background: #E9F2FA; padding: 0 56px 88px">
+<div class="m-smsc" style="display: grid; grid-template-columns: 1fr 1.15fr; gap: 56px; align-items: center; background: #FFFFFF; border-radius: 24px; padding: 48px 52px; box-shadow: 0 14px 40px rgba(15,32,51,0.07)">
+<div style="display: flex; flex-direction: column; gap: 16px">
+<span style="font-size: 13px; letter-spacing: 0.16em; color: #0166B4; font-weight: 700">MM-I AJAL TEHVANDIL</span>
+<h2 style="margin: 0; font-size: 42px; font-weight: 800; line-height: 1.02">Toeta oma lemmikut ühe SMS-iga</h2>
+<p style="margin: 0; font-size: 19px; line-height: 1.5; color: #3E5266">Külmas pole aega pangalinke otsida. Saada sportlase nimi numbrile <b style="color: #0F2033">1399</b> ja <b style="color: #0F2033">5&nbsp;€</b> läheb otse temale. Iga sõnum on uus toetus.</p>
+<div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px"><span class="smsk"><b>LIIS</b>Org</span><span class="smsk"><b>KADRI</b>Vahtra</span><span class="smsk"><b>SIIM</b>Laur</span><span class="smsk"><b>TANEL</b>Rebane</span><span class="smsk"><b>MERIT</b>Saluste</span><span class="smsk"><b>JOOSEP</b>Kangur</span><span class="smsk"><b>MARKUS</b>Hein</span><span class="smsk"><b>ANNI</b>Põld</span></div>
+</div>
+<div class="scr">
+<img src="img/ph-9286562c.jpg" alt="" class="scr-img">
+<div class="scr-sh"></div>
+<span class="scr-tag">SUUREKRAAN · TEHVANDI STAADION</span>
+<div class="scr-b">
+<div><div style="font-size: 15px; font-weight: 700; color: #FFE58A; letter-spacing: 0.08em">KADRI VAHTRA · 5/5 TIIRUS</div>
+<div class="num" style="font-size: 58px; font-weight: 800; line-height: 0.95; margin-top: 8px">SMS <span style="color: #FFE58A">KADRI</span><br>→ 1399</div>
+<div style="margin-top: 8px; font-size: 16px; color: #CFE5F7">5 € otse Kadrile</div></div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 6px"><img src="qr-sms-kadri.svg" alt="QR: SMS KADRI numbrile 1399" width="112" height="112" style="border-radius: 10px; padding: 5px; background: #FFFFFF"><span style="font-size: 12px; font-weight: 700; color: #CFE5F7">Skänni – sõnum on valmis</span></div>
+</div>
 </div>
 </div>
 </section>
