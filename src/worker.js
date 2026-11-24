@@ -1,5 +1,6 @@
 // Second Sun — serves the static site, asks AI follow-up questions and e-mails inquiries (with attachments).
 import { EmailMessage } from 'cloudflare:email';
+import { handleEvent, handleLog, logArPage, evaCookie, dailyMail } from './hvlog.js';
 
 const json = (obj, status = 200) => new Response(JSON.stringify(obj), { status, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' } });
 const clean = (v, max) => String(v == null ? '' : v).replace(/\r/g, '').replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, '').slice(0, max).trim();
@@ -287,7 +288,10 @@ async function handleFollowups(request, env) {
 // ---- homeview.secondsun.ee: house AR configurator + iOS App Clip links ----
 // Pages are served from GitHub Pages (avatarapps/homeview); this domain only adds
 // the Apple association file and a clean address.
-async function handleHomeviewSite(request, env, url) {
+async function handleHomeviewSite(request, env, url, ctx) {
+  if (url.searchParams.get('eva') === '1') return evaCookie(url);          // Eva's own devices: left out of the open log
+  if (url.pathname === '/api/hv-event') return handleEvent(request, env, ctx);
+  if (url.pathname === '/api/hv-log') return handleLog(request, env, url);
   if (url.pathname === '/.well-known/apple-app-site-association') {
     const team = env.HV_TEAM_ID;
     if (!team) return new Response('not configured', { status: 404 });
@@ -300,6 +304,7 @@ async function handleHomeviewSite(request, env, url) {
   // App Clip link: iPhone Safari shows the Homeview AR App Clip card from the Smart App Banner on this page;
   // the App Clip / app opens this same URL (house, model, colours in the query). Elsewhere: link back.
   if (url.pathname === '/ar' || url.pathname.startsWith('/ar/')) {   // /ar/<client folder>: that client's own App Clip card
+    logArPage(request, env, ctx, url);
     let back = '/';
     try {
       const m = new URL(url.searchParams.get('m') || '');
@@ -341,9 +346,12 @@ ${usdz ? `<a class="q" rel="ar" href="${h(usdz)}"><img alt="Ava AR-vaade" src="d
 }
 
 export default {
-  async fetch(request, env) {
+  async scheduled(event, env, ctx) {
+    ctx.waitUntil(dailyMail(env, buildMime).catch((err) => console.error('hv daily', err && err.message)));
+  },
+  async fetch(request, env, ctx) {
     const url = new URL(request.url);
-    if (url.hostname === 'homeview.secondsun.ee') return handleHomeviewSite(request, env, url);
+    if (url.hostname === 'homeview.secondsun.ee') return handleHomeviewSite(request, env, url, ctx);
     // One public origin: https://www.secondsun.ee (apex and plain http are permanently redirected).
     if (url.hostname === 'secondsun.ee' || (url.hostname === 'www.secondsun.ee' && url.protocol === 'http:')) {
       url.hostname = 'www.secondsun.ee'; url.protocol = 'https:';

@@ -4,6 +4,10 @@
   "compatibility_date": "2025-09-01",
   "assets": { "directory": "./public", "binding": "ASSETS", "run_worker_first": true },
   "send_email": [{ "name": "EMAIL" }],
+  // Homeview demode avamiste logi (src/hvlog.js).
+  "d1_databases": [{ "binding": "HVLOG", "database_name": "homeview-loghomeview-log", "database_id": "83ab56cc-c3a0-4a05-b571-d664aaed1a1d" }],
+  // Iga hommik kell 8 (talveaeg; suvel 9) eelmise ööpäeva avamised Eva postkasti.
+  "triggers": { "crons": ["0 6 * * *"] },
   // Rämpspäringute kaitse: päringuid IP kohta minutis.
   "ratelimits": [
     { "name": "RL_SEND", "namespace_id": "1101", "simple": { "limit": 4, "period": 60 } },
@@ -18,5 +22,6 @@
     // Apple arendajakonto Team ID (homeview.secondsun.ee App Clipi seos). Tühi = seosefaili ei serveerita.
     "HV_TEAM_ID": "57BY6HBJQN"
   }
+  // HV_LOG_TOKEN (avamiste logi lugemise võti, /api/hv-log?t=…) on samuti salajane väärtus.
   // ANTHROPIC_API_KEY on salajane väärtus (Cloudflare → Worker → Settings → Variables and Secrets), mitte siin.
 }
