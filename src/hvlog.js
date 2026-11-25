@@ -21,6 +21,7 @@ export const HV_CODES = {
   '5s09': 'Mooduliparadiis',
   'yhb0': 'Indrem',
   'fy6o': 'Cube House',
+  '28qs': 'Greencube',
 };
 // Client folders with their own demo: opening one already says who it is.
 const SITES = { demo: 'Üldine demo', soomemaja: 'Soome Maja', finnlog: 'Finnlog' };
