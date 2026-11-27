@@ -103,7 +103,7 @@ const dur = (s) => (s >= 60 ? Math.floor(s / 60) + ' min ' : '') + (s % 60) + ' 
 
 async function visits(env, sinceMs) {
   const d = await db(env); if (!d) return [];
-  const { results } = await d.prepare("SELECT * FROM ev WHERE ts >= ? AND k != 'test' ORDER BY ts").bind(sinceMs).all();
+  const { results } = await d.prepare("SELECT * FROM ev WHERE ts >= ? AND IFNULL(k, '') != 'test' ORDER BY ts").bind(sinceMs).all();
   const by = new Map();
   for (const r of results) {
     const v = by.get(r.visit) || { start: r.ts, site: r.site, k: r.k, dev: r.dev, os: r.os, country: r.country, city: r.city, org: r.org, ipk: r.ipk, ref: r.ref, houses: new Set(), ar: false, inquiry: false, dur: 0, arPage: false };
@@ -151,13 +151,28 @@ export async function handleLog(request, env, url) {
 }
 
 // Every morning: last 24 hours to Eva's mailbox, only if something happened.
+// Each morning run leaves one row in table mail (ts, n, err) so a missing email can be traced.
+async function mailNote(env, n, err) {
+  try {
+    await env.HVLOG.exec('CREATE TABLE IF NOT EXISTS mail (ts INTEGER, n INTEGER, err TEXT)');
+    await env.HVLOG.prepare('INSERT INTO mail (ts, n, err) VALUES (?, ?, ?)').bind(Date.now(), n, err || null).run();
+  } catch (e) { console.error('hv mail note', e && e.message); }
+}
+
 export async function dailyMail(env, buildMime) {
+  let n = 0;
+  try { n = await sendDaily(env, buildMime); await mailNote(env, n, null); }
+  catch (e) { await mailNote(env, n, String((e && (e.stack || e.message)) || e).slice(0, 500)); throw e; }
+}
+
+async function sendDaily(env, buildMime) {
   const list = await visits(env, Date.now() - 86400000);
-  if (!list.length) return;
+  if (!list.length) return 0;
   const n = list.length;
   const text = 'Homeview demode avamised viimase 24 tunni jooksul (Tallinna aeg).\n'
     + 'Sinu enda avamisi ei loeta.\n\n' + summaryText(list) + '\n';
   const raw = buildMime({ from: env.FROM_ADDRESS, fromName: 'Homeview', to: env.TO_ADDRESS, replyTo: env.TO_ADDRESS,
     subject: 'Homeview: ' + n + (n === 1 ? ' avamine' : ' avamist') + ' viimase ööpäevaga', text, attachments: [] });
   await env.EMAIL.send(new EmailMessage(env.FROM_ADDRESS, env.TO_ADDRESS, raw));
+  return n;
 }
