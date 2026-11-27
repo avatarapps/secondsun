@@ -6,8 +6,8 @@
   "send_email": [{ "name": "EMAIL" }],
   // Homeview demode avamiste logi (src/hvlog.js).
   "d1_databases": [{ "binding": "HVLOG", "database_name": "homeview-loghomeview-log", "database_id": "83ab56cc-c3a0-4a05-b571-d664aaed1a1d" }],
-  // Iga hommik kell 8 (talveaeg; suvel 9) eelmise ööpäeva avamised Eva postkasti.
-  "triggers": { "crons": ["0 6 * * *", "45 7 * * *"] },
+  // Hommikune kokkuvõttekiri on välja lülitatud (27.11). Tühi loend eemaldab ajastused ka Cloudflare'ist.
+  "triggers": { "crons": [] },
   // Rämpspäringute kaitse: päringuid IP kohta minutis.
   "ratelimits": [
     { "name": "RL_SEND", "namespace_id": "1101", "simple": { "limit": 4, "period": 60 } },
